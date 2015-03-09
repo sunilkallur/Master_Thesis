@@ -7,7 +7,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[a4paper]{article}
 
-\usepackage[ireport]{KTHEEtitlepage}
+\usepackage[exjobb]{KTHEEtitlepage}
+\usepackage{tocloft}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
 
 % Packages used in the main document for this particular example:
 \usepackage{url}
@@ -16,7 +18,7 @@
 \hypersetup{%
     pdfborder = {0 0 0}
 }
-\usepackage[ireport]{KTHEEtitlepage}
+\usepackage[exjobb]{KTHEEtitlepage}
 
 \begin{document}
 % Information to appear on the title page:
@@ -52,9 +54,9 @@
 
 
 
-\phantomsection
+%\phantomsection
 
-\renewcommand\contentsname{Table of Contents}
+\renewcommand\contentsname{\centerline{\underline{\underline{Table of Contents}}}}
 \tableofcontents
 \addcontentsline{toc}{section}{Table of Contents}
 \cleardoublepage
