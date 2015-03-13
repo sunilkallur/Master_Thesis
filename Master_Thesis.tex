@@ -5,7 +5,10 @@
 % 
 % Mats Bengtsson,  7/8 2006
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[a4paper]{article}
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{filecontents,lipsum}
+\usepackage[noadjust]{cite}
 
 \usepackage[exjobb]{KTHEEtitlepage}
 \usepackage{tocloft}
@@ -75,20 +78,64 @@
 
 
 
+
+
 \pagenumbering{arabic}
 
 \section{Introduction}
 
+A set of digital rules define the communication strategy between digital systems.There are many such rules which makes the communication possible between systems.Over the decades the rules have evolved into standards.The rules are called as Protocols in communication systems.The Open Systems Interconnect model (OSI) partition the communication system into 7 abstraction layers.There are different protocols for each layers of abstraction. The software and/or hardware changes based on the protocol chosen to process the message and extract the relevant information at each layer of abstraction. The hardware solutions based on a General Purpose Processor(GPP)  or an Application Specific Integrated Circuit(ASIC) exists \cite{5335678}\cite{558379}.GPP will have more flexibility but are less energy efficient when compared to ASIC which are less flexible and most Energy efficient. Application Specific Instruction-set Processors(ASIP) or domain specific processors are more suitable for the protocol processing task and depending on their architectural characteristics they allow varying degrees of trade-off between flexibility and energy-efficiency\cite{1106752}.Resource and Performance varies depending on the Reconfigurable architecture and its level of abstraction\cite{6868627}.\\   
+
+The design of reconfigurable hardware architecture requires change in compiler software which can produce the required configuration or the hardware compatible code.The configuration files can be produced on run time when the application is running or in a static way before the application is made to run. The complexity of the system depends on the selected design.The hardware for processing the different protocols can be made reconfigurable.Investigation and design of such a concept is performed in this thesis work.\\ 
+
+The reconfigurable hardware is modelled in SystemC TLM2 language. The configuration file required for the reconfiguration is obtained by parsing the description of protocols using the language defined by the Grammar. The Antlr tool is used for building the base parser file for the defined grammar and then the required functions are written to output the configuration files. 
+
+
 \clearpage
-\begin{figure}
-    \caption{A figure}
-\end{figure}
-\begin{table}
-    \caption{A table}
-\end{table}
+\subsection{Background}
+In 1960 Gerald Estrin, proposed the idea of a fixed plus variable structure computer \cite{1114865}.It consisted of a fixed processor and an array of reconfigurable hardware which was controlled by the fixed processor.Even though the idea was demonstrated with a proof the industry did not consider to further innovate in these field and till 1980's there were no significant developments. In  1985 the reconfigurable PLA(Programmable Logic Array) was patented\cite{page1985re}.Innovation in PLA's further continued with the commercially available FPGA(Field Programmable Gate Arrays) in today's market.\\
+
+Ericsson AB is a market leader in the radio base station equipments.There are different protocols being used for communication in the Radio Base Station (RBS) units.The Ethernet standard defined by IEEE in 802.3 standard defines the protocol for 10Gbit transfer which is mainly used for communication between the chips. Other protocols include Common Public Radio Interface (CPRI),Serial Rapid IO(SRIO),Xio(Ericsson Specific protocol) for reliable communication between chips at high data rate.Most of these protocols in this layer of abstraction have common harware units/blocks. Ericsson design and manufacture Custom ASIC chips for each of these protocols.The common functions which can be used by different protocols are being studied in this thesis by designing a reconfigurable hardware architecture which will minimize the cost and will provide more flexibility compared to ASIC chips.More details about the protocols and reconfigurable architecture is explained in Chapter 3.\\ 
+
+The reconfigurable architecture requires a new hardware and software co-design.The reconfiguration details are extracted based on the hardware design and the compiler/mapper should be able to produce such reconfiguration.This is accomplished  by using Grammar based technique i.e by defining a language based on BNF grammar and then defining the protocols using this language.The overall architecture and working principle will be explained in further chapters.\\
+
+The Reconfigurable hardware for protocol processing using the grammar based approach is performed in this thesis.A detailed technical description of each technology being used is explained in Chapter 3.\\   
+
 \clearpage
 
-\section{Methodology}
+
+\subsection{Purpose}
+
+The thesis purpose is to investigate an approach for a compiler or mapper to consider the mapping of hardware blocks based on different protocols.This involves showing the proof of concept by SystemC TLM2 simulation models.The Individual hardware blocks are modelled in SystemC and can vary from a constant block to complex functions of the protocols like Encoder,Scrambler etc.This thesis work serves as a proof for the project in Ericsson to further investigate the feasibility of developing such architectures.
+
+
+
+\subsection{Goal}
+The thesis goal is to provide a proof of concept for the reconfigurable protocol processor using grammar based approach.The proof includes the simulation models by transmitting the data trough the reconfigurable architecture and showing the working principle using the metrics.
+
+\clearpage
+\subsection{Methodology}
+\clearpage
+\subsection{Delimitations}
+\clearpage
+\subsection{Outline}
+
+
+
+     
+
+\section{Theoretical Background}
+
+\clearpage
+\subsection{Reconfigurable Architectures}
+\clearpage
+\subsection{Protocols}
+\clearpage
+\subsection{Grammar BNF}
+\clearpage
+\subsection{Different architectures}
+\clearpage
+\section{Work}
 \clearpage
 
 \section{Future Work}
@@ -97,79 +144,80 @@
 \section{Conclusion}
 \clearpage
 
-\section{References}
-\clearpage
 
 
+\begin{filecontents*}{references.bib}
 
-%
-%\section{How to Use the Package}
-%Once you have finished your paper/report/thesis/\dots, just add the 
-%following line somewhere before \verb+\begin{document}+:
-%\begin{verbatim}
-%\usepackage[ireport]{KTHEEtitlepage}
-%\end{verbatim}
-%and following commands just below \verb+\begin{document}+:
-%\begin{verbatim}
-%\ititle{My Title}
-%\isubtitle{My Subtitle}
-%\iauthor{Me and Myself}
-%\idate{2004}
-%\irefnr{IR-EE-SB 2000:099}
-%\iaddress{Signal Processing\\
-%  School of Electrical Engineering\\
-%  Kungliga Tekniska Högskolan}
-%\makeititle
-%\end{verbatim}
-%
-%This will add a front page following (as far as possible) the layout
-%proposed at \url{http://www.kth.se/internt/grafiskprofil/rapporter} in
-%the example ``Exempel 2 omslag rapport'' (which admittedly is the
-%least fancy of the tree examples, but also the one that is most likely
-%to look well when printed on a black/white printer). 
-%
-%Note that the layout of the original document will remain untouched,
-%only a new front page is added. If your original document is typeset
-%for double sided print (using the \verb+twoside+ option to
-%\verb+\documentclass+, then an empty page will be added after the
-%front page, so the main document starts on a left side. 
-%
-%
-%\subsection{Package Options}
-%
-%The following options are available
-%\begin{description}
-%\item[ireport] Front page with layout for internal reports
-%\item[lic] Front page with layout for licentiate thesis
-%\item[doktor] Front page with layout for PhD dissertations.
-%\item[exjobb (default)] Front page with layout for masters thesis.
-%\item[eng (default)] Logotype and text in English
-%\item[sve] Logotype and text in Swedish
-%\item[forWWW (default)] Full layout in color, for WWW publishing.
-%\item[forPrint] Only the text in black and white, for use when the
-%  front page will be copied on a preprinted paper that already has the
-%  logotype and background color. 
-%\end{description}
-%
-%
-%\subsection{Optional Commands}
-%
-%For web publication of documents from IEEE publications, one of the
-%following commands can be used (above \verb+\makeititle+), to add the
-%corresponding standard IEEE copyright notice (see the link on ``
-%Electronic Information Dissemination'' at
-%\url{http://www.ieee.org/web/publications/rights/polilink_new.html} 
-%for more information). 
-%
-%\begin{description}
-%\item[\texttt{$\backslash$submittedIEEE\{\textit{year\}}}] For documents
-%  submitted to, but not yet accepted by, an IEEE conference or
-%  journal. 
-%\item[\texttt{$\backslash$publishedIEEE\{\textit{year\}}}] For documents
-%  copyrighted by an IEEE conference or journal. 
-%\end{description}
-%
-%These commands only apply to internal reports, not to any of the
-%thesis options.
+
+@INPROCEEDINGS{5335678, 
+    author={Szczesny, D. and Showk, A. and Hessel, S. and Bilgic, A. and Hildebrand, U. and Frascolla, V.}, 
+    booktitle={System-on-Chip, 2009. SOC 2009. International Symposium on}, 
+    title={Performance analysis of LTE protocol processing on an ARM based mobile platform}, 
+    year={2009}, 
+    month={Oct}, 
+    pages={056-063}, 
+    keywords={hardware-software codesign;mobile communication;mobile handsets;virtual prototyping;ARM based mobile platform;LTE protocol processing;long term evolution layer;robust header compression;Acceleration;Computational modeling;Hardware;Long Term Evolution;Mobile computing;Mobile handsets;Performance analysis;Physical layer;Protocols;Virtual prototyping}, 
+    doi={10.1109/SOCC.2009.5335678},}
+
+@INPROCEEDINGS{558379, 
+    author={Abnous, A. and Rabaey, J.}, 
+    booktitle={VLSI Signal Processing, IX, 1996., [Workshop on]}, 
+    title={Ultra-low-power domain-specific multimedia processors}, 
+    year={1996}, 
+    month={Oct}, 
+    pages={461-470}, 
+    keywords={computer architecture;computer networks;digital signal processing chips;integrated circuit design;land mobile radio;mobile radio;multimedia communication;portable computers;radio equipment;communication capabilities;hybrid architecture template;multimedia services;portable communication devices;portable computing;programmable devices;signal processing applications;ultra-low-power domain-specific multimedia processors;Computer aided instruction;Computer architecture;Decoding;Digital signal processing;Energy efficiency;Kernel;Multimedia computing;Portable computers;Power engineering computing;Signal processing algorithms}, 
+    doi={10.1109/VLSISP.1996.558379},}
+
+@INPROCEEDINGS{1106752, 
+    author={Keutzer, K. and Malik, S. and Newton, A.R.}, 
+    booktitle={Computer Design: VLSI in Computers and Processors, 2002. Proceedings. 2002 IEEE International Conference on}, 
+    title={From ASIC to ASIP: the next design discontinuity}, 
+    year={2002}, 
+    month={}, 
+    pages={84-90}, 
+    keywords={application specific integrated circuits;logic design;programmable circuits;ASIC;ASIP;Application Specific Instruction Set Processors;Application Specific Integrated Circuits;application implementation philosophy;programmable platforms;Application software;Application specific integrated circuits;Application specific processors;Computational geometry;Costs;Design methodology;Hardware;Manufacturing;Productivity;Time to market}, 
+    doi={10.1109/ICCD.2002.1106752}, 
+    ISSN={1063-6404},}
+
+@INPROCEEDINGS{6868627, 
+    author={Badawi, M. and Hemani, A. and Zhonghai Lu}, 
+    booktitle={Application-specific Systems, Architectures and Processors (ASAP), 2014 IEEE 25th International Conference on}, 
+    title={Customizable coarse-grained energy-efficient reconfigurable packet processing architecture}, 
+    year={2014}, 
+    month={June}, 
+    pages={30-35}, 
+    keywords={application specific integrated circuits;multiprocessing systems;reconfigurable architectures;agile reconfigurability;custom ASIC implementation;customizable coarse grained energy efficient reconfigurable packet processing architecture;hardwired ASIC implementation;programmable protocol processor;real-life Voice-Over IP traffic;reconfigurable multicore packet processing architecture;retaining flexibility;time critical adaptability;Application specific integrated circuits;Delays;IP networks;Program processors;Protocols;Registers;Time factors}, 
+    doi={10.1109/ASAP.2014.6868627},}
+
+@ARTICLE{1114865, 
+    author={Estrin, G.}, 
+    journal={Annals of the History of Computing, IEEE}, 
+    title={Reconfigurable computer origins: the UCLA fixed-plus-variable (F+V) structure computer}, 
+    year={2002}, 
+    month={Oct}, 
+    volume={24}, 
+    number={4}, 
+    pages={3-9}, 
+    keywords={reconfigurable architectures;UCLA fixed-plus-variable structure computer;University of California at Los Angeles;models;reconfigurable computer architectures;reconfigurable systems analysis;reconfigurable systems design;tools;Circuits;Computer architecture;Contracts;Hardware;High performance computing;Laboratories;Mathematics;Microprocessors;System analysis and design;Telephony}, 
+    doi={10.1109/MAHC.2002.1114865}, 
+    ISSN={1058-6180},}
+
+@misc{page1985re,
+    title={Re-programmable PLA},
+    author={Page, D.W. and Peterson, L.V.R.},
+    url={http://www.google.com/patents/US4508977},
+    year={1985},
+    month=apr # "~2",
+    publisher={Google Patents},
+    note={US Patent 4,508,977}
+}
+
+
+\end{filecontents*}
+\bibliographystyle{ieeetr}
+\bibliography{references}
+\addcontentsline{toc}{section}{References}
+
 
 \end{document}
