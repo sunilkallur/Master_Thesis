@@ -21,7 +21,7 @@
 \usepackage{tocloft}
 \usepackage{hyperref}
 \hypersetup{%
-    pdfborder = {0 0 0}
+	pdfborder = {0 0 0}
 }
 \usepackage[exjobb]{KTHEEtitlepage}
 
@@ -34,272 +34,280 @@
 \irefnr{IR-EE-Dummy 2000:099}
 
 \iaddress{ICT Labs\\
-  Major in Embedded Platforms\\
-  Kungliga Tekniska Högskolan}
-\makeititle
+	Major in Embedded Platforms\\
+		Kungliga Tekniska Högskolan}
+		\makeititle
 
-% Everything below is exactly as for a normal document and 
-% the layout of that document should not be affected in any
-% way by the title page.
+		% Everything below is exactly as for a normal document and 
+		% the layout of that document should not be affected in any
+		% way by the title page.
 
-\title{Reconfigurable Hardware Programming in a Protocol Processor Unit}
-\author{Sunil Kallur Ramegowda}
+		\title{Reconfigurable Hardware Programming in a Protocol Processor Unit}
+		\author{Sunil Kallur Ramegowda}
 
-\maketitle
-\pagenumbering{roman}
+		\maketitle
+		\pagenumbering{roman}
 
 
-\begin{abstract}
-  The objective of the thesis is to define an architecture for the reconfigurable protocol processor unit being investigated at Ericsson,Stockholm. The thesis also includes proving the concept using SystemC TLM2.0 by defining the common hardware functions used in different protocols.A common framework for different  protocol definition and to extract the information in the form of state table which will be used by the protocol processor. 
-\end{abstract}
+		\begin{abstract}
+		The objective of the thesis is to define an architecture for the reconfigurable protocol processor unit being investigated at Ericsson,Stockholm. The thesis also includes proving the concept using SystemC TLM2.0 by defining the common hardware functions used in different protocols.A common framework for different  protocol definition and to extract the information in the form of state table which will be used by the protocol processor. 
+		\end{abstract}
 
-\addcontentsline{toc}{section}{Abstract}
-\cleardoublepage
+		\addcontentsline{toc}{section}{Abstract}
+		\cleardoublepage
 
 
 
 
-%\phantomsection
+		%\phantomsection
 
-\renewcommand\contentsname{\centerline{\underline{\underline{Table of Contents}}}}
-\tableofcontents
-\addcontentsline{toc}{section}{Table of Contents}
-\cleardoublepage
+		\renewcommand\contentsname{\centerline{\underline{\underline{Table of Contents}}}}
+		\tableofcontents
+		\addcontentsline{toc}{section}{Table of Contents}
+		\cleardoublepage
 
 
-%\renewcommand\listfigurename{List of Figures}
+		%\renewcommand\listfigurename{List of Figures}
 
-\listoffigures
-\addcontentsline{toc}{section}{List of Figures}
-\cleardoublepage
+		\listoffigures
+		\addcontentsline{toc}{section}{List of Figures}
+		\cleardoublepage
 
-\renewcommand\listtablename{List of Tables}
-\listoftables
-\addcontentsline{toc}{section}{List of Tables}
-\clearpage
+		\renewcommand\listtablename{List of Tables}
+		\listoftables
+		\addcontentsline{toc}{section}{List of Tables}
+		\clearpage
 
 
 
 
 
-\pagenumbering{arabic}
+		\pagenumbering{arabic}
 
-\section{Introduction}
+		\section{Introduction}
 
-A set of digital rules define the communication strategy between digital systems.There are many such rules which makes the communication possible between systems.Over the decades the rules have evolved into standards.The rules are called as Protocols in communication systems.The Open Systems Interconnect model (OSI) partition the communication system into 7 abstraction layers.There are different protocols for each layers of abstraction. The software and/or hardware changes based on the protocol chosen to process the message and extract the relevant information at each layer of abstraction. The hardware solutions based on a General Purpose Processor(GPP)  or an Application Specific Integrated Circuit(ASIC) exists \cite{5335678}\cite{558379}.GPP will have more flexibility but are less energy efficient when compared to ASIC which are less flexible and most Energy efficient. Application Specific Instruction-set Processors(ASIP) or domain specific processors are more suitable for the protocol processing task and depending on their architectural characteristics they allow varying degrees of trade-off between flexibility and energy-efficiency\cite{1106752}.Resource and Performance varies depending on the Reconfigurable architecture and its level of abstraction\cite{6868627}.\\   
+		A set of digital rules define the communication strategy between digital systems.There are many such rules which makes the communication possible between systems.Over the decades the rules have evolved into standards.The rules are called as Protocols in communication systems.The Open Systems Interconnect model (OSI) partition the communication system into 7 abstraction layers.There are different protocols for each layers of abstraction. The software and/or hardware changes based on the protocol chosen to process the message and extract the relevant information at each layer of abstraction. The hardware solutions based on a General Purpose Processor(GPP)  or an Application Specific Integrated Circuit(ASIC) exists \cite{5335678}\cite{558379}.GPP will have more flexibility but are less energy efficient when compared to ASIC which are less flexible and most Energy efficient. Application Specific Instruction-set Processors(ASIP) or domain specific processors are more suitable for the protocol processing task and depending on their architectural characteristics they allow varying degrees of trade-off between flexibility and energy-efficiency\cite{1106752}.Resource and Performance varies depending on the Reconfigurable architecture and its level of abstraction\cite{6868627}.\\   
 
-The design of reconfigurable hardware architecture requires change in compiler software which can produce the required configuration or the hardware compatible code.The configuration files can be produced on run time when the application is running or in a static way before the application is made to run. The complexity of the system depends on the selected design.The hardware for processing the different protocols can be made reconfigurable.Investigation and design of such a concept is performed in this thesis work.\\ 
+		The design of reconfigurable hardware architecture requires change in compiler software which can produce the required configuration or the hardware compatible code.The configuration files can be produced on run time when the application is running or in a static way before the application is made to run. The complexity of the system depends on the selected design.The hardware for processing the different protocols can be made reconfigurable.Investigation and design of such a concept is performed in this thesis work.\\ 
 
-The reconfigurable hardware is modelled in SystemC TLM2 language. The configuration file required for the reconfiguration is obtained by parsing the description of protocols using the language defined by the Grammar. The Antlr tool is used for building the base parser file for the defined grammar and then the required functions are written to output the configuration files. 
+		The reconfigurable hardware is modelled in SystemC TLM2 language. The configuration file required for the reconfiguration is obtained by parsing the description of protocols using the language defined by the Grammar. The Antlr tool is used for building the base parser file for the defined grammar and then the required functions are written to output the configuration files. 
 
 
-\clearpage
-\subsection{Background}
-In 1960 Gerald Estrin, proposed the idea of a fixed plus variable structure computer \cite{1114865}.It consisted of a fixed processor and an array of reconfigurable hardware which was controlled by the fixed processor.Even though the idea was demonstrated with a proof the industry did not consider to further innovate in these field and till 1980's there were no significant developments. In  1985 the reconfigurable PLA(Programmable Logic Array) was patented\cite{page1985re}.Innovation in PLA's further continued with the commercially available FPGA(Field Programmable Gate Arrays) in today's market.\\
+		\clearpage
+		\subsection{Background}
+		In 1960 Gerald Estrin, proposed the idea of a fixed plus variable structure computer \cite{1114865}.It consisted of a fixed processor and an array of reconfigurable hardware which was controlled by the fixed processor.Even though the idea was demonstrated with a proof the industry did not consider to further innovate in these field and till 1980's there were no significant developments. In  1985 the reconfigurable PLA(Programmable Logic Array) was patented\cite{page1985re}.Innovation in PLA's further continued with the commercially available FPGA(Field Programmable Gate Arrays) in today's market.\\
 
-Ericsson AB is a market leader in the radio base station equipments.There are different protocols being used for communication in the Radio Base Station (RBS) units.The Ethernet standard defined by IEEE in 802.3 standard defines the protocol for 10Gbit transfer which is mainly used for communication between the chips. Other protocols include Common Public Radio Interface (CPRI),Serial Rapid IO(SRIO),Xio(Ericsson Specific protocol) for reliable communication between chips at high data rate.Most of these protocols in this layer of abstraction have common harware units/blocks. Ericsson design and manufacture Custom ASIC chips for each of these protocols.The common functions which can be used by different protocols are being studied in this thesis by designing a reconfigurable hardware architecture which will minimize the cost and will provide more flexibility compared to ASIC chips.More details about the protocols and reconfigurable architecture is explained in Chapter 3.\\ 
+		Ericsson AB is a market leader in the radio base station equipments.There are different protocols being used for communication in the Radio Base Station (RBS) units.The Ethernet standard defined by IEEE in 802.3 standard defines the protocol for 10Gbit transfer which is mainly used for communication between the chips. Other protocols include Common Public Radio Interface (CPRI),Serial Rapid IO(SRIO),Xio(Ericsson Specific protocol) for reliable communication between chips at high data rate.Most of these protocols in this layer of abstraction have common harware units/blocks. Ericsson design and manufacture Custom ASIC chips for each of these protocols.The common functions which can be used by different protocols are being studied in this thesis by designing a reconfigurable hardware architecture which will minimize the cost and will provide more flexibility compared to ASIC chips.More details about the protocols and reconfigurable architecture is explained in Chapter 3.\\ 
 
-The reconfigurable architecture requires a new hardware and software co-design.The reconfiguration details are extracted based on the hardware design and the compiler/mapper should be able to produce such reconfiguration.This is accomplished  by using Grammar based technique i.e by defining a language based on BNF grammar and then defining the protocols using this language.The overall architecture and working principle will be explained in further chapters.\\
+		The reconfigurable architecture requires a new hardware and software co-design.The reconfiguration details are extracted based on the hardware design and the compiler/mapper should be able to produce such reconfiguration.This is accomplished  by using Grammar based technique i.e by defining a language based on BNF grammar and then defining the protocols using this language.The overall architecture and working principle will be explained in further chapters.\\
 
-The Reconfigurable hardware for protocol processing using the grammar based approach is performed in this thesis.A detailed technical description of each technology being used is explained in Chapter 3.\\   
+		The Reconfigurable hardware for protocol processing using the grammar based approach is performed in this thesis.A detailed technical description of each technology being used is explained in Chapter 3.\\   
 
-\clearpage
+		\clearpage
 
 
-\subsection{Purpose}
+		\subsection{Purpose}
 
-The thesis purpose is to investigate an approach for a compiler or mapper to consider the mapping of hardware blocks based on different protocols.This involves showing the proof of concept by SystemC TLM2 simulation models.The Individual hardware blocks are modelled in SystemC and can vary from a constant block to complex functions of the protocols like Encoder,Scrambler etc.This thesis work serves as a proof for the project in Ericsson to further investigate the feasibility of developing such architectures.
+		The thesis purpose is to investigate an approach for a compiler or mapper to consider the mapping of hardware blocks based on different protocols.This involves showing the proof of concept by SystemC TLM2 simulation models.The Individual hardware blocks are modelled in SystemC and can vary from a constant block to complex functions of the protocols like Encoder,Scrambler etc.This thesis work serves as a proof for the project in Ericsson to further investigate the feasibility of developing such architectures.
 
 
 
-\subsection{Goal}
-The thesis goal is to provide a proof of concept for the reconfigurable protocol processor using grammar based approach.The proof includes the simulation models by transmitting the data trough the reconfigurable architecture and showing the working principle using the metrics.
+		\subsection{Goal}
+		The thesis goal is to provide a proof of concept for the reconfigurable protocol processor using grammar based approach.The proof includes the simulation models by transmitting the data trough the reconfigurable architecture and showing the working principle using the metrics.
 
 
-\subsection{Methodology}
+		\subsection{Methodology}
 
-\subsection{Delimitations}
-The thesis focus more on showing the proof of concept for one of the protocol i.e Ethernet. The architecture will be developed such that it is easy with minor modification to extend for other protocols like Xio,CPRI,SRIO. Considering all the protocols will not be feasible in this time line.
+		\subsection{Delimitations}
+		The thesis focus more on showing the proof of concept for one of the protocol i.e Ethernet. The architecture will be developed such that it is easy with minor modification to extend for other protocols like Xio,CPRI,SRIO. Considering all the protocols will not be feasible in this time line.
 
-\subsection{Outline}
-The thesis is organised to provide required details for understanding the overall work.Chapter 2 will provide a detailed description of the technical terminologies and tools used in this thesis.Chapter 3 will provide the implementation details and the results obtained will be explained in chapter 4. The Future work and conclusion are explained in the further chapter 5 and chapter 6.
+		\subsection{Outline}
+		The thesis is organised to provide required details for understanding the overall work.Chapter 2 will provide a detailed description of the technical terminologies and tools used in this thesis.Chapter 3 will provide the implementation details and the results obtained will be explained in chapter 4. The Future work and conclusion are explained in the further chapter 5 and chapter 6.
 
 
-\clearpage
-     
+		\clearpage
 
-\section{Related Work}
-This chapter explains in detail the reconfigurable architectures,Protocols at Data link layer and Grammar based tools.
 
+		\section{Related Work}
+		This chapter explains in detail the reconfigurable architectures,Protocols at Data link layer and Grammar based tools.
 
-\subsection{Reconfigurable Systems}
 
- 
-In the field of computer architecture, designers make decisions based on flexibility and performance requirement\cite{JACST518}.ASIC are the least flexible in terms of adapting for any change in the application and GPP are the most flexible as they are independent of the application and the core can be programmed to make the required algorithm work at the cost of higher power and lower efficiency.ASIC and GPP lies in extreme corners of the graph between Flexibility Vs Performance as in Fig.~\ref{fig:Fig1}.Reconfigurable architectures are intended to fill the gap and provide more flexibility in terms of hardware and potentially higher performance than software\cite{JACST518}.
-
-    \begin{figure}[!htb]
-    \centering
-    \includegraphics[scale=0.45]{Fig1}
-    \caption{Flexibility Vs Performance of Hardware Classes}
-    \label{fig:Fig1}
-    \end{figure}
-    
-\subsubsection{Granularity}
-    
-Reconfigurable devices like FPGA(Field Programmable Gate Arrays) have the configurable logic blocks(CLB) which can be configured to map the required functionality. The complexity of the function will not matter but the number of inputs and output of the function has to be considered based on the FPGA architecture. This level of granularity in implementing the functions is called as Fine grained Reconfigurable architecture as it provides the reconfigurable granularity till lowest possible level. These reconfigurable devices are not energy efficient and the execution speed is too less than the ASIC counterpart. Another type of reconfigurable devices are the coarse grained reconfigurable architectures. These devices have the granularity at function levels. They will configure the Function blocks to achieve the efficient algorithm implementation.The Function blocks can vary from constant blocks to complex functions which are commonly used based on the application domain.   
-
-
-\subsubsection{Reconfiguration Models}
-The reconfigurable architectures need configuration of hardware.This can be at compile time or at runtime of an application as in  Fig.~\ref{fig:Fig2}.
-
- \begin{figure}[!htb]
-     \centering
-     \includegraphics[scale=0.45]{Fig2}
-     \caption{Reconfiguration Models}
-     \label{fig:Fig2}
-    \end{figure}
-    
-In Compile time reconfiguration model, the reconfigurable hardware system is configured at compile time and will be static during the application run time.In this model the programmable logic can be configured to perform some specific task like hardware accelerators to achieve high performance. An FPGA configured to perform floating point multiplication together with a GPP will accelerate the performance of the application if the GPP doesn't have a Floating Point Unit.
-In Run time reconfiguration model, the reconfiguration hardware is configured at run time and will be dynamically programmed to perform different tasks.The decision for making such dynamic reconfiguration has to be embedded coupled with the application and hence it increase the overhead.The Dynamic Reprogrammable Resource Array(DRRA) fabric developed at KTH Electronic System Dept is an example of this model\cite{5351593}.   
- 
-\subsubsection{Reconfiguration rate}
-The Fine grain Systems will have more reconfiguration data(In FPGAs it is in term of bit streams) which leads to more time and the Coarse Grained Reconfigurable systems will have comparatively less blocks as they have higher granularity and will contain less reconfiguration data.Hence the Coarse Grain architecture will take less time to re configure. This depends on the dynamic reconfiguration architecture whether the complete fabric is reconfigured or partially reconfigured during runtime. 
-
-
-\subsection{Protocols}
-
-The communication between chips in Radio Base station equipments has many protocols to fulfill the requirements of the specification.The protocols differ by standards.The protocols in Data link layer of the OSI model share some common functionalities.The different protocols being used at Ericsson AB and related to this thesis work are described below:  
-
-\subsubsection{Ethernet}
-Ethernet is a widely used protocol for data communication.It is typically used in Local Area Network(LAN) applications.IEEE organization has standardized the protocol and revise it according to the technological advancement. The recent standard available is from 2012.The standard defines the protocol for different applications and we will consider the communication between chips in this context.  
-
-
-\subsubsection{Xio}
-Xio-s is Ericsson proprietary protocol used for communication between chips
-\subsubsection{CPRI}
-CPRI(Common Public Radio Interface) is an industry cooperation aimed at defining a publicly available specification for the key internal interface of radio base stations between Radio Equipment Control(REC) and the Radio Equipment(RE).It is the co operating work of Ericsson AB,Huawei Technologies Co.Ltd,NEC corporation,Nortel Networks SA and Siemens AG.
-
-\subsubsection{Protocol Functions}
-
-The protocols defined above are the Data link layer protocols.All these protocols have common functions which are necessary to follow the standards.The data also called payload to be transmitted need to be encapsulated or altered based on the protocol definition for successful transmission and similarly in the receiver the data will be obtained based on the protocol.Some of the common protocol functions at this level of abstraction are as below :
-\begin{itemize}
-    \item{CRC Calculation and check}
-    \item{Scrambling and Descrambling}
-    \item{Coding and Decoding}
-    \item{Framer and Deframer}
-    \item{Gearbox}
-    \item{Striping and Aligning}
-    \item{Queues and FIFOs}
-    \item{Counters}
-\end{itemize}
-
-\subsection{Grammar BNF}
-\subsubsection{Antlr}
-\clearpage
-\subsection{Environment and Tools}
-\clearpage
-
-
-\section{Main Technical Work}
-\clearpage
-
-\section{Future Work}
-\clearpage
-
-\section{Conclusion}
-\clearpage
-
-
-
-\begin{filecontents*}{references.bib}
-
-
-@INPROCEEDINGS{5335678, 
-    author={Szczesny, D. and Showk, A. and Hessel, S. and Bilgic, A. and Hildebrand, U. and Frascolla, V.}, 
-    booktitle={System-on-Chip, 2009. SOC 2009. International Symposium on}, 
-    title={Performance analysis of LTE protocol processing on an ARM based mobile platform}, 
-    year={2009}, 
-    month={Oct}, 
-    pages={056-063}, 
-    keywords={hardware-software codesign;mobile communication;mobile handsets;virtual prototyping;ARM based mobile platform;LTE protocol processing;long term evolution layer;robust header compression;Acceleration;Computational modeling;Hardware;Long Term Evolution;Mobile computing;Mobile handsets;Performance analysis;Physical layer;Protocols;Virtual prototyping}, 
-    doi={10.1109/SOCC.2009.5335678},}
-
-@INPROCEEDINGS{558379, 
-    author={Abnous, A. and Rabaey, J.}, 
-    booktitle={VLSI Signal Processing, IX, 1996., [Workshop on]}, 
-    title={Ultra-low-power domain-specific multimedia processors}, 
-    year={1996}, 
-    month={Oct}, 
-    pages={461-470}, 
-    keywords={computer architecture;computer networks;digital signal processing chips;integrated circuit design;land mobile radio;mobile radio;multimedia communication;portable computers;radio equipment;communication capabilities;hybrid architecture template;multimedia services;portable communication devices;portable computing;programmable devices;signal processing applications;ultra-low-power domain-specific multimedia processors;Computer aided instruction;Computer architecture;Decoding;Digital signal processing;Energy efficiency;Kernel;Multimedia computing;Portable computers;Power engineering computing;Signal processing algorithms}, 
-    doi={10.1109/VLSISP.1996.558379},}
-
-@INPROCEEDINGS{1106752, 
-    author={Keutzer, K. and Malik, S. and Newton, A.R.}, 
-    booktitle={Computer Design: VLSI in Computers and Processors, 2002. Proceedings. 2002 IEEE International Conference on}, 
-    title={From ASIC to ASIP: the next design discontinuity}, 
-    year={2002}, 
-    month={}, 
-    pages={84-90}, 
-    keywords={application specific integrated circuits;logic design;programmable circuits;ASIC;ASIP;Application Specific Instruction Set Processors;Application Specific Integrated Circuits;application implementation philosophy;programmable platforms;Application software;Application specific integrated circuits;Application specific processors;Computational geometry;Costs;Design methodology;Hardware;Manufacturing;Productivity;Time to market}, 
-    doi={10.1109/ICCD.2002.1106752}, 
-    ISSN={1063-6404},}
-
-@INPROCEEDINGS{6868627, 
-    author={Badawi, M. and Hemani, A. and Zhonghai Lu}, 
-    booktitle={Application-specific Systems, Architectures and Processors (ASAP), 2014 IEEE 25th International Conference on}, 
-    title={Customizable coarse-grained energy-efficient reconfigurable packet processing architecture}, 
-    year={2014}, 
-    month={June}, 
-    pages={30-35}, 
-    keywords={application specific integrated circuits;multiprocessing systems;reconfigurable architectures;agile reconfigurability;custom ASIC implementation;customizable coarse grained energy efficient reconfigurable packet processing architecture;hardwired ASIC implementation;programmable protocol processor;real-life Voice-Over IP traffic;reconfigurable multicore packet processing architecture;retaining flexibility;time critical adaptability;Application specific integrated circuits;Delays;IP networks;Program processors;Protocols;Registers;Time factors}, 
-    doi={10.1109/ASAP.2014.6868627},}
-
-@ARTICLE{1114865, 
-    author={Estrin, G.}, 
-    journal={Annals of the History of Computing, IEEE}, 
-    title={Reconfigurable computer origins: the UCLA fixed-plus-variable (F+V) structure computer}, 
-    year={2002}, 
-    month={Oct}, 
-    volume={24}, 
-    number={4}, 
-    pages={3-9}, 
-    keywords={reconfigurable architectures;UCLA fixed-plus-variable structure computer;University of California at Los Angeles;models;reconfigurable computer architectures;reconfigurable systems analysis;reconfigurable systems design;tools;Circuits;Computer architecture;Contracts;Hardware;High performance computing;Laboratories;Mathematics;Microprocessors;System analysis and design;Telephony}, 
-    doi={10.1109/MAHC.2002.1114865}, 
-    ISSN={1058-6180},}
-
-@misc{page1985re,
-    title={Re-programmable PLA},
-    author={Page, D.W. and Peterson, L.V.R.},
-    url={http://www.google.com/patents/US4508977},
-    year={1985},
-    month=apr # "~2",
-    publisher={Google Patents},
-    note={US Patent 4,508,977}
-}
+		\subsection{Reconfigurable Systems}
+
+
+		In the field of computer architecture, designers make decisions based on flexibility and performance requirement\cite{JACST518}.ASIC are the least flexible in terms of adapting for any change in the application and GPP are the most flexible as they are independent of the application and the core can be programmed to make the required algorithm work at the cost of higher power and lower efficiency.ASIC and GPP lies in extreme corners of the graph between Flexibility Vs Performance as in Fig.~\ref{fig:Fig1}.Reconfigurable architectures are intended to fill the gap and provide more flexibility in terms of hardware and potentially higher performance than software\cite{JACST518}.
+
+		\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.45]{Fig1}
+		\caption{Flexibility Vs Performance of Hardware Classes}
+		\label{fig:Fig1}
+		\end{figure}
+
+		\subsubsection{Granularity}
+
+		Reconfigurable devices like FPGA(Field Programmable Gate Arrays) have the configurable logic blocks(CLB) which can be configured to map the required functionality. The complexity of the function will not matter but the number of inputs and output of the function has to be considered based on the FPGA architecture. This level of granularity in implementing the functions is called as Fine grained Reconfigurable architecture as it provides the reconfigurable granularity till lowest possible level. These reconfigurable devices are not energy efficient and the execution speed is too less than the ASIC counterpart. Another type of reconfigurable devices are the coarse grained reconfigurable architectures. These devices have the granularity at function levels. They will configure the Function blocks to achieve the efficient algorithm implementation.The Function blocks can vary from constant blocks to complex functions which are commonly used based on the application domain.   
+
+
+		\subsubsection{Reconfiguration Models}
+		The reconfigurable architectures need configuration of hardware.This can be at compile time or at runtime of an application as in  Fig.~\ref{fig:Fig2}.
+
+		\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.45]{Fig2}
+		\caption{Reconfiguration Models}
+		\label{fig:Fig2}
+		\end{figure}
+
+		In Compile time reconfiguration model, the reconfigurable hardware system is configured at compile time and will be static during the application run time.In this model the programmable logic can be configured to perform some specific task like hardware accelerators to achieve high performance. An FPGA configured to perform floating point multiplication together with a GPP will accelerate the performance of the application if the GPP doesn't have a Floating Point Unit.
+		In Run time reconfiguration model, the reconfiguration hardware is configured at run time and will be dynamically programmed to perform different tasks.The decision for making such dynamic reconfiguration has to be embedded coupled with the application and hence it increase the overhead.The Dynamic Reprogrammable Resource Array(DRRA) fabric developed at KTH Electronic System Dept is an example of this model\cite{5351593}.   
+
+		\subsubsection{Reconfiguration rate}
+		The Fine grain Systems will have more reconfiguration data(In FPGAs it is in term of bit streams) which leads to more time and the Coarse Grained Reconfigurable systems will have comparatively less blocks as they have higher granularity and will contain less reconfiguration data.Hence the Coarse Grain architecture will take less time to re configure. This depends on the dynamic reconfiguration architecture whether the complete fabric is reconfigured or partially reconfigured during runtime. 
+
+
+		\subsection{Protocols}
+
+		The communication between chips in Radio Base station equipments has many protocols to fulfill the requirements of the specification.The protocols differ by standards.The protocols in Data link layer of the OSI model share some common functionalities.The different protocols being used at Ericsson AB and related to this thesis work are described below:  
+
+		\subsubsection{Ethernet}
+		Ethernet is a widely used protocol for data communication.It is typically used in Local Area Network(LAN) applications.IEEE organization has standardized the protocol and revise it according to the technological advancement. The recent standard available is from 2012.The standard defines the protocol for different applications and we will consider the communication between chips in this context.  
+
+
+		\subsubsection{Xio}
+		Xio-s is Ericsson proprietary protocol used for communication between chips
+		\subsubsection{CPRI}
+		CPRI(Common Public Radio Interface) is an industry cooperation aimed at defining a publicly available specification for the key internal interface of radio base stations between Radio Equipment Control(REC) and the Radio Equipment(RE).It is the co operating work of Ericsson AB,Huawei Technologies Co.Ltd,NEC corporation,Nortel Networks SA and Siemens AG.
+
+		\subsubsection{Protocol Functions}
+
+		The protocols defined above are the Data link layer protocols.All these protocols have common functions which are necessary to follow the standards.The data also called payload to be transmitted need to be encapsulated or altered based on the protocol definition for successful transmission and similarly in the receiver the data will be obtained based on the protocol.Some of the common protocol functions at this level of abstraction are as below :
+		\begin{itemize}
+		\item{CRC Calculation and check}
+		\item{Scrambling and Descrambling}
+		\item{Coding and Decoding}
+		\item{Framer and Deframer}
+		\item{Gearbox}
+		\item{Striping and Aligning}
+		\item{Queues and FIFOs}
+		\item{Counters}
+		\end{itemize}
+
+		\subsection{Grammar BNF}
+
+		Bacchus-Naur form is a context free grammar used to describe the syntax of languages in computer systems.
+
+		\subsubsection{Antlr}
+
+		ANTLR is a powerful parser generator that can be used to read,process or translate structured text or binary files.It has been adapted in academia and industries for different applications and hence there is a good community help for any kind of problems.The tool generates the background parser and checker files for the grammar defined in the Bacchus-Naur form(BNF).It makes the framework easy for the user to generate a language application based on the defined grammar.
+
+
+
+		\clearpage
+		\subsection{Environment and Tools}
+		\clearpage
+
+
+		\section{Main Technical Work}
+		\clearpage
+
+		\section{Future Work}
+		\clearpage
+
+		\section{Conclusion}
+		\clearpage
+
+
+
+		\begin{filecontents*}{references.bib}
+
+
+		@INPROCEEDINGS{5335678, 
+			author={Szczesny, D. and Showk, A. and Hessel, S. and Bilgic, A. and Hildebrand, U. and Frascolla, V.}, 
+			booktitle={System-on-Chip, 2009. SOC 2009. International Symposium on}, 
+			title={Performance analysis of LTE protocol processing on an ARM based mobile platform}, 
+			year={2009}, 
+			month={Oct}, 
+			pages={056-063}, 
+			keywords={hardware-software codesign;mobile communication;mobile handsets;virtual prototyping;ARM based mobile platform;LTE protocol processing;long term evolution layer;robust header compression;Acceleration;Computational modeling;Hardware;Long Term Evolution;Mobile computing;Mobile handsets;Performance analysis;Physical layer;Protocols;Virtual prototyping}, 
+			doi={10.1109/SOCC.2009.5335678},}
+
+			@INPROCEEDINGS{558379, 
+				author={Abnous, A. and Rabaey, J.}, 
+				booktitle={VLSI Signal Processing, IX, 1996., [Workshop on]}, 
+				title={Ultra-low-power domain-specific multimedia processors}, 
+				year={1996}, 
+				month={Oct}, 
+				pages={461-470}, 
+				keywords={computer architecture;computer networks;digital signal processing chips;integrated circuit design;land mobile radio;mobile radio;multimedia communication;portable computers;radio equipment;communication capabilities;hybrid architecture template;multimedia services;portable communication devices;portable computing;programmable devices;signal processing applications;ultra-low-power domain-specific multimedia processors;Computer aided instruction;Computer architecture;Decoding;Digital signal processing;Energy efficiency;Kernel;Multimedia computing;Portable computers;Power engineering computing;Signal processing algorithms}, 
+				doi={10.1109/VLSISP.1996.558379},}
+
+				@INPROCEEDINGS{1106752, 
+					author={Keutzer, K. and Malik, S. and Newton, A.R.}, 
+					booktitle={Computer Design: VLSI in Computers and Processors, 2002. Proceedings. 2002 IEEE International Conference on}, 
+					title={From ASIC to ASIP: the next design discontinuity}, 
+					year={2002}, 
+					month={}, 
+					pages={84-90}, 
+					keywords={application specific integrated circuits;logic design;programmable circuits;ASIC;ASIP;Application Specific Instruction Set Processors;Application Specific Integrated Circuits;application implementation philosophy;programmable platforms;Application software;Application specific integrated circuits;Application specific processors;Computational geometry;Costs;Design methodology;Hardware;Manufacturing;Productivity;Time to market}, 
+					doi={10.1109/ICCD.2002.1106752}, 
+					ISSN={1063-6404},}
+
+					@INPROCEEDINGS{6868627, 
+						author={Badawi, M. and Hemani, A. and Zhonghai Lu}, 
+						booktitle={Application-specific Systems, Architectures and Processors (ASAP), 2014 IEEE 25th International Conference on}, 
+						title={Customizable coarse-grained energy-efficient reconfigurable packet processing architecture}, 
+						year={2014}, 
+						month={June}, 
+						pages={30-35}, 
+						keywords={application specific integrated circuits;multiprocessing systems;reconfigurable architectures;agile reconfigurability;custom ASIC implementation;customizable coarse grained energy efficient reconfigurable packet processing architecture;hardwired ASIC implementation;programmable protocol processor;real-life Voice-Over IP traffic;reconfigurable multicore packet processing architecture;retaining flexibility;time critical adaptability;Application specific integrated circuits;Delays;IP networks;Program processors;Protocols;Registers;Time factors}, 
+						doi={10.1109/ASAP.2014.6868627},}
+
+						@ARTICLE{1114865, 
+							author={Estrin, G.}, 
+							journal={Annals of the History of Computing, IEEE}, 
+							title={Reconfigurable computer origins: the UCLA fixed-plus-variable (F+V) structure computer}, 
+							year={2002}, 
+							month={Oct}, 
+							volume={24}, 
+							number={4}, 
+							pages={3-9}, 
+							keywords={reconfigurable architectures;UCLA fixed-plus-variable structure computer;University of California at Los Angeles;models;reconfigurable computer architectures;reconfigurable systems analysis;reconfigurable systems design;tools;Circuits;Computer architecture;Contracts;Hardware;High performance computing;Laboratories;Mathematics;Microprocessors;System analysis and design;Telephony}, 
+							doi={10.1109/MAHC.2002.1114865}, 
+							ISSN={1058-6180},}
+
+							@misc{page1985re,
+								title={Re-programmable PLA},
+								author={Page, D.W. and Peterson, L.V.R.},
+								url={http://www.google.com/patents/US4508977},
+								year={1985},
+								month=apr # "~2",
+								publisher={Google Patents},
+								note={US Patent 4,508,977}
+							}
 
 @article{JACST518,
-    author = {Abida Waza and Roohie Naaz Mir and Hakim Najeeb-ud-din},
-    title = {Reconfigurable Architectures},
-    journal = {Journal of Advanced Computer Science \& Technology},
-    volume = {1},
-    number = {4},
-    year = {2012},
-    keywords = {},
-    abstract = {In the area of computer architecture, designers are faced with the trade-of between flexibility and performance. The architectural choices span a wide spectrum, with general-purpose processors and application specific integrated circuits (ASICs) at opposite ends. General-purpose processors are not optimized to specific applications; they are flexible due to their versatile instruction sets that allow the implementation of every computable task. ASICs are dedicated hardware devices that can achieve higher performance, require less silicon area, and are less power-consuming than instruction-level programmable processors. However, they lack in flexibility. Reconfigurable computer architectures promise to overcome this traditional trade-off and achieve both, the high performance of ASICs and the flexibility of general-purpose processors.},
-    issn = {2227-4332},
-    url = {http://www.sciencepubco.com/index.php/JACST/article/view/518},
-    pages = {337--346}
+	author = {Abida Waza and Roohie Naaz Mir and Hakim Najeeb-ud-din},
+	title = {Reconfigurable Architectures},
+	journal = {Journal of Advanced Computer Science \& Technology},
+	volume = {1},
+	number = {4},
+	year = {2012},
+	keywords = {},
+	abstract = {In the area of computer architecture, designers are faced with the trade-of between flexibility and performance. The architectural choices span a wide spectrum, with general-purpose processors and application specific integrated circuits (ASICs) at opposite ends. General-purpose processors are not optimized to specific applications; they are flexible due to their versatile instruction sets that allow the implementation of every computable task. ASICs are dedicated hardware devices that can achieve higher performance, require less silicon area, and are less power-consuming than instruction-level programmable processors. However, they lack in flexibility. Reconfigurable computer architectures promise to overcome this traditional trade-off and achieve both, the high performance of ASICs and the flexibility of general-purpose processors.},
+	issn = {2227-4332},
+	url = {http://www.sciencepubco.com/index.php/JACST/article/view/518},
+	pages = {337--346}
 
-@INPROCEEDINGS{5351593, 
-    author={Shami, M.A. and Hemani, A.}, 
-    booktitle={ASIC, 2009. ASICON '09. IEEE 8th International Conference on}, 
-    title={Partially reconfigurable interconnection network for dynamically reprogrammable resource array}, 
-    year={2009}, 
-    month={Oct}, 
-    pages={122-125}, 
-    keywords={multiprocessor interconnection networks;reconfigurable architectures;binary encoding;dynamically reprogrammable resource array;innovative regular nonblocking interconnection network;low latency interconnection network;partially reconfigurable interconnection network;point-to-multipoint interconnection network;point-to-point interconnection network;sliding window connectivity;Delay;Energy efficiency;Fabrics;Multiplexing;Multiprocessor interconnection networks;Nearest neighbor searches;Parallel processing;Reconfigurable architectures;Reconfigurable logic;Signal processing algorithms;CGRA;Dynamically Reconfigurable;Interconnects;Partially Reconfigurable}, 
-    doi={10.1109/ASICON.2009.5351593},}
+	@INPROCEEDINGS{5351593, 
+		author={Shami, M.A. and Hemani, A.}, 
+		booktitle={ASIC, 2009. ASICON '09. IEEE 8th International Conference on}, 
+		title={Partially reconfigurable interconnection network for dynamically reprogrammable resource array}, 
+		year={2009}, 
+		month={Oct}, 
+		pages={122-125}, 
+		keywords={multiprocessor interconnection networks;reconfigurable architectures;binary encoding;dynamically reprogrammable resource array;innovative regular nonblocking interconnection network;low latency interconnection network;partially reconfigurable interconnection network;point-to-multipoint interconnection network;point-to-point interconnection network;sliding window connectivity;Delay;Energy efficiency;Fabrics;Multiplexing;Multiprocessor interconnection networks;Nearest neighbor searches;Parallel processing;Reconfigurable architectures;Reconfigurable logic;Signal processing algorithms;CGRA;Dynamically Reconfigurable;Interconnects;Partially Reconfigurable}, 
+		doi={10.1109/ASICON.2009.5351593},}
 }
 
 
