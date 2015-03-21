@@ -108,21 +108,23 @@
 
 		\subsection{Purpose}
 
-		The thesis purpose is to investigate an approach for a compiler or mapper to consider the mapping of hardware blocks based on different protocols.This involves showing the proof of concept by SystemC TLM2 simulation models.The Individual hardware blocks are modelled in SystemC and can vary from a constant block to complex functions of the protocols like Encoder,Scrambler etc.This thesis work serves as a proof for the project in Ericsson to further investigate the feasibility of developing such architectures.
+		The thesis purpose is to investigate an approach of a compiler or mapper to consider the mapping of hardware blocks based on different protocols.This involves showing the proof of concept by SystemC TLM2 simulation models.The Individual hardware blocks are modelled in SystemC and can vary from a constant block to complex functions of the protocols like Encoder,Scrambler etc.This thesis work serves as a proof for the project in Ericsson to further investigate the feasibility of developing such architectures.
 
 
 
 		\subsection{Goal}
-		The thesis goal is to provide a proof of concept for the reconfigurable protocol processor using grammar based approach.The proof includes the simulation models by transmitting the data trough the reconfigurable architecture and showing the working principle using the metrics.
+		The thesis goal is to provide a proof of concept for the reconfigurable protocol processor using grammar based approach.The proof includes the simulation models by transmitting the data through the reconfigurable architecture and showing the working principle using the metrics.
 
 
-		\subsection{Methodology}
+		\subsection{Research Methodology}
+        The qualitative research \cite{2013portal} is performed to understand the existing technology and to prove the proposed concept by  considering minimal protocols. The overall architecture is illustrated by exploring the available and existing methods in each field.
+                
 
 		\subsection{Delimitations}
-		The thesis focus more on showing the proof of concept for one of the protocol i.e Ethernet. The architecture will be developed such that it is easy with minor modification to extend for other protocols like Xio,CPRI,SRIO. Considering all the protocols will not be feasible in this time line.
+		The thesis focus more on showing the proof of concept considering one to two of the protocol i.e Ethernet and Xio. The architecture will be developed such that it is easy with minor modification to extend for other protocols like CPRI,SRIO. Considering all the protocol's will not be feasible in this time line.
 
 		\subsection{Outline}
-		The thesis is organised to provide required details for understanding the overall work.Chapter 2 will provide a detailed description of the technical terminologies and tools used in this thesis.Chapter 3 will provide the implementation details and the results obtained will be explained in chapter 4. The Future work and conclusion are explained in the further chapter 5 and chapter 6.
+		The thesis is organized to provide required details for understanding the overall work.Chapter 2 will provide a detailed description of the technical terminologies and tools used for the project work.Chapter 3 will provide the implementation details and the results obtained will be explained in chapter 4. The Future work and conclusion are explained in the further chapter 5 and chapter 6.
 
 
 		\clearpage
@@ -196,15 +198,29 @@
 		\subsection{Grammar BNF}
 
 		Bacchus-Naur form is a context free grammar used to describe the syntax of languages in computer systems.
+        \\ more text to be added about the grammar
 
 		\subsubsection{Antlr}
 
-		ANTLR is a powerful parser generator that can be used to read,process or translate structured text or binary files.It has been adapted in academia and industries for different applications and hence there is a good community help for any kind of problems.The tool generates the background parser and checker files for the grammar defined in the Bacchus-Naur form(BNF).It makes the framework easy for the user to generate a language application based on the defined grammar.
-
-
+		ANTLR is a powerful parser generator that can be used to read,process or translate structured text or binary files.It has been adapted in academia and industries for different applications and hence there is a good community help for most common problems.The tool generates the background parser and checker files for the grammar defined in the Bacchus-Naur form(BNF)or the Extended Bacchus-Naur form(EBNF).It makes the framework easy for the user to generate a language application based on the defined grammar.
 
 		\clearpage
 		\subsection{Environment and Tools}
+        The Linux based server environment is used for compiling and testing the project files.The Antlr tool is used to define the protocols in a language defined in the grammar using EBNF. The Antlr tool is made to ouput the state table information which contains all the states with transition information.This will be used to reconfigure the hardware to process the input packets according to the protocols.
+        
+           
+        \subsubsection{SystemC}
+         SystemC is an ANSI standard C++ class library for system and hardware design for use by designers and architects who need to address complex
+         systems that are a hybrid between hardware and software \cite{1617814}.It helps in modeling the concurrent processes.This makes it possible to model the hardware which are concurrent systems by nature.  
+        
+        \subsubsection{TLM}
+         Transaction level Modeling is the approach of abstracting the lower implementation details of the function units and representing the overall system architecture.TLM helps in modeling the communication and the function unit implementation separately. The Transaction refers to the set of data being exchanged.TLM speeds up the simulation by replacing a set of pin level events with a single function call.\\
+         
+         TLM 2.0 standard is used for the implementation of the bus system.
+         
+       \subsubsection{UVM}
+       Universal Verification Methodology(UVM) is a verification methodology based on the best features of OVM(Open verification Methodology) and Verification Methodology Manual(VMM).A Base version of UVM is built to verify the functionality of the architecture.  
+       
 		\clearpage
 
 
@@ -308,6 +324,27 @@
 	                	pages={122-125}, 
 	                	keywords={multiprocessor interconnection networks;reconfigurable architectures;binary encoding;dynamically reprogrammable resource array;innovative regular nonblocking interconnection network;low latency interconnection network;partially reconfigurable interconnection network;point-to-multipoint interconnection network;point-to-point interconnection network;sliding window connectivity;Delay;Energy efficiency;Fabrics;Multiplexing;Multiprocessor interconnection networks;Nearest neighbor searches;Parallel processing;Reconfigurable architectures;Reconfigurable logic;Signal processing algorithms;CGRA;Dynamically Reconfigurable;Interconnects;Partially Reconfigurable}, 
 		                doi={10.1109/ASICON.2009.5351593},}
+                    
+                    
+                         @comment{ Anne Håkansson, Portal of Research Methods and Methodologies for 
+                             Research Projects and Degree Projects. WORLDCOMP'13 - The 2013 
+                             World Congress in Computer Science, Computer Engineering, and 
+                             Applied Computing, 22-25 July, 2013 Las Vegas, Nevada; USA }
+                            @book{2013portal,
+                                author = "Anne Håkansson",
+                                title = "Portal of Research Methods and Methodologies for Research Projects and Degree Projects",
+                                publisher = "WORLDCOMP'13 - The 2013 World Congress in Computer Science, Computer Engineering, and Applied Computing",
+                                pages = "22--25",
+                                year = 2013
+                            }
+                            
+                           @ARTICLE{1617814, 
+                               journal={IEEE Std 1666-2005}, 
+                               title={IEEE Standard System C Language Reference Manual}, 
+                               year={2006}, 
+                               month={}, 
+                               pages={0\_1-423}, 
+                               doi={10.1109/IEEESTD.2006.99475},}
 }
 
 
