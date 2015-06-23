@@ -10,24 +10,50 @@
 \usepackage{filecontents,lipsum}
 \usepackage[noadjust]{cite}
 \usepackage{graphicx}
+\usepackage[nonumberlist,acronym,shortcuts]{glossaries}
 \graphicspath{{Images/}}
 
 \usepackage[exjobb]{KTHEEtitlepage}
-\usepackage{tocloft}
-\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+%\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
 
 % Packages used in the main document for this particular example:
 \usepackage{url}
 \usepackage{tocloft}
+\renewcommand\listfigurename{List of Figures}
+\renewcommand\listtablename{List of Tables}
+
+
+
 \usepackage{hyperref}
+%\usepackage{acro}
 \hypersetup{%
 	pdfborder = {0 0 0}
 }
 \usepackage[exjobb]{KTHEEtitlepage}
 
+ \newacronym{asip}{ASIP}{Application Specific Instruction-set Processors}
+ \newacronym{ebnf}{EBNF}{Extended Backus Naur Form}
+ \newacronym{cpri}{CPRI}{Common Public Radio Interface}
+ \newacronym{osi}{OSI}{Open Systems Interconnect model}
+ \newacronym{gpp}{GPP}{General Purpose Processor}
+ \newacronym{asic}{ASIC}{Application Specific Integrated Circuit}
+ \newacronym{tlm}{TLM}{Transaction Level Modeling}
+ \newacronym{pla}{PLA}{Programmable Logic Array}
+ \newacronym{fpga}{FPGA}{Field Programmable Gate Arrays}
+ \newacronym{rbs}{RBS}{Radio Base Station}
+ \newacronym{ieee}{IEEE}{Institute of Electrical and Electronics Engineers}
+ 
+ 
+ 
+ 
+ 
+ 
+
+\makeglossaries
+
 \begin{document}
 % Information to appear on the title page:
-\ititle{Reconfigurable Hardware Programming in a Protocol Processor Unit}
+\ititle{Reconfigurable hardware programming in a protocol processor unit}
 \isubtitle{}
 \iauthor{- Sunil Kallur Ramegowda}
 \idate{2015}
@@ -42,102 +68,117 @@
 		% the layout of that document should not be affected in any
 		% way by the title page.
 
-		\title{Reconfigurable Hardware Programming in a Protocol Processor Unit}
+		\title{Reconfigurable hardware programming in a protocol processor unit}
 		\author{Sunil Kallur Ramegowda}
 
 		\maketitle
 		\pagenumbering{roman}
-
-
-		\begin{abstract}
-		The objective of the thesis is to define an architecture for the reconfigurable protocol processor unit being investigated at Ericsson,Stockholm. The thesis also includes proving the concept using SystemC TLM2.0 by defining the common hardware functions used in different protocols.A common framework for different  protocol definition and to extract the information in the form of state table which will be used by the protocol processor. 
+       
+  		\begin{abstract}
+		
+        Reconfigurable hardware architectures are the topic of research for many years.Programming such architectures requires the design of custom compilers to generate the required files for the architecture.
+        
+        A protocol processor,in general processes the packets according to the protocol.There are number of protocols like Ethernet,\acs{cpri} to define how the data has to be sent and received between the source and destination points. Data packets can be processed using the generic processors programmed in software,but hardware processing is always energy efficient.\\  
+        
+        A compiler/mapper is developed in this thesis work. The language application was developed using a parser generator tool called Antlr.The grammar was written in \acs{ebnf} and the corresponding language was used to describe the architecture and the protocols. The tool will generate the hardware model and their interconnection in SystemC based on the protocol description.\\ 
+        
+        The complete system was verified by integrating the Ethernet protocol.Parts of the protocol implementation in SystemC was also considered in the work.The system is verified for different protocols.The framework works based on the user defined description of the protocol. \\
+        
+        Future work involves the integration of further protocols into the system and then adapt the language to further involve all the future requirements.The concept of mapping can be used to design the hardware blocks and their interconnections in different languages. 
+        
+        
 		\end{abstract}
-
+        \phantomsection
 		\addcontentsline{toc}{section}{Abstract}
+       	\cleardoublepage
+
+        %\renewcommand\contentsname{\centerline{\underline{\underline{Table of Contents}}}}
+		\phantomsection
+        \tableofcontents
+		%\addcontentsline{toc}{section}{Table of contents}
 		\cleardoublepage
+        
+        % abbreviations
+        \phantomsection
+        \addcontentsline{toc}{section}{Abbreviations}
+        \printglossary[type=\acronymtype,title=Abbreviations]
+        \cleardoublepage
 
-
-
-
-		%\phantomsection
-
-		\renewcommand\contentsname{\centerline{\underline{\underline{Table of Contents}}}}
-		\tableofcontents
-		\addcontentsline{toc}{section}{Table of Contents}
-		\cleardoublepage
-
-
-		%\renewcommand\listfigurename{List of Figures}
-
+		\phantomsection
 		\listoffigures
 		\addcontentsline{toc}{section}{List of Figures}
 		\cleardoublepage
 
-		\renewcommand\listtablename{List of Tables}
-		\listoftables
+		\phantomsection
+        \listoftables
 		\addcontentsline{toc}{section}{List of Tables}
 		\clearpage
 
-
-
-
-
 		\pagenumbering{arabic}
+         
+       \section{Introduction}
 
-		\section{Introduction}
+		A set of digital rules define the communication strategy between digital systems.There are many rules which makes the communication possible between systems.Over the decades the rules have evolved into standards.The rules are called as Protocols in communication systems.The \gls{osi} partition the communication system into 7 abstraction layers.There are different protocols for each layers of abstraction. The software and/or hardware changes based on the protocol chosen to process the message and extract the relevant information at each layer of abstraction. The hardware solutions based on a \gls{gpp}  or an \gls{asic} exists \cite{5335678}\cite{558379}.GPP will have more flexibility but are less energy efficient when compared to \acs{asic} which are less flexible and most energy efficient. \acs{asip} or domain specific processors are more suitable for the protocol processing task and depending on their architectural characteristics they allow varying degrees of trade-off between flexibility and energy-efficiency\cite{1106752}.Resource and performance varies depending on the reconfigurable architecture and its level of abstraction\cite{6868627}.\\   
 
-		A set of digital rules define the communication strategy between digital systems.There are many such rules which makes the communication possible between systems.Over the decades the rules have evolved into standards.The rules are called as Protocols in communication systems.The Open Systems Interconnect model (OSI) partition the communication system into 7 abstraction layers.There are different protocols for each layers of abstraction. The software and/or hardware changes based on the protocol chosen to process the message and extract the relevant information at each layer of abstraction. The hardware solutions based on a General Purpose Processor(GPP)  or an Application Specific Integrated Circuit(ASIC) exists \cite{5335678}\cite{558379}.GPP will have more flexibility but are less energy efficient when compared to ASIC which are less flexible and most Energy efficient. Application Specific Instruction-set Processors(ASIP) or domain specific processors are more suitable for the protocol processing task and depending on their architectural characteristics they allow varying degrees of trade-off between flexibility and energy-efficiency\cite{1106752}.Resource and Performance varies depending on the Reconfigurable architecture and its level of abstraction\cite{6868627}.\\   
+		The design of reconfigurable hardware architecture requires the compiler to produce the configuration or the hardware compatible code.These files can be produced on run time when the application is running or in a static way before the application is made to run. The complexity of the system depends on the selected design.The hardware for processing the different protocols can be made reconfigurable.Investigation and design of such a concept is performed in this thesis work.\\ 
 
-		The design of reconfigurable hardware architecture requires change in compiler software which can produce the required configuration or the hardware compatible code.The configuration files can be produced on run time when the application is running or in a static way before the application is made to run. The complexity of the system depends on the selected design.The hardware for processing the different protocols can be made reconfigurable.Investigation and design of such a concept is performed in this thesis work.\\ 
-
-		The reconfigurable hardware is modelled in SystemC TLM2 language. The configuration file required for the reconfiguration is obtained by parsing the description of protocols using the language defined by the Grammar. The Antlr tool is used for building the base parser file for the defined grammar and then the required functions are written to output the configuration files. 
-
+		The reconfigurable hardware is modeled in SystemC language using \acs{tlm}. The configuration files required for the reconfiguration is obtained by parsing the description of protocols using the language defined by the Grammar.The Antlr tool is used for building the base parser file for the defined grammar and then the required functions are written to output the complete system and configuration files. 
+        
 
 		\clearpage
 		\subsection{Background}
-		In 1960 Gerald Estrin, proposed the idea of a fixed plus variable structure computer \cite{1114865}.It consisted of a fixed processor and an array of reconfigurable hardware which was controlled by the fixed processor.Even though the idea was demonstrated with a proof the industry did not consider to further innovate in these field and till 1980's there were no significant developments. In  1985 the reconfigurable PLA(Programmable Logic Array) was patented\cite{page1985re}.Innovation in PLA's further continued with the commercially available FPGA(Field Programmable Gate Arrays) in today's market.\\
+		In 1960 Gerald Estrin, proposed the idea of a fixed plus variable structure computer \cite{1114865}.It consisted of a fixed processor and an array of reconfigurable hardware which was controlled by the fixed processor.Even though the idea was demonstrated with a proof,the industry did not consider to further innovate in these field and till 1980's there were no significant developments. In  1985,the reconfigurable \gls{pla} was patented\cite{page1985re}.Innovation in \acs{pla}'s further continued with the commercially available \gls{fpga} in today's market.\\
 
-		Ericsson AB is a market leader in the radio base station equipments.There are different protocols being used for communication in the Radio Base Station (RBS) units.The Ethernet standard defined by IEEE in 802.3 standard defines the protocol for 10Gbit transfer which is mainly used for communication between the chips. Other protocols include Common Public Radio Interface (CPRI),Serial Rapid IO(SRIO),Xio(Ericsson Specific protocol) for reliable communication between chips at high data rate.Most of these protocols in this layer of abstraction have common harware units/blocks. Ericsson design and manufacture Custom ASIC chips for each of these protocols.The common functions which can be used by different protocols are being studied in this thesis by designing a reconfigurable hardware architecture which will minimize the cost and will provide more flexibility compared to ASIC chips.More details about the protocols and reconfigurable architecture is explained in Chapter 3.\\ 
+		Ericsson AB is a market leader in the radio base station equipments.There are different protocols being used for communication in the Radio Base Station (RBS) units.Ethernet standard explained by \acs{ieee} in 802.3 standard defines the protocol for 10Gbit transfer which is mainly used for communication between the silicon chips. Other protocols include \gls{cpri},Serial Rapid IO(SRIO),Xio(Ericsson Specific protocol) for reliable communication between chips at high data rate.Most of these protocols in MAC layer of abstraction have common hardware units. Ericsson design and manufacture Custom \acs{asic} chips for these protocols.The common functions which can be used by different protocols for designing a reconfigurable hardware architecture which will minimize the cost and will provide more flexibility compared to ASIC chips.More details about the protocols and reconfigurable architecture is explained in Chapter 3.\\ 
 
-		The reconfigurable architecture requires a new hardware and software co-design.The reconfiguration details are extracted based on the hardware design and the compiler/mapper should be able to produce such reconfiguration.This is accomplished  by using Grammar based technique i.e by defining a language based on BNF grammar and then defining the protocols using this language.The overall architecture and working principle will be explained in further chapters.\\
+		The reconfigurable architecture requires a new hardware and software co-design.The reconfiguration details are extracted based on the hardware design and the compiler/mapper should be able to produce such reconfiguration.This is accomplished  by using Grammar based technique i.e by defining a language based on \gls{ebnf} grammar and then describing the protocols using this language.The overall architecture and working principle will be explained in further chapters.\\
 
-		The Reconfigurable hardware for protocol processing using the grammar based approach is performed in this thesis.A detailed technical description of each technology being used is explained in Chapter 3.\\   
+		The thesis deals with understanding the reconfigurable architecture and identifying the configuration details to make the system work for different protocols.The description in high level language is used to extract these configuration details and to verify the complete system using a test bench.\\   
 
 		\clearpage
 
 
 		\subsection{Purpose}
 
-		The thesis purpose is to investigate an approach of a compiler or mapper to consider the mapping of hardware blocks based on different protocols.This involves showing the proof of concept by SystemC TLM2 simulation models.The Individual hardware blocks are modelled in SystemC and can vary from a constant block to complex functions of the protocols like Encoder,Scrambler etc.This thesis work serves as a proof for the project in Ericsson to further investigate the feasibility of developing such architectures.
+		The thesis purpose is to investigate an approach of a compiler or mapper to describe the protocols in high level language and then map it to hardware blocks and their interconnection.This involves showing the proof of concept by SystemC TLM simulation models.The Individual hardware blocks are modeled in SystemC and can vary from a simple block to complex functions of the protocols like Encoder.This thesis work serves as a proof for the project in Ericsson AB to further investigate the feasibility of developing such architectures.
 
 
 
-		\subsection{Goal}
-		The thesis goal is to provide a proof of concept for the reconfigurable protocol processor using grammar based approach.The proof includes the simulation models by transmitting the data through the reconfigurable architecture and showing the working principle using the metrics.
+		\subsection{Goals}
+		The thesis goal is to achieve the below milestones:
+        
+        \begin{itemize}
+            \item{Understand the Reconfigurable hardware architecture designed at Ericsson AB}
+            \item{Understand Ethernet,Xio and CPRI protocols}
+            \item{Define a language to describe the protocols in high level words}
+            \item{Identifying how to represent the reconfiguration information}
+            \item{Mapping the description of language to hardware and interconnections}
+            \item{Integrating Ethernet protocol for the complete system}
+            \item{Verifying the system by simulation}
+            
+            
+        \end{itemize}
+        
+      	               
 
+		\subsection{Limits on scope}
+		The thesis focus more on showing the proof of concept considering one to two protocol i.e Ethernet and Xio. The language will be designed such that it is easy with minor modification to extend for other protocols like CPRI,SRIO. Developing and integrating the \acs{tlm} models for all the protocol's will not be feasible in this time line.
 
-		\subsection{Research Methodology}
-        The qualitative research \cite{2013portal} is performed to understand the existing technology and to prove the proposed concept by  considering minimal protocols. The overall architecture is illustrated by exploring the available and existing methods in each field.
-                
-
-		\subsection{Delimitations}
-		The thesis focus more on showing the proof of concept considering one to two of the protocol i.e Ethernet and Xio. The architecture will be developed such that it is easy with minor modification to extend for other protocols like CPRI,SRIO. Considering all the protocol's will not be feasible in this time line.
-
-		\subsection{Outline}
-		The thesis is organized to provide required details for understanding the overall work.Chapter 2 will provide a detailed description of the technical terminologies and tools used for the project work.Chapter 3 will provide the implementation details and the results obtained will be explained in chapter 4. The Future work and conclusion are explained in the further chapter 5 and chapter 6.
+		\subsection{Structure of the thesis}
+		The thesis is organized to provide required details for understanding the overall work. The first chapter gives a brief introduction to the reader about the topic of investigation,limitations and goals.The second chapter will describe the background about the topic and the literature about different terminologies. The third Chapter will provide the implementation details and the results obtained will be explained in chapter four. The Future work and conclusion are stated in the further chapter five  and six.
 
 
 		\clearpage
 
 
-		\section{Related Work}
-		This chapter explains in detail the reconfigurable architectures,Protocols at Data link layer and Grammar based tools.
+		\section{Background}
+		To understand the reconfigurable hardware and its terminologies, this chapter explains in detail about the architecture and its meaning.Protocols and their common functions are also explained which helps in designing the reconfigurable protocol processors.The further sections explains the meaning of grammar and language and its terms.    
 
 
 		\subsection{Reconfigurable Systems}
 
 
-		In the field of computer architecture, designers make decisions based on flexibility and performance requirement\cite{JACST518}.ASIC are the least flexible in terms of adapting for any change in the application and GPP are the most flexible as they are independent of the application and the core can be programmed to make the required algorithm work at the cost of higher power and lower efficiency.ASIC and GPP lies in extreme corners of the graph between Flexibility Vs Performance as in Fig.~\ref{fig:Fig1}.Reconfigurable architectures are intended to fill the gap and provide more flexibility in terms of hardware and potentially higher performance than software\cite{JACST518}.
+		In the field of computer architecture, designers make decisions based on flexibility and performance requirement\cite{JACST518}.\acs{asic} are the least flexible in terms of adapting for any change in the application and GPP are the most flexible as they are independent of the application and the core can be programmed to make the required algorithm work at the cost of higher power and lower efficiency.ASIC and GPP lies in extreme corners of the graph between Flexibility Vs Performance as in Fig.~\ref{fig:Fig1}.Reconfigurable architectures are intended to fill the gap and provide more flexibility in terms of hardware and potentially higher performance than software\cite{JACST518}.
 
 		\begin{figure}[!htb]
 		\centering
@@ -148,7 +189,7 @@
 
 		\subsubsection{Granularity}
 
-		Reconfigurable devices like FPGA(Field Programmable Gate Arrays) have the configurable logic blocks(CLB) which can be configured to map the required functionality. The complexity of the function will not matter but the number of inputs and output of the function has to be considered based on the FPGA architecture. This level of granularity in implementing the functions is called as Fine grained Reconfigurable architecture as it provides the reconfigurable granularity till lowest possible level. These reconfigurable devices are not energy efficient and the execution speed is too less than the ASIC counterpart. Another type of reconfigurable devices are the coarse grained reconfigurable architectures. These devices have the granularity at function levels. They will configure the Function blocks to achieve the efficient algorithm implementation.The Function blocks can vary from constant blocks to complex functions which are commonly used based on the application domain.   
+		Reconfigurable devices like \acs{fpga} have the configurable logic blocks(CLB) which can be configured to map the required functionality. The complexity of the function is not a concern but the number of inputs and output of the function has to be considered based on the FPGA architecture. This level of granularity in implementing the functions is called as Fine grained Reconfigurable architecture as it provides the reconfigurable granularity till lowest possible level. These reconfigurable devices are not energy efficient and the execution speed is too less than the ASIC counterpart. Another type of reconfigurable devices are the coarse grained reconfigurable architectures. These devices have the granularity at function levels. They will configure the Function blocks to achieve the efficient algorithm implementation.The Function blocks can vary from constant blocks to complex functions which are commonly used based on the application domain.   
 
 
 		\subsubsection{Reconfiguration Models}
@@ -161,7 +202,7 @@
 		\label{fig:Fig2}
 		\end{figure}
 
-		In Compile time reconfiguration model, the reconfigurable hardware system is configured at compile time and will be static during the application run time.In this model the programmable logic can be configured to perform some specific task like hardware accelerators to achieve high performance. An FPGA configured to perform floating point multiplication together with a GPP will accelerate the performance of the application if the GPP doesn't have a Floating Point Unit.
+		In Compile time reconfiguration model, the reconfigurable hardware system is configured at compile time and will be static during the application run time.In this model the programmable logic can be configured to perform some specific task like hardware accelerators to achieve high performance.FPGA configured to perform floating point multiplication together with a GPP will accelerate the performance of the application if the GPP doesn't have a Floating Point Unit.
 		In Run time reconfiguration model, the reconfiguration hardware is configured at run time and will be dynamically programmed to perform different tasks.The decision for making such dynamic reconfiguration has to be embedded coupled with the application and hence it increase the overhead.The Dynamic Reprogrammable Resource Array(DRRA) fabric developed at KTH Electronic System Dept is an example of this model\cite{5351593}.   
 
 		\subsubsection{Reconfiguration rate}
@@ -224,13 +265,31 @@
 		\clearpage
 
 
-		\section{Main Technical Work}
+		\section{Developed language application}
+        \subsection{Hardware and interconnection}
+        \subsection{Context switching}
+        \subsection{Memory}
+        \subsection{Error handling}
+        \subsection{Transaction handling}
+        
 		\clearpage
 
-		\section{Future Work}
+		\section{Tests}
+        \subsection{Complete Test System}
+        \subsection{Input file}
+        \subsection{Transaction routing}
+        \subsection{Debugging}
+        \subsection{Output}
 		\clearpage
+
+        \section{Analysis}
+        \subsection{Ethernet}
+        \subsection{Xio}
+        \clearpage
 
 		\section{Conclusion}
+        \subsection{Limitations}
+        \subsection{Future work}
 		\clearpage
 
 
