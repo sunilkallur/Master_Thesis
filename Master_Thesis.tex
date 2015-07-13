@@ -20,7 +20,8 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 
-
+\usepackage[titletoc]{appendix}
+%\usepackage{appendix}
 \usepackage{listings,lstautogobble}
 \usepackage{color}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -28,7 +29,7 @@
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 %\lstset{escapeinside={<@}{@>}}
 \lstset{frame=tb,
-    %language=Java,
+    language=C,
     aboveskip=3mm,
     belowskip=3mm,
     showstringspaces=false,
@@ -54,6 +55,10 @@
 \usepackage{tocloft}
 \renewcommand\listfigurename{List of Figures}
 \renewcommand\listtablename{List of Tables}
+
+\usepackage{chngcntr}
+\counterwithin{figure}{section}
+
 
 
 \newcommand{\quotes}[1]{``#1''}
@@ -100,12 +105,19 @@
 		% Everything below is exactly as for a normal document and 
 		% the layout of that document should not be affected in any
 		% way by the title page.
+        
+         \section*{Acknowledgement}
+         \thispagestyle{empty}
+         \clearpage
 
 		\title{Reconfigurable hardware programming in a protocol processor unit}
 		\author{Sunil Kallur Ramegowda}
 
 		\maketitle
 		\pagenumbering{roman}
+        
+       
+        
        
   		\begin{abstract}
 		
@@ -246,7 +258,7 @@
 		The Fine grain Systems will have more reconfiguration data(In FPGAs it is in term of bit streams) which leads to more time and the Coarse Grained Reconfigurable systems will have comparatively less blocks as they have higher granularity and will contain less reconfiguration data.Hence the Coarse Grain architecture will take less time to re configure. This depends on the dynamic reconfiguration architecture whether the complete fabric is reconfigured or partially reconfigured during runtime. 
 
 
-		\subsection{Protocols}
+		\subsection{Protocols}\label{protocols}
 
 		The communication between chips in Radio Base station equipments has many protocols to fulfill the requirements of the specification.The protocols differ by standards.The Data link layer protocol's of the \acs{osi} model share some common functionalities.The different protocols being used at Ericsson AB and related to this thesis work are described below:  
 
@@ -439,28 +451,7 @@
         
         
         
-        \subsubsection{Comparison of 3 Protocols}
-            
-           The common functions in each protocol are highlighted with the same color for the boundary line in Fig \& Fig. A common hardware architecture can be designed with minimal reconfiguration to perform the protocol processing of different protocols stated above.\\
-        
-        
-        
-         \begin{figure}[!htb]
-             \centering
-             \includegraphics[scale=0.4]{common_tx}
-             \caption{Transmitter of all 3 protocols}
-             \label{fig:common_tx}
-            \end{figure}
-        \clearpage
-
-         \begin{figure}[!htb]
-             \centering
-             \includegraphics[scale=0.4]{common_rx}
-             \caption{Receiver of all 3 protocols}
-             \label{fig:common_rx}
-            \end{figure}
-
-        \clearpage
+       
         
         
         
@@ -506,28 +497,9 @@
         
         
 
-		\subsubsection{Antlr}
+	
 
-		ANTLR is a powerful parser generator that can be used to read,process or translate structured text or binary files.It has been adapted in academia and industries for different applications and hence there is a good community help for most common problems.The tool generates the background parser and checker files for the grammar defined in the Bacchus-Naur form(BNF)or the Extended Bacchus-Naur form(EBNF).It makes the framework easy for the user to generate a language application based on the defined grammar.
-        
-        
-        \begin{figure}[!htb]
-            \centering
-            \includegraphics[scale=0.4]{antlr}
-            \caption{Antlr}
-            \label{fig:antlr}
-        \end{figure}
-        
-        
-        
-        Antlr is a parser generator tool.It allows the user to express the grammar to match syntactic structures like programming language arithmetic expressions.As in Fig below, the grammar can parse the expression and produce the parse tree and the backend functions to implement the interpreter, compiler or translator .
-        
-
-        \subsubsection*{Parse tree listners and Visitors}
-            Antlr provides 2 tree walking mechanisms in its runtime library. In parse tree Listners, ANTLR generates a parsetreeListner subclass specific to each grammar with entry and exit methods for each rule. This is suitable for applications wherin the complete tree need to be invoked from root till the last leaf node. The parse tree Visitor mechanism is used when the tree walking needs to be controlled.
-        
-
-		\clearpage
+	
 		\subsection{Environment and Tools}
         The Linux based server environment is used for compiling and testing the project files.The Antlr tool is used to define the protocols in a language defined in the grammar using EBNF. The Antlr tool is made to ouput the state table information which contains all the states with transition information.This will be used to reconfigure the hardware to process the input packets according to the protocols.
         
@@ -549,14 +521,21 @@
 
        \section{Methodology}
        
-       This chapter starts with a description of the methodology behind the research process. The representation of test results, analysis and their methods are discussed. 
+      This chapter explains the process applied in describing the protocol for the hardware architecture.This chapter also explains the details of reconfigurable architecture under study, the common protocol functions and the methodology used to verify the result. 
        
        \subsection{Research process}
-            The architecture and its interconnections need to be understood to design the protocol processor. The reconfigurable architecture is called as Freyja architecture.
+            The hardware architecture and its interconnections need to be understood to design the protocol processor. The reconfigurable architecture developed at Ericsson AB is called as Freyja architecture.The hardware architecture details has to be abstracted out to define it in high level description.Similarly the protocols details has to be abstracted using the same description to reconfigure the hardware for different protocols.The mapping between them requires a custom set of tools to define and reconfigure the architecture according to the requirement.To accomplish this,the research involves the following major steps:
+            \begin{itemize}
+                \item{Study the Reconfigurable hardware architecture}
+                \item{Identify the common protocol functions}
+                \item{Develop a grammar to describe the details in high level language}
+                \item{Test the developed system}
+               \end{itemize} 
        
+       The Study of the architecture is explained in detail in the next section.The further sections explains the process involved in achieving the remaining steps. 
        
-       \subsubsection{Freyja Architecture}
-           As in Fig , Freyja architecture is a reconfigurable protocol processor. It consists of different protocol operators which are connected through the central switch. This switch based network topology can be configured to process the data based on protocols. The Ring bus (RB) interface the Freyja with the higher layers of protocol and it issues the data frames of different protocols as tokens. The Common Memory Interface(CMI) is used to fetch the data from memory. 
+       \subsection{Freyja Architecture}
+           As in Figure~\ref{fig:Freyja} , Freyja architecture is a reconfigurable protocol processor. It consists of different protocol operators which are connected through the central switch. This switch based network topology can be configured to process the data based on protocols. The Ring bus (RB) interface the Freyja with the higher layers of protocol and it issues the data frames of different protocols as tokens. The Common Memory Interface(CMI) is used to fetch the data from memory. 
            The physical interface is represented by the Serializer/Deserializer block i.e SERDES. The details of each of the Freyja architecture blocks are discussed below.
            
             \begin{figure}[!htb]
@@ -580,11 +559,8 @@
         \end{wrapfigure} 
         
        Freyja Switch port is the smallest unit in the architecture which receives the transactions from different functions and then forwards it to the internally connected next switch port based on the destination of the transaction. It consists of a simple initiator socket,simple target socket,Multipass through initiator socket and Multi pass through target socket.It is represented as in \lipsum[0-0] Figure~\ref{wrap-fig:switchport}
-       
-       
-       
-       
-       \subsubsection*{Operator units}
+ 
+    \subsubsection*{Operator units}
        
        
        \begin{figure}[!htb]
@@ -596,7 +572,7 @@
        
       
        Freyja Operator units are designed to contain a control, process and memory blocks. Each operator function is implemented in the process block and the transaction routing and context switching is performed in the control block. The memory block stores the constants required for the process block. It can also be used to store the result and then the control block can access the results. 
-       As in Fig , the 3 components of each operator is encapsulated with one simple initiator socket and one target socket which initiates the transaction and receives the transaction from the switch respectively. The transaction received in routed to the control block where it sends the transaction to memory block about the received transaction. Based on the required operator, the memory block will send the transaction to the process block. Meanwhile the received transaction is sent to the process block from the control block to perform the required operation. 
+       As in Figure~\ref{fig:operator} , the 3 components of each operator is encapsulated with one simple initiator socket and one target socket which initiates the transaction and receives the transaction from the switch respectively. The transaction received in routed to the control block where it sends the transaction to memory block about the received transaction. Based on the required operator, the memory block will send the transaction to the process block. Meanwhile the received transaction is sent to the process block from the control block to perform the required operation. 
        
        
        \subsubsection*{Switch wrapper}
@@ -611,10 +587,10 @@
              \label{fig:switchwrapper}
             \end{figure}
         
-        As in Fig, each switch port can send the transaction to any of the other switch port through the internal multi pass through socket. The other switch ports can receive the transaction using the multi pass through receive socket. A transaction source and destination cannot be the same operator as there is no such interconnection.
+        As in Figure~\ref{fig:switchwrapper}, each switch port can send the transaction to any of the other switch port through the internal multi pass through socket. The other switch ports can receive the transaction using the multi pass through receive socket. A transaction source and destination cannot be the same operator as there is no such interconnection.
         
         \subsubsection*{Overall architecture}
-            Overall architecture for 4 operators
+            
         
          \begin{figure}[!htb]
              \centering
@@ -623,11 +599,64 @@
              \label{fig:Overallarchitecture}
             \end{figure}    
        
-       As in Fig, the overall Frejya architecture consists of switch wrapper instantiating switch ports and the operator blocks for each of the operator functions. A transaction originating from operator 1 as shown in fig with Orange box can be routed to any of the other operators as destination based on the address of the payload. This address is assigned in the control block of the operator where the transaction is originated. 
+       As in Figure~\ref{fig:Overallarchitecture}, the overall Frejya architecture consists of switch wrapper instantiating switch ports and the operator blocks for each of the operator functions. A transaction originating from operator 1 as shown in fig with Orange box can be routed to any of the other operators as destination based on the address of the payload. This address is assigned in the control block of the operator where the transaction is originated. 
        
        \clearpage
        
-       \subsection{Highlevel description of the protocol}
+       \subsection{High level description of the protocol}
+           The different operations in each of the protocols are summarized in Section \ref{protocols}.To describe them using high level description 
+       
+       
+        \subsubsection{Comparison of 3 Protocols}
+        
+        The common functions in each protocol are highlighted with the same color for the boundary line in Fig \& Fig. A common hardware architecture can be designed with minimal reconfiguration to perform the protocol processing of different protocols stated above.\\
+        
+        
+        
+        \begin{figure}[!htb]
+            \centering
+            \includegraphics[scale=0.4]{common_tx}
+            \caption{Transmitter of all 3 protocols}
+            \label{fig:common_tx}
+        \end{figure}
+        \clearpage
+        
+        \begin{figure}[!htb]
+            \centering
+            \includegraphics[scale=0.4]{common_rx}
+            \caption{Receiver of all 3 protocols}
+            \label{fig:common_rx}
+        \end{figure}
+        
+        \clearpage
+       
+       
+       
+       
+       	\subsubsection{Antlr}
+           
+           ANTLR is a powerful parser generator that can be used to read,process or translate structured text or binary files.It has been adapted in academia and industries for different applications and hence there is a good community help for most common problems.The tool generates the background parser and checker files for the grammar defined in the Bacchus-Naur form(BNF)or the Extended Bacchus-Naur form(EBNF).It makes the framework easy for the user to generate a language application based on the defined grammar.
+           
+           
+           \begin{figure}[!htb]
+               \centering
+               \includegraphics[scale=0.4]{antlr}
+               \caption{Antlr}
+               \label{fig:antlr}
+            \end{figure}
+            
+            
+            
+            Antlr is a parser generator tool.It allows the user to express the grammar to match syntactic structures like programming language arithmetic expressions.As in Fig below, the grammar can parse the expression and produce the parse tree and the backend functions to implement the interpreter, compiler or translator .
+            
+            
+            \subsubsection*{Parse tree listners and Visitors}
+            Antlr provides 2 tree walking mechanisms in its runtime library. In parse tree Listners, ANTLR generates a parsetreeListner subclass specific to each grammar with entry and exit methods for each rule. This is suitable for applications wherin the complete tree need to be invoked from root till the last leaf node. The parse tree Visitor mechanism is used when the tree walking needs to be controlled.
+            
+       
+       
+       
+       
        \clearpage
        
        \subsection{Verification and Testing}
@@ -683,7 +712,7 @@
             
             \begin{lstlisting}
             
-<@\textcolor{blue}{Operator}  \textcolor{blue}{CHECKSUM}@>{
+<@\textcolor{blue}{Operator}@> CHECKSUM{
 <@\textcolor{red}{sc\_name} @>: crc;
 <@\textcolor{red}{op\_type} @>: crc_add,crc_check;
 <@\textcolor{red}{op\_mem} @> : 0x01,0x04,0xc1,0x1d,0xb7,0x20,0x00,0x04,0x03,0x04,0x00,
@@ -813,7 +842,100 @@
         
         
         \subsection{Ethernet}
+            Ethernet Transmit and Receive operations are explained in Fig.~\ref{fig:EthTx} and Fig.~\ref{fig:EthRx}.The \textit{Datain} in the transmit is passed from the UVM test bench.The UVM sequence is generated with first byte indicating the protocol and the second byte containing the address of the operator.Once the transaction reaches the Switch wrapper,it is decoded and forwarded to the first operator as defined by the input file.\\
+            
+            \autoref{Ethernet} shows the complete description of Ethernet protocol.The interconnection between different Ethernet operator is explained in this section.
+            
+            A part of the Ethernet description is shown in code below:
+            
+            \begin{lstlisting}
+                <@\textcolor{blue}{Tx\_PATH} @>{
+                <@\textcolor{red}{CONNECT} @>: proc_tx <@\textcolor{red}{to} @> crc_add; 
+                <@\textcolor{red}{CONNECT} @>: crc_add <@\textcolor{red}{to} @> pre_sfd_add;
+                <@\textcolor{red}{CONNECT} @>: pre_sfd_add <@\textcolor{red}{to} @> cc_a;
+                <@\textcolor{red}{CONNECT} @>: cc_a <@\textcolor{red}{to} @> enc;
+                <@\textcolor{red}{CONNECT} @>: enc <@\textcolor{red}{to} @> scram;
+                <@\textcolor{red}{CONNECT} @>: scram <@\textcolor{red}{to} @> gb_tx;
+                <@\textcolor{red}{CONNECT} @>: gb_tx <@\textcolor{red}{to} @> gb_rx;
+                }       
+                
+          \end{lstlisting}
+            
+          The operators required by the protocols are first instantiated by defining them in the description.The string protocol indicates the definition of new protocol in Freyja architecture. The new protocol definition consists of 3 segments : Fields,Tx\_path,Rx\_Path. 
+          \begin{itemize}
+          
+          \item{The Fields section is defined to indicate the details of transaction contents in each protocol}
+          \item{Tx\_Path is used to define the transmitter sequence and}
+          \item{Rx\_Path is used to define the Receiver sequence}
+        
+         \end{itemize}
+        
+         The Tx\_Path and Rx\_Path are for the user to distinguish between the Transmitter and Receiver sequence for each protocol.In Freyja architecture the interconnections have no difference w.r.t Tx\_Path and Rx\_Path. The interconnect information is used to code the control block of each operator to forward the transaction to the correct destination.          
+        
+      
+         A part of control block of CRC operator for the description of Ethernet protocol is shown below:
+         
+         
+         \begin{lstlisting}
+//part of fre_op_ctrl_crc.cpp block 
+            
+if(type == ethernet){
+    if(op_type == crc_add){
+        data[0] = ethernet;
+        sz = sz + 2;
+        data[1] = pre_sfd_add;
+        gp.set_address(crc_add_2_pre_sfd_add);
+    }
+    else if(op_type == crc_check){
+        data[0] = ethernet;
+        sz = sz + 2;
+        data[1] = proc;
+        gp.set_address(crc_check_2_proc);
+    }             
+}    
+         \end{lstlisting}
+         
+         
+         In the above code the CRC operator's control block initially check for the Protocol and then for the type of the operator.As explained in Fig.~\ref{fig:CRC},the CRC operator multiplex 2 operations. CRC ADD and CRC check operators are having the same destination operator control block. They share the common memory,hardware for CRC computation and control function. The extra logic required to perform the CRC add and CRC compare are different.\\ 
+         
+         The destination address of the transaction is obtained from the input file.This information is compiled in the form of constants in SystemC environment.The same information can be stored in shared or in the operator memory based on architecture requirement.\\ 
+         
+         The parser implemented will generate these constants which are required for the reconfiguration of hardware. The context here is the possibility to send the transaction to different operators from the same source.\\ 
+         
+         \begin{lstlisting}
+//constants for the protocol : ethernet
+const unsigned char ethernet = 0;
+const  int proc_2_crc_add=0;
+const  int crc_add_2_pre_sfd_add=1;
+const  int pre_sfd_add_2_cc_a=2;
+const  int cc_a_2_enc=3;
+const  int enc_2_scram=4;
+const  int scram_2_gb=5;
+const  int gb_2_descram=5;
+const  int descram_2_dec=7;
+const  int dec_2_cc_d=8;
+const  int cc_d_2_pre_sfd_del=2;
+const  int pre_sfd_del_2_crc_check=1;
+const  int crc_check_2_proc=0;             
+            \end{lstlisting}
+         
+         The constants are formed using simple syntax as below \\
+         
+         \la source operator \ra \_2\_ \la Destination operator \ra \\
+         
+         The constant value assigned is calculated by the parser based on the Multipass through ports of switch port to which the source and destination operators are connected.
+         
+         The CRC operator also contains 19 bytes of memory elements.These 19 bytes are used by both CRC32 and CRC16 Operators.Ethernet protocol uses only CRC32 and hence only crc\_add and crc\_check uses first 9 bytes of the memory elements.The parser supports the access of contiguous or individual elements. After the control block informs the memory about the protocol and operator, the memory block will send the transaction to the process block which includes the constants required by the operator.   
+         
+        
         \subsection{Xio}
+        
+        The Xio-s protocol is defined using the input file and only CRC operator was integrated.
+        
+        change in control block!
+        include one source to many destination operators !
+        context switching at process block 
+  
         \clearpage
 
 		\section{Conclusion}
@@ -821,6 +943,15 @@
         \subsection{Future work}
 		\clearpage
 
+
+
+       
+       
+       
+       
+       
+       
+       
 
 
 		\begin{filecontents*}{references.bib}
@@ -954,5 +1085,135 @@
 \bibliographystyle{ieeetr}
 \bibliography{references}
 \addcontentsline{toc}{section}{References}
+\cleardoublepage
+
+\phantomsection
+\appendix
+\appendixpage
+\addcontentsline{toc}{section}{\appendixname}
+%\cleardoublepage
+
+\section{Ethernet Protocol Description}
+\label{Ethernet}
+\begin{lstlisting}
+
+<@\textcolor{blue}{FunctionUnits}@> FREYJA:
+
+<@\textcolor{blue}{Operator}@> PROCESSOR{
+<@\textcolor{red}{sc\_name}@> : proc;
+<@\textcolor{red}{op\_type}@> : proc_tx,proc_rx;
+<@\textcolor{red}{errorid}@> : 01,13;
+}
+
+<@\textcolor{blue}{Operator}@> CHECKSUM{
+<@\textcolor{red}{sc\_name}@> : crc;
+<@\textcolor{red}{op\_type}@> : crc_add,crc_check;
+<@\textcolor{red}{op\_mem}@>  : 0x01,0x04,0xc1,0x1d,0xb7,0x20,0x00,0x04,0x03,
+0x04,0x00,0x00,0x01,0x59,0x53,0x10,0x03,0x02,0x04;
+<@\textcolor{red}{errorid}@> : 02,03;
+}
+
+<@\textcolor{blue}{Operator}@> PRE_SFD{
+<@\textcolor{red}{sc\_name}@> : pre_sfd_add;
+<@\textcolor{red}{op\_type}@> : pre_sfd_add,pre_sfd_del;
+<@\textcolor{red}{errorid}@> : 04,05;
+}
+
+<@\textcolor{blue}{Operator}@> CORRECTING_CODES_ADD{
+<@\textcolor{red}{sc\_name}@> : cc_a;
+<@\textcolor{red}{op\_type}@> : cc_a;
+<@\textcolor{red}{errorid}@> : 06;
+}
+
+<@\textcolor{blue}{Operator}@> ENCODER{
+<@\textcolor{red}{sc\_name}@> : enc_64_66;
+<@\textcolor{red}{op\_type}@> : enc;
+<@\textcolor{red}{errorid}@> : 07;
+}
+
+<@\textcolor{blue}{Operator}@> SCRAMBLER{
+<@\textcolor{red}{sc\_name}@> : scram;
+<@\textcolor{red}{op\_type}@> : scram,descram;
+<@\textcolor{red}{op\_mem}@>  : 0x01,0x00,0x00,0x00,0x80,0x00,0x00,0x04; 
+<@\textcolor{red}{errorid}@> : 08;
+}
+
+<@\textcolor{blue}{Operator}@> GEARBOX_TX{
+<@\textcolor{red}{sc\_name}@> : gb_tx;
+<@\textcolor{red}{op\_type}@> : gb_tx;
+<@\textcolor{red}{errorid}@> : 09;
+}
+
+<@\textcolor{blue}{Operator}@> GEARBOX_RX{
+<@\textcolor{red}{sc\_name}@> : gb_rx;
+<@\textcolor{red}{op\_type}@> : gb_rx;     
+<@\textcolor{red}{errorid}@> : 13;
+}
+
+<@\textcolor{blue}{Operator}@> FRAMESYNC{
+<@\textcolor{red}{sc\_name}@> : fs;
+<@\textcolor{red}{op\_type}@> : fs;
+<@\textcolor{red}{errorid}@> : 10;
+}
+
+<@\textcolor{blue}{Operator}@> DECODER{
+<@\textcolor{red}{sc\_name}@> : dec_66_64;
+<@\textcolor{red}{op\_type}@> : decdr;
+<@\textcolor{red}{errorid}@> : 11;
+}
+
+<@\textcolor{blue}{Operator}@> CORRECTING_CODES_DEL{
+<@\textcolor{red}{sc\_name}@> : cc_d;
+<@\textcolor{red}{op\_type}@> : cc_d;
+<@\textcolor{red}{errorid}@> : 12;
+}
+
+
+<@\textcolor{blue}{protocol}@>  ETHERNET 
+<@\textcolor{cyan}{fields}@> : DA[06]
+SA[06]
+VLAN:0x8100
+VLAN[02]
+Len[02]
+PL[20]
+
+
+<@\textcolor{blue}{memory} @>{
+<@\textcolor{red}{crc\_add} @>   :00 <@\textcolor{red}{to} @> 08;
+<@\textcolor{red}{crc\_check} @> :00 <@\textcolor{red}{to} @> 07,09;
+<@\textcolor{red}{scram} @>     :00 <@\textcolor{red}{to} @> 07: 
+<@\textcolor{red}{descram} @>   :00 <@\textcolor{red}{to} @> 07;
+} 
+
+
+<@\textcolor{blue}{Tx\_PATH} @>{
+<@\textcolor{red}{CONNECT} @>: proc_tx <@\textcolor{red}{to} @> crc_add; 
+<@\textcolor{red}{CONNECT} @>: crc_add <@\textcolor{red}{to} @> pre_sfd_add;
+<@\textcolor{red}{CONNECT} @>: pre_sfd_add <@\textcolor{red}{to} @> cc_a;
+<@\textcolor{red}{CONNECT} @>: cc_a <@\textcolor{red}{to} @> enc;
+<@\textcolor{red}{CONNECT} @>: enc <@\textcolor{red}{to} @> scram;
+<@\textcolor{red}{CONNECT} @>: scram <@\textcolor{red}{to} @> gb_tx;
+<@\textcolor{red}{CONNECT} @>: gb_tx <@\textcolor{red}{to} @> gb_rx;
+}       
+
+
+<@\textcolor{blue}{RX\_PATH} @>{
+<@\textcolor{red}{CONNECT} @>: gb_rx <@\textcolor{red}{to} @> descram;
+<@\textcolor{red}{CONNECT} @>: descram <@\textcolor{red}{to} @> decdr;
+<@\textcolor{red}{CONNECT} @>: decdr <@\textcolor{red}{to} @> cc_d;
+<@\textcolor{red}{CONNECT} @>: cc_d <@\textcolor{red}{to} @> pre_sfd_del;
+<@\textcolor{red}{CONNECT} @>: pre_sfd_del <@\textcolor{red}{to} @> crc_check;
+<@\textcolor{red}{CONNECT} @>: crc_check <@\textcolor{red}{to} @> proc_rx;
+}
+
+\end{lstlisting}
+
+
+
+\clearpage
+
+
+
+
 
 \end{document}
