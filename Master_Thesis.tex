@@ -44,7 +44,11 @@
     breakatwhitespace=true,
     tabsize=3,
     escapeinside={<@}{@>},
-    autogobble=true
+    autogobble=true,
+    numbers=left,
+    stepnumber=5,    
+    firstnumber=1,
+    numberfirstline=true
 }
 
 \usepackage[exjobb]{KTHEEtitlepage}
@@ -56,13 +60,11 @@
 \renewcommand\listfigurename{List of Figures}
 \renewcommand\listtablename{List of Tables}
 
-\usepackage{chngcntr}
-\counterwithin{figure}{section}
-
 
 
 \newcommand{\quotes}[1]{``#1''}
 \usepackage{hyperref}
+\usepackage[all]{hypcap}
 %\usepackage{acro}
 \hypersetup{%
 	pdfborder = {0 0 0}
@@ -329,20 +331,22 @@
         
          \subsubsection*{Encoder 64/66B and Decoder 66B/64B}
          
-         The Encoder block is represented as show in Fig.~\ref{fig:encoder}. The 8 octet data is encoded using the control word into 66 bit output. The first 2 bits of the output are called sync header which is used for the synchronization from the receiver. The synch header \quotes{10} correspond to data and \quotes{01} corresponds to control codes
-         
           \begin{figure}[!htb]
               \centering
-              \includegraphics[scale=0.45]{encoder}
+              \includegraphics[scale=0.35]{encoder}
               \caption{Ethernet Encoder block}
               \label{fig:encoder}
             \end{figure}
+         
+         The Encoder block is represented as show in Fig.~\ref{fig:encoder}. The 8 octet data is encoded using the control word into 66 bit output. The first 2 bits of the output are called sync header which is used for the synchronization from the receiver. The synch header \quotes{10} correspond to data and \quotes{01} corresponds to control codes
+         
+         
         
         In the decoder the synch header is used to synchronize the 66bit data. The process of decoder is the reverse interpretation of the encoder module.
         
         \begin{figure}[!htb]
             \centering
-            \includegraphics[scale=0.45]{decoder}
+            \includegraphics[scale=0.35]{decoder}
             \caption{Ethernet Decoder block}
             \label{fig:decoder}
         \end{figure}
@@ -457,7 +461,7 @@
         
         
 
-	    \subsection{Grammar and Language}
+	    \subsection{Grammar and Language} \label{grammar}
         
         A Grammar is used to describe the syntax of a language, that is, all possible legal sentences or combination of words that make up the language. More formally, Grammar G describes all allowed legal sequences of strings. This is called the language(G) of the grammar.
         The language in turn is made of sequence of elements which can be letters, numbers or special symbols. For example, In the word \quotes{KTH} the capital letters K,T,H are to be recognized and then the word needs to be formed. This is performed by the Lexer which recognizes the letter and forms the token.
@@ -486,7 +490,7 @@
            
        \la int\ra  \hspace{0.2cm} ::= \la DIGIT \ra    | \la int \ra  \la DIGIT \ra \\
        
-               \la DIGIT \ra \hspace{0.2cm} ::= [ 0-9 ]
+               \la DIGIT \ra \hspace{0.2cm} ::= [ 0-9 ]\\
         
         In the above Grammar, \la int \ra on the left hand side is called as non terminal and the \la DIGIT \ra is called as terminal. So the sequences of digits like 9999... can be parsed by representing grammar using BNF. 
         An extension to BNF grammar with more operators to write the syntax is called as EBNF. The grammar above can be rewritten in EBNF as below \\
@@ -506,7 +510,7 @@
            
         \subsubsection{SystemC}
          SystemC is an ANSI standard C++ class library for system and hardware design for use by designers and architects who need to address complex
-         systems that are a hybrid between hardware and software \cite{1617814}.It helps in modeling the concurrent processes.This makes it possible to model the hardware which are concurrent systems by nature.  
+         systems that are hybrid between hardware and software \cite{1617814}.It helps in modeling the concurrent processes.This makes it possible to model the hardware which are concurrent systems by nature.  
         
         \subsubsection{TLM}
          Transaction level Modeling is the approach of abstracting the lower implementation details of the function units and representing the overall system architecture.TLM helps in modeling the communication and the function unit implementation separately. The Transaction refers to the set of data being exchanged.TLM speeds up the simulation by replacing a set of pin level events with a single function call.\\
@@ -524,7 +528,7 @@
       This chapter explains the process applied in describing the protocol for the hardware architecture.This chapter also explains the details of reconfigurable architecture under study, the common protocol functions and the methodology used to verify the result. 
        
        \subsection{Research process}
-            The hardware architecture and its interconnections need to be understood to design the protocol processor. The reconfigurable architecture developed at Ericsson AB is called as Freyja architecture.The hardware architecture details has to be abstracted out to define it in high level description.Similarly the protocols details has to be abstracted using the same description to reconfigure the hardware for different protocols.The mapping between them requires a custom set of tools to define and reconfigure the architecture according to the requirement.To accomplish this,the research involves the following major steps:
+            The hardware architecture and its interconnections need to be understood to design the protocol processor. The reconfigurable architecture developed at Ericsson AB is called as Freyja architecture.The hardware architecture details has to be abstracted out to define it in high level description.Similarly the protocols details has to be abstracted using the same description to reconfigure the hardware for different protocols.The mapping between them requires a custom set of files to define and reconfigure the architecture according to the requirement.To accomplish this,the research involves the following major steps:
             \begin{itemize}
                 \item{Study the Reconfigurable hardware architecture}
                 \item{Identify the common protocol functions}
@@ -546,7 +550,7 @@
             \end{figure}
            
        
-       \subsubsection*{Switch port}
+       \subsubsection{Switch port}
        
        \begin{wrapfigure}{R}{0.4\textwidth}
            \vspace{-30pt}
@@ -560,12 +564,12 @@
         
        Freyja Switch port is the smallest unit in the architecture which receives the transactions from different functions and then forwards it to the internally connected next switch port based on the destination of the transaction. It consists of a simple initiator socket,simple target socket,Multipass through initiator socket and Multi pass through target socket.It is represented as in \lipsum[0-0] Figure~\ref{wrap-fig:switchport}
  
-    \subsubsection*{Operator units}
+    \subsubsection{Operator units}
        
        
        \begin{figure}[!htb]
            \centering
-           \includegraphics[scale=0.4]{operator}
+           \includegraphics[scale=0.5]{operator}
            \caption{Freyja operator}
            \label{fig:operator}
         \end{figure}
@@ -575,7 +579,7 @@
        As in Figure~\ref{fig:operator} , the 3 components of each operator is encapsulated with one simple initiator socket and one target socket which initiates the transaction and receives the transaction from the switch respectively. The transaction received in routed to the control block where it sends the transaction to memory block about the received transaction. Based on the required operator, the memory block will send the transaction to the process block. Meanwhile the received transaction is sent to the process block from the control block to perform the required operation. 
        
        
-       \subsubsection*{Switch wrapper}
+       \subsubsection{Switch wrapper}
         The switch wrapper instantiates the switch ports and their interconnections. 
         Based on the number of operators the required number of switch ports is instantiated.
         
@@ -589,7 +593,9 @@
         
         As in Figure~\ref{fig:switchwrapper}, each switch port can send the transaction to any of the other switch port through the internal multi pass through socket. The other switch ports can receive the transaction using the multi pass through receive socket. A transaction source and destination cannot be the same operator as there is no such interconnection.
         
-        \subsubsection*{Overall architecture}
+        \subsubsection{Overall architecture}
+        
+        Assuming there are 4 operators in the Freyja architecture, an illustration of the system is shown in Figure~\ref{fig:Overallarchitecture}
             
         
          \begin{figure}[!htb]
@@ -599,27 +605,54 @@
              \label{fig:Overallarchitecture}
             \end{figure}    
        
-       As in Figure~\ref{fig:Overallarchitecture}, the overall Frejya architecture consists of switch wrapper instantiating switch ports and the operator blocks for each of the operator functions. A transaction originating from operator 1 as shown in fig with Orange box can be routed to any of the other operators as destination based on the address of the payload. This address is assigned in the control block of the operator where the transaction is originated. 
+       The overall Frejya architecture consists of switch wrapper instantiating switch ports and the operator blocks for each of the operator functions. A transaction originating from operator 1 as shown in fig with orange box can be routed to any of the other operators as destination based on the address of the payload. This will be assigned in the control block of the operator where the transaction is originated. 
        
        \clearpage
        
        \subsection{High level description of the protocol}
-           The different operations in each of the protocols are summarized in Section \ref{protocols}.To describe them using high level description 
+          High level language description requires the design of Lexer and parser as explained in Section \ref{grammar}.They can be designed using languages like C,C++,java,C\# and more. Based on the application requirement, a parsing strategy needs to be decided. As the machine resources grew in today's world, researchers have developed more complex and powerful Non Deterministic parsing strategies. Today both \quotes{bottom-up} and \quotes{top-down} approaches exist. Debugging a \quotes{bottom-up} parsers are hard to understand and debug compared to the \quotes{top-down} parsers.\\
+          
+          There are many tools like ANTLR4,APG,AXE,YACC etc which helps to build a language application.They provide the user with Lexer and Parser implementations for the matched grammar defined by the user.This helps in reducing time for building the language in a short time. Antlr is one such tool which helps in designing the recursive descent top-down parser and a clear error recovery mechanism.           
        
-       
+         
+         
+         	\subsubsection{Antlr}
+             
+            ANTLR4 accepts as inputs any context-free grammar that does not contain indirect or hidden left-recursion.\cite{antlr4}.Antlr 4 generates a recursive descent top down parser. It uses ALL(*) production prediction function. ALL(*) prediction mechanism launches sub parsers at decision point and they operate in pseudo parallel to explore all possibilities of input combinations. Antlr 4 currently generates parsers in Java or c\# and the previous version supports even C and C++.\\ 
+            
+            
+              \begin{figure}[!htb]
+                  \centering
+                  \includegraphics[scale=0.3]{antlr}
+                  \caption{Antlr}
+                  \label{fig:antlr}
+                \end{figure}
+            
+            Antlr 4 grammar use yacc-like syntax with EBNF operators like Kleene star(*) and token literals in single quotes.Both Lexical and syntactic rules are specified in the same grammar file. The Lexical rules are specified in capital letters which distinguishes them from others.\\
+            
+            
+            Figure~\ref{fig:antlr} illustrates ANTLRs yacc-like metalanguage .Antlr 4 automatically rewrites the rule to be non left recursive and unambiguous.The grammar analysis is performed at parse time and caching results in lookahead DFA for efficiency.\cite{antlr4}. 
+             
+          
+             \subsubsection*{Parse tree listners and Visitors}
+             Antlr provides 2 tree walking mechanisms in its runtime library. In parse tree Listners, ANTLR generates a parsetreeListner subclass specific to each grammar with entry and exit methods for each rule. This is suitable for applications wherein the complete tree need to be invoked from root till the last leaf node in-order. The parse tree Visitor mechanism is used when the tree walking needs to be controlled.
+             
+              
         \subsubsection{Comparison of 3 Protocols}
         
-        The common functions in each protocol are highlighted with the same color for the boundary line in Fig \& Fig. A common hardware architecture can be designed with minimal reconfiguration to perform the protocol processing of different protocols stated above.\\
+        The parser generator tools need to be used to describe the protocols and produce the reconfigurable files for the hardware architecture.The protocols of the MAC layer considered in this work are explained in section \ref*{protocols}. 
+        
+        The common functions in each protocol are highlighted with the same color for the boundary line in Figure~\ref{fig:common_tx} \& Figure~\ref{fig:common_rx}. A common hardware architecture can be designed with minimal reconfiguration to perform the protocol processing of different protocols stated above.\\
         
         
         
         \begin{figure}[!htb]
             \centering
-            \includegraphics[scale=0.4]{common_tx}
+            \includegraphics[scale=0.35]{common_tx}
             \caption{Transmitter of all 3 protocols}
             \label{fig:common_tx}
         \end{figure}
-        \clearpage
+        
         
         \begin{figure}[!htb]
             \centering
@@ -630,36 +663,7 @@
         
         \clearpage
        
-       
-       
-       
-       	\subsubsection{Antlr}
-           
-           ANTLR is a powerful parser generator that can be used to read,process or translate structured text or binary files.It has been adapted in academia and industries for different applications and hence there is a good community help for most common problems.The tool generates the background parser and checker files for the grammar defined in the Bacchus-Naur form(BNF)or the Extended Bacchus-Naur form(EBNF).It makes the framework easy for the user to generate a language application based on the defined grammar.
-           
-           
-           \begin{figure}[!htb]
-               \centering
-               \includegraphics[scale=0.4]{antlr}
-               \caption{Antlr}
-               \label{fig:antlr}
-            \end{figure}
-            
-            
-            
-            Antlr is a parser generator tool.It allows the user to express the grammar to match syntactic structures like programming language arithmetic expressions.As in Fig below, the grammar can parse the expression and produce the parse tree and the backend functions to implement the interpreter, compiler or translator .
-            
-            
-            \subsubsection*{Parse tree listners and Visitors}
-            Antlr provides 2 tree walking mechanisms in its runtime library. In parse tree Listners, ANTLR generates a parsetreeListner subclass specific to each grammar with entry and exit methods for each rule. This is suitable for applications wherin the complete tree need to be invoked from root till the last leaf node. The parse tree Visitor mechanism is used when the tree walking needs to be controlled.
-            
-       
-       
-       
-       
-       \clearpage
-       
-       \subsection{Verification and Testing}
+         \subsection{Modelling and Testing}
        \clearpage
        
 
@@ -928,7 +932,7 @@ const  int crc_check_2_proc=0;
          The CRC operator also contains 19 bytes of memory elements.These 19 bytes are used by both CRC32 and CRC16 Operators.Ethernet protocol uses only CRC32 and hence only crc\_add and crc\_check uses first 9 bytes of the memory elements.The parser supports the access of contiguous or individual elements. After the control block informs the memory about the protocol and operator, the memory block will send the transaction to the process block which includes the constants required by the operator.   
          
         
-        \subsection{Xio}
+        \subsection{Xio-s}
         
         The Xio-s protocol is defined using the input file and only CRC operator was integrated.
         
@@ -1078,6 +1082,19 @@ const  int crc_check_2_proc=0;
                                doi={10.1109/JRPROC.1961.287814}, 
                                ISSN={0096-8390},}
                             
+                            
+                           @MISC{antlr4,
+                               author = {Terence Parr, Sam Harwell and Kathleen Fisher},
+                               title = {Adaptive LL(*) Parsing: The Power of Dynamic Analysis},
+                               month = March,
+                               year = {2014},
+                               howpublished = "\url{http://www.antlr.org/papers/allstar-techreport.pdf}",
+                               note = "[Online; accessed 1-March-2015]",
+                               url = {http://www.antlr.org/papers/allstar-techreport.pdf}}
+                           
+                           
+                        
+                            
 }
 
 
@@ -1212,8 +1229,35 @@ PL[20]
 
 \clearpage
 
+\section{Language Recognition terms}
+\label{language}
+
+\subsubsection*{Language}  A Language is a set of valid sentences which are  composed of phrases,sub-phrases and so on. 
+
+\subsubsection*{Grammar}  A Grammar formally defines the syntax rules of a language.
+
+\subsubsection*{Syntax tree or Parse tree}  This is a tree structure representation of a sentence.The leaves of the tree are symbols or tokens of the sentence
+
+\subsubsection*{Token}  A token is a symbol in a language like Identifier, keyword or an operator symbol.
+
+\subsubsection*{Lexer}  It performs lexical analysis by conversting input character streams into Tokens.
+
+\subsubsection*{Parser}  A Parser checks the sentence structure against the rules of a grammar.
+
+\subsubsection*{Top down parser} It is a type of parsing strategy where one first looks at the highest level OF Parse tree (root) and works down the parse tree by reaching the leaf nodes.
+
+\subsubsection*{Bottom up parser} In this parsing strategy the input text is processed from the lowest level to highest level (root).
 
 
+\subsubsection*{Recursive Descent Parser} It is a kind of top down parser built from a set of mutually recursive procedures where each such procedure usually implements one of the productions of the grammar.
 
+\subsubsection*{LookAhead parser}  It defines the number of tokens accessible to the parser in making decisions at each point. 
+
+
+\subsubsection*{Left recursion} 
+
+\subsubsection*{context free grammar}
+
+\subsubsection*{Regular grammar}
 
 \end{document}
