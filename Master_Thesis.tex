@@ -365,7 +365,7 @@
 
         
         
-		\subsubsection{Xio-s}
+		\subsubsection{Xio-s}\label{xio}
 		Xio-s is Ericsson proprietary protocol used for communication between chips.
         
         \begin{figure}[!htb]
@@ -564,7 +564,7 @@
         
        Freyja Switch port is the smallest unit in the architecture which receives the transactions from different functions and then forwards it to the internally connected next switch port based on the destination of the transaction. It consists of a simple initiator socket,simple target socket,Multipass through initiator socket and Multi pass through target socket.It is represented as in \lipsum[0-0] Figure~\ref{wrap-fig:switchport}
  
-    \subsubsection{Operator units}
+    \subsubsection{Operator units}\label{operator}
        
        
        \begin{figure}[!htb]
@@ -664,6 +664,10 @@
         \clearpage
        
          \subsection{Modelling and Testing}
+         
+         
+         
+         
        \clearpage
        
 
@@ -830,7 +834,35 @@
              \label{fig:inputoutput}
             \end{figure}
         
-        The input file is the description of the protocol using the language defined by the EBNF grammar. The input file is parsed by the Antlr tool; the backend functions are triggered during parsing to output the Freyja architecture and the reconfigurable files. The UVM test bench will send the transaction to the Freyja architecture. The simulation is performed using Quartus tool chain. The transaction is initiated from the UVM to the Freyja architecture and the final transaction is received back in the UVM. An example of instantiatig 4 operator blocks and interconnecting them using the input file and the corresponding output is shown below:
+        The input file is the description of the protocol using the language defined by the EBNF grammar. The input file is parsed by the Antlr tool; the backend functions are triggered during parsing to output the Freyja architecture and the reconfigurable files. The UVM test bench will send the transaction to the Freyja architecture. The simulation is performed using Quartus tool chain. The transaction is initiated from the UVM to the Freyja architecture and the final transaction is received back in the UVM. An example of instantiating 4 operator blocks as in Figure~\ref{fig:Overallarchitecture} is shown below :
+        
+        \begin{lstlisting}
+        <@\textcolor{blue}{Operator}@> OPERATOR1{
+        <@\textcolor{red}{sc\_name}@> : op1;
+        <@\textcolor{red}{op\_type}@> : op11,op12;
+        <@\textcolor{red}{errorid}@> : 01,02;
+        }
+        
+        <@\textcolor{blue}{Operator}@> OPERATOR2{
+        <@\textcolor{red}{sc\_name}@> : op2;
+        <@\textcolor{red}{op\_type}@> : op21,op22,op23;
+        <@\textcolor{red}{errorid}@> : 03,04,05;
+        }
+        
+         <@\textcolor{blue}{Operator}@> OPERATOR3{
+         <@\textcolor{red}{sc\_name}@> : op3;
+         <@\textcolor{red}{op\_type}@> : op31;
+         <@\textcolor{red}{errorid}@> : 06;
+         }
+        
+        <@\textcolor{blue}{Operator}@> OPERATOR4{
+        <@\textcolor{red}{sc\_name}@> : op4;
+        <@\textcolor{red}{op\_type}@> : op41,op42;
+        <@\textcolor{red}{errorid}@> :  07;
+        }
+
+        \end{lstlisting}
+          
         
        
          \subsection{Blocking transport and timing annotation}
@@ -865,7 +897,7 @@
                 
           \end{lstlisting}
             
-          The operators required by the protocols are first instantiated by defining them in the description.The string protocol indicates the definition of new protocol in Freyja architecture. The new protocol definition consists of 3 segments : Fields,Tx\_path,Rx\_Path. 
+          The operators required by the protocols are first instantiated by defining them in the description.The string \quotes{protocol} indicates the definition of new protocol in Freyja architecture. The new protocol definition consists of 3 segments : Fields,Tx\_path,Rx\_Path. 
           \begin{itemize}
           
           \item{The Fields section is defined to indicate the details of transaction contents in each protocol}
@@ -934,10 +966,52 @@ const  int crc_check_2_proc=0;
         
         \subsection{Xio-s}
         
-        The Xio-s protocol is defined using the input file and only CRC operator was integrated.
+        Xio-s protocol is breifly explained in section \ref{xio}. The Xio-s protocol CRC block is integrated into the system.The control block will check for the type of protocol, prioritized according to the description in the input file. Similarly Operators are prioritized in the order they have been defined in the input file.
+        Defining Xio-s after Ethernet protocol description will change the control block  code segment as shown below.\\ \\
         
-        change in control block!
-        include one source to many destination operators !
+        \begin{lstlisting}
+//part of fre_op_ctrl_crc.cpp block             
+if(type == ethernet){
+    if(op_type == crc_add){
+        ...
+    }
+    else if(op_type == crc_check){
+        ...
+    }             
+}
+else if(type == xios){
+    if(op_type == crc_add){
+        ...
+    }
+    else if(op_type == crc_check){
+    ...
+    }             
+}
+\end{lstlisting}
+        
+        As illustrated in Fig.~\ref{fig:Xiotx} and Fig.~\ref{fig:XioRx}, Xio-s protocol requires 2 interfaces to transmit the transaction from one operator to multiple operators. The transactions are sent from \textit{packet service} block to two other operators both in transmission and during receiving stage. This feature is included in the input description. The \textit{Tx\_path} and \textit{Rx\_Path} in each protocol description will allow the user to define multiple destination operators for the same source operator.The code below depicts a scenario of Xio-s protocol assuming \textbf{ps}, \textbf{crc\_add\_16} and \textbf{cc\_a\_xio} are the operators described in the input file.  
+        
+        \begin{lstlisting}
+        <@\textcolor{blue}{Tx\_PATH} @>{
+        <@\textcolor{red}{CONNECT} @>: ps <@\textcolor{red}{to} @> crc_add_16; 
+        <@\textcolor{red}{CONNECT} @>: ps <@\textcolor{red}{to} @> cc_a_xio;
+        }       
+        
+        \end{lstlisting}
+        
+        Similar logic applies to the receiver section which can be parsed to receive the transaction from different source operators.Assuming \textbf{fs1},\textbf{fs2} and \textbf{aligner} are Xio-s protocol operators, the below code indicate the way to receive transaction from multiple sources.
+        
+        \begin{lstlisting}
+        <@\textcolor{blue}{Rx\_PATH} @>{
+        <@\textcolor{red}{CONNECT} @>: fs1 <@\textcolor{red}{to} @> aligner; 
+        <@\textcolor{red}{CONNECT} @>: fs2 <@\textcolor{red}{to} @> aligner;
+        }
+        \end{lstlisting}
+        
+        
+        But the Freyja Operator as explained in section \ref{operator} consists of only one interface. This need the change in architecture of operator units and a single interface will not be possible to model the Xio-s protocol. The operators can be customized by defining more strings in the operator instantiation stage. Once the architecture is modeled, the parsed input description can be used to output the architecture to match the interface requirement.     
+        
+        
         context switching at process block 
   
         \clearpage
