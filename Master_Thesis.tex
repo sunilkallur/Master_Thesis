@@ -6,13 +6,14 @@
 % Mats Bengtsson,  7/8 2006
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt,a4paper]{article}
-
+\usepackage[a4paper,left=3cm,right=3cm]{geometry}
 \usepackage{filecontents,lipsum}
 \usepackage[noadjust]{cite}
 \usepackage{graphicx,wrapfig,lipsum}
 \usepackage{wrapfig}
 \usepackage[nonumberlist,acronym,shortcuts]{glossaries}
 \graphicspath{{Images/}}
+\usepackage{booktabs}
 
 \usepackage{textcomp,xspace}
 \newcommand\la{\textlangle\xspace}
@@ -27,19 +28,55 @@
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
+%\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 %\lstset{escapeinside={<@}{@>}}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    aboveskip=3mm,
+    belowskip=3mm,
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    escapeinside={<@}{@>},
+    language=C,
+    autogobble=true
+}
+
+
+
 \lstset{frame=tb,
     language=C,
     aboveskip=3mm,
     belowskip=3mm,
     showstringspaces=false,
     columns=flexible,
-    basicstyle={\small\ttfamily},
+    %basicstyle={\small\ttfamily},
+    basicstyle=\footnotesize,
     numbers=none,
     numberstyle=\tiny\color{gray},
     keywordstyle=\color{blue},
     commentstyle=\color{dkgreen},
     stringstyle=\color{mauve},
+    backgroundcolor=\color{backcolour}
     breaklines=true,
     breakatwhitespace=true,
     tabsize=3,
@@ -50,6 +87,9 @@
     firstnumber=1,
     numberfirstline=true
 }
+
+\lstset{style=mystyle}
+
 
 \usepackage[exjobb]{KTHEEtitlepage}
 %\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
@@ -82,10 +122,10 @@
  \newacronym{fpga}{FPGA}{Field Programmable Gate Arrays}
  \newacronym{rbs}{RBS}{Radio Base Station}
  \newacronym{ieee}{IEEE}{Institute of Electrical and Electronics Engineers}
- 
- 
- 
- 
+ \newacronym{eda}{EDA}{Electronic Design Automation}
+ \newacronym{hdls}{HDLs}{Hardware Description Languages}
+ \newacronym{hls}{HLS}{High Level Synthesis}
+ \newacronym{rtl}{RTL}{Register Transfer Level}
  
  
 
@@ -122,16 +162,17 @@
         
        
   		\begin{abstract}
+        \normalsize
 		
-        Reconfigurable hardware architectures are the topic of research for many years.Programming such architectures requires the design of custom compilers to generate the required files for the architecture.
+        Reconfigurable hardware architectures have been the topic of research for many years. Programming such architectures requires manual coding or the design of custom compilers to generate the required files for the architecture.\\
         
-        A protocol processor,in general processes the packets according to the protocol.There are number of protocols like Ethernet,\acs{cpri} to define how the data has to be sent and received between the source and destination points. Data packets can be processed using the generic processors programmed in software,but hardware processing is always energy efficient.\\  
+        A protocol processor,in general processes the packets according to the protocol. There are number of protocols like Ethernet,\acs{cpri} to define how the data has to be sent and received between the source and destination points. Data packets can be processed using a generic processors programmed in software,but hardware processing is always faster and energy efficient.\\  
         
-        A compiler/mapper is developed in this thesis work. The language application was developed using a parser generator tool called Antlr.The grammar was written in \acs{ebnf} and the corresponding language was used to describe the architecture and the protocols. The tool will generate the hardware model and their interconnection in SystemC based on the protocol description.\\ 
+        A compiler/mapper is investigated in this thesis work. The language application is developed using a parser generator tool called Antlr. The grammar is written in \gls{ebnf} and the corresponding language is used to describe the architecture and the protocols. The tool will generate the hardware model and their interconnection in SystemC based on the protocol description.\\ 
         
-        The complete system was verified by integrating the Ethernet protocol.Parts of the protocol implementation in SystemC was also considered in the work.The system is verified for different protocols.The framework works based on the user defined description of the protocol. \\
+        The complete system is verified by integrating the Ethernet protocol. Parts of the protocol implementation in SystemC is also considered in the work. The system is verified for different protocols. The framework works based on the user defined description of the protocol. \\
         
-        Future work involves the integration of further protocols into the system and then adapt the language to further involve all the future requirements.The concept of mapping can be used to design the hardware blocks and their interconnections in different languages. 
+        Future work involves the integration of further protocols into the system and then adapt the language to further involve all the future requirements. The concept of mapping can be used to design the hardware blocks and their interconnections in different languages. 
         
         
 		\end{abstract}
@@ -163,37 +204,76 @@
 		\phantomsection
         \listoftables
 		\addcontentsline{toc}{section}{List of Tables}
-		\clearpage
+		\cleardoublepage
+        
+        \phantomsection
+        \lstlistoflistings
+        \addcontentsline{toc}{section}{Listings}
+        \cleardoublepage
 
 		\pagenumbering{arabic}
          
        \section{Introduction}
 
-		A set of digital rules define the communication strategy between digital systems.There are many rules which makes the communication possible between systems.Over the decades the rules have evolved into standards.The rules are called as Protocols in communication systems.The \gls{osi} partition the communication system into 7 abstraction layers.There are different protocols for each layers of abstraction. The software and/or hardware changes based on the protocol chosen to process the message and extract the relevant information at each layer of abstraction. The hardware solutions based on a \gls{gpp}  or an \gls{asic} exists \cite{5335678}\cite{558379}.GPP will have more flexibility but are less energy efficient when compared to \acs{asic} which are less flexible and most energy efficient. \acs{asip} or domain specific processors are more suitable for the protocol processing task and depending on their architectural characteristics they allow varying degrees of trade-off between flexibility and energy-efficiency\cite{1106752}.Resource and performance varies depending on the reconfigurable architecture and its level of abstraction\cite{6868627}.\\   
+		A set of rules define the communication strategy between digital systems. There are many rules which makes the communication possible between systems. Over the decades the rules have evolved into standards. \gls{osi} is an international effort to facilitate communications among different manufacture and technology. OSI reference model partition the communication system into 7 abstraction layers. It address the interconnection requirement of an open systems environment.
+        
+ %       \begin{figure}[!htb]
+ %           \centering
+ %           \includegraphics[scale=0.45]{osi}
+ %           \caption{OSI Model}
+ %           \label{fig:osi}
+ %       \end{figure}
+        
+        
+      % Please add the following required packages to your document preamble:
+      % \usepackage{booktabs}
+      \begin{table}[!htb]
+          \centering
+          \begin{tabular}{@{}cllc@{}}
+              \toprule
+              \multicolumn{2}{c}{{\bf Layers}} & \multicolumn{1}{c}{{\bf Functions}}                                                                                 & {\bf Examples}  \\ \midrule
+              7         & Application          & High level APIs                                                                                                     & Mail,IE,Firefox \\ \midrule
+              6         & Presentation         & \begin{tabular}[c]{@{}l@{}}Character code translation,\\ Data conversion,\\ Data compression etc\end{tabular}       & ASCII,JPEG      \\ \midrule
+              5         & Session              & \begin{tabular}[c]{@{}l@{}}Session establishment between \\ processes running on different \\ systems.\end{tabular} & HTTP,SMTP       \\ \midrule
+              4         & Transport            & \begin{tabular}[c]{@{}l@{}}Acknowledgement,\\ Segmentation,\\ Multiplexing etc\end{tabular}                         & TCP,UDP         \\ \midrule
+              3         & Network              & \begin{tabular}[c]{@{}l@{}}Addressing,Routing,\\ Traffic control etc\end{tabular}                                   & IPv4,IPv6       \\ \midrule
+              2         & Data Link            & \begin{tabular}[c]{@{}l@{}}Error free data transfer from \\ one node to another\end{tabular}                        & PPP,IEEE 802.2  \\ \midrule
+              1         & Physical             & \begin{tabular}[c]{@{}l@{}}Transmission and reception in\\ physical medium.\end{tabular}                            & DSL             \\ \bottomrule
+            \end{tabular}
+            \caption{OSI Model}
+            \label{osi}
+        \end{table}
+        
+       
+        The rules are called as protocols in communication systems. The software and/or hardware changes based on the protocol chosen to process the message and extract the relevant information at each layer of abstraction. The hardware solutions based on a \gls{gpp}  or an \gls{asic} exists \cite{5335678}\cite{558379}. GPP will have more flexibility but are less energy efficient when compared to \acs{asic} which are less flexible and most energy efficient. \acs{asip} or domain specific processors are more suitable for the protocol processing task and depending on their architectural characteristics they allow varying degrees of trade-off between flexibility and energy-efficiency\cite{1106752}. Resource and performance varies depending on the reconfigurable architecture and its level of abstraction\cite{6868627}.\\   
 
-		The design of reconfigurable hardware architecture requires the compiler to produce the configuration or the hardware compatible code.These files can be produced on run time when the application is running or in a static way before the application is made to run. The complexity of the system depends on the selected design.The hardware for processing the different protocols can be made reconfigurable.Investigation and design of such a concept is performed in this thesis work.\\ 
+		The design of reconfigurable hardware architecture requires the compiler to produce the configuration or the hardware compatible code\cite{5681536}. These files can be produced on run time when the application is running or in a static way before execution. The complexity of the system depends on the selected design. The hardware for processing the different protocols can be made reconfigurable. Investigation and design of such a concept is performed in this thesis work.\\ 
 
-		The reconfigurable hardware is modeled in SystemC language using \acs{tlm}. The configuration files required for the reconfiguration is obtained by parsing the description of protocols using the language defined by the Grammar.The Antlr tool is used for building the base parser file for the defined grammar and then the required functions are written to output the complete system and configuration files. 
+		The reconfigurable hardware is modeled in SystemC language using \acs{tlm}. The configuration files required for the reconfiguration is obtained by parsing the description of protocols using the language defined by the grammar. Antlr tool is used for building the base parser file for the defined grammar and then the required functions are implemented to output the complete system and configuration files. 
         
 
-		\clearpage
+		
 		\subsection{Background}
-		In 1960 Gerald Estrin, proposed the idea of a fixed plus variable structure computer \cite{1114865}.It consisted of a fixed processor and an array of reconfigurable hardware which was controlled by the fixed processor.Even though the idea was demonstrated with a proof,the industry did not consider to further innovate in these field and till 1980's there were no significant developments. In  1985,the reconfigurable \gls{pla} was patented\cite{page1985re}.Innovation in \acs{pla}'s further continued with the commercially available \gls{fpga} in today's market.\\
+		In 1960 Gerald Estrin, proposed the idea of a fixed plus variable structure computer \cite{1114865}. It consisted of a fixed processor and an array of reconfigurable hardware which was controlled by the fixed processor. Even though the idea was demonstrated with a proof,the industry did not consider to further innovate in these field and till 1980's there were no significant developments. In  1985,the reconfigurable \gls{pla} was patented\cite{page1985re}. Innovation in \acs{pla}'s further continued with the commercially available \gls{fpga} in today's market.\\
+        
+        \acs{fpga} introduction led to the research of optimizing and reusing the reconfigurable logic blocks. The  \gls{eda} tools compile and synthesize \gls{hdls}  to create a physical design in terms of the \acs{fpga}'s resources. There were many academic and industry projects showing the concept of \gls{hls}\cite{4291932} \cite{5469564}. They operate on internal models known as control/data flow graphs (CDFG) and produces a \gls{rtl} model of the hardware implementation\cite{998629}.\\    
 
-		Ericsson AB is a market leader in the radio base station equipments.There are different protocols being used for communication in the Radio Base Station (RBS) units.Ethernet standard explained by \acs{ieee} in 802.3 standard defines the protocol for 10Gbit transfer which is mainly used for communication between the silicon chips. Other protocols include \gls{cpri},Serial Rapid IO(SRIO),Xio(Ericsson Specific protocol) for reliable communication between chips at high data rate.Most of these protocols in MAC layer of abstraction have common hardware units. Ericsson design and manufacture Custom \acs{asic} chips for these protocols.The common functions which can be used by different protocols for designing a reconfigurable hardware architecture which will minimize the cost and will provide more flexibility compared to ASIC chips.More details about the protocols and reconfigurable architecture is explained in Chapter 3.\\ 
+		Ericsson AB is a market leader in the radio base station equipments. There are different protocols being used for communication in the Radio Base Station (RBS) units. Ethernet standard explained by \acs{ieee} in 802.3 standard defines the protocol for 10Gbit transfer which is mainly used for communication between the silicon chips. Other protocols include \gls{cpri},Serial Rapid IO(SRIO),Xio(Ericsson Specific protocol) for reliable communication between chips at high data rate. Most of these protocols in MAC layer of abstraction have common hardware units. Ericsson design and manufacture custom \acs{asic} chips for these protocols. The common functions which can be used by different protocols for designing a reconfigurable hardware architecture which will minimize the cost and will provide more flexibility compared to ASIC chips. More details about the protocols and reconfigurable architecture is explained in Chapter 3.\\ 
 
-		The reconfigurable architecture requires a new hardware and software co-design.The reconfiguration details are extracted based on the hardware design and the compiler/mapper should be able to produce such reconfiguration.This is accomplished  by using Grammar based technique i.e by defining a language based on \gls{ebnf} grammar and then describing the protocols using this language.The overall architecture and working principle will be explained in further chapters.\\
+		The reconfigurable architecture requires a new hardware and software co-design. The reconfiguration details are extracted based on the hardware design and the compiler/mapper should be able to produce such reconfiguration. This is accomplished  by using Grammar based technique i.e by defining a language based on \gls{ebnf} grammar and then describing the protocols using this language. The overall architecture and working principle will be explained in further chapters.\\
 
-		The thesis deals with understanding the reconfigurable architecture and identifying the configuration details to make the system work for different protocols.The description in high level language is used to extract these configuration details and to verify the complete system using a test bench.\\   
+		The thesis deals with understanding the reconfigurable architecture and identifying the configuration details to make the system work for different protocols. The description in high level language is used to extract these configuration details and to verify the complete system using a test bench.\\   
 
-		\clearpage
+	
 
 
 		\subsection{Purpose}
 
-		The thesis purpose is to investigate an approach of a compiler or mapper to describe the protocols in high level language and then map it to hardware blocks and their interconnection.This involves showing the proof of concept by SystemC TLM simulation models.The Individual hardware blocks are modeled in SystemC and can vary from a simple block to complex functions of the protocols like Encoder.This thesis work serves as a proof for the project in Ericsson AB to further investigate the feasibility of developing such architectures.
+		The thesis purpose is to investigate an approach of a compiler or mapper to describe the protocols in high level language and then map it to hardware blocks and their interconnection. This involves showing the proof of concept by SystemC TLM simulation models. The Individual hardware blocks are modeled in SystemC and can vary from a simple block to complex functions of the protocols. This thesis work serves as a proof for the project in Ericsson AB to further investigate the feasibility of developing such architectures.
 
 
+        \subsection{Problem Description}
+            As explained in the previous section reconfigurable architecture with lowest granularity are available for different applications.They still face the challenges of lower speed,high energy consumption and the compatibility of tool chains between different vendors. The lowest reconfigurable granularity can be designed at bit,block or function level. When targeting hybrid architectures to improve either performance,cost or speed, the application must be partitioned in such a way that certain repetitive or computation intensive functions are mapped on a reconfigurable hardware.Such mapping is not simple as it assumes deep understanding of both hardware and software design \cite{1395538}.The know how of this process to build the complete system which solves the practical problems are of great importance. The MAC layer shares the common functions among different protocols. How the reconfigurable hardware can be programmed to accomplish the protocol processing in an efficient way by designing the framework using high level description. This allows the user with minimal know how about hardware to reconfigure and show result in short time.
 
 		\subsection{Goals}
 		The thesis goal is to achieve the below milestones:
@@ -213,23 +293,39 @@
       	               
 
 		\subsection{Limits on scope}
-		The thesis focus more on showing the proof of concept considering one to two protocol i.e Ethernet and Xio. The language will be designed such that it is easy with minor modification to extend for other protocols like CPRI,SRIO. Developing and integrating the \acs{tlm} models for all the protocol's will not be feasible in this time line.
+		The thesis focus more on showing the proof of concept considering one to two protocol i.e Ethernet and Xio. The language will be designed such that it is easy with minor modification to extend for other protocols like CPRI. Developing and integrating the \acs{tlm} models for all the protocol's will not be feasible in this time line. The architectural changes required are suggested but not changed as the focus is more on describing the protocol in high level description.
 
 		\subsection{Structure of the thesis}
-		The thesis is organized to provide required details for understanding the overall work. The first chapter gives a brief introduction to the reader about the topic of investigation,limitations and goals.The second chapter will describe the background about the topic and the literature about different terminologies. The third Chapter will provide the implementation details and the results obtained will be explained in chapter four. The Future work and conclusion are stated in the further chapter five  and six.
-
-
+		The thesis is organized to provide required details for understanding the overall work. The first chapter gives a brief introduction to the reader about the topic of investigation,limitations and goals.The rest of the thesis is structured as follows.\\
+        
+        
+        \textbf{chapter 2}  This chapter  will describe the background about the topic.It is summarized in three sections starting with Reconfigurable hardware architectures and their terminologies,different protocols and their functions and grammar introduction.It also introduces the simulation environment and languages used to model the hardware.
+        \newline
+        
+       \textbf{chapter 3}  This chapter describes the research methodology inculcated in carrying out this thesis work.It starts with the research process and then the introduction of the reconfigurable hardware architecture under study i.e Freyja architecture details. Then the process of building a language application is explained using Antlr tool.The comparison of three protocols under study and their common functions are also discussed.\\
+        
+        \textbf{chapter 4}  The chapter starts with the details of building the framework. It also discuss how the architectural requirements are mapped using the high level description.Mapping of Freyja operators,their memory contents,interconnections and error handling are discussed.\\
+        
+        \textbf{chapter 5}  This chapter explains the details of complete test system.How the overall system can be represented using the input file and how the data is processed and handled within the system.\\
+        
+        \textbf{chapter 6}  This chapter explains the integration of Ethernet protocol functions into the  system of files auto generated from the language application. The challenges and the mapping of input description are discussed in detail. The Xio-s protocol is also considered but part of the functions are integrated to show the context switching and highlighting the control block changes.\\
+        
+        \textbf{chapter 7}  This chapter explains the conclusion and future work.\\
+        
+        
+        
+          
 		\clearpage
 
 
 		\section{Background}
-		To understand the reconfigurable hardware and its terminologies, this chapter explains in detail about the architecture and its meaning.Protocols and their common functions are also explained which helps in designing the reconfigurable protocol processors.The further sections explains the meaning of grammar and language and its terms.    
+		To understand the reconfigurable hardware and its terminologies, this chapter explains in detail about the architecture and its meaning. Protocols and their common functions are also explained which helps in designing the reconfigurable protocol processors. The further sections explains the meaning of grammar and language and its terms.    
 
 
 		\subsection{Reconfigurable Systems}
 
 
-		In the field of computer architecture, designers make decisions based on flexibility and performance requirement\cite{JACST518}.\acs{asic} are the least flexible in terms of adapting for any change in the application and GPP are the most flexible as they are independent of the application and the core can be programmed to make the required algorithm work at the cost of higher power and lower efficiency.ASIC and GPP lies in extreme corners of the graph between Flexibility Vs Performance as in Fig.~\ref{fig:Fig1}.Reconfigurable architectures are intended to fill the gap and provide more flexibility in terms of hardware and potentially higher performance than software\cite{JACST518}.
+		In the field of computer architecture, designers make decisions based on flexibility and performance requirement\cite{JACST518}. \acs{asic} are the least flexible in terms of adapting for any change in the application and GPP are the most flexible as they are independent of the application and the core can be programmed to make the required algorithm work at the cost of higher power and lower efficiency. ASIC and GPP lies in extreme corners of the graph between Flexibility Vs Performance as in Fig.~\ref{fig:Fig1}. Reconfigurable architectures are intended to fill the gap and provide more flexibility in terms of hardware and potentially higher performance than software\cite{JACST518}.
 
 		\begin{figure}[!htb]
 		\centering
@@ -240,11 +336,11 @@
 
 		\subsubsection{Granularity}
 
-		Reconfigurable devices like \acs{fpga} have the configurable logic blocks(CLB) which can be configured to map the required functionality. The complexity of the function is not a concern but the number of inputs and output of the function has to be considered based on the FPGA architecture. This level of granularity in implementing the functions is called as Fine grained Reconfigurable architecture as it provides the reconfigurable granularity till lowest possible level. These reconfigurable devices are not energy efficient and the execution speed is too less than the ASIC counterpart. Another type of reconfigurable devices are the coarse grained reconfigurable architectures. These devices have the granularity at function levels. They will configure the Function blocks to achieve the efficient algorithm implementation.The Function blocks can vary from constant blocks to complex functions which are commonly used based on the application domain.   
+		Reconfigurable devices like \acs{fpga} have the configurable logic blocks(CLB) which can be configured to map the required functionality. The complexity of the function is not a concern but the number of inputs and output of the function has to be considered based on the FPGA architecture. This level of granularity in implementing the functions is called as Fine grained Reconfigurable architecture as it provides the reconfigurable granularity till lowest possible level. These reconfigurable devices are not energy efficient and the execution speed is too less than the ASIC counterpart. Another type of reconfigurable devices are the coarse grained reconfigurable architectures. These devices have the granularity at function levels. They will configure the function blocks to achieve the efficient algorithm implementation.The function blocks can vary from constant block to complex functions which are commonly used based by the application.   
 
 
 		\subsubsection{Reconfiguration Models}
-		The reconfigurable architectures need configuration of hardware.This can be at compile time or at runtime of an application as in  Fig.~\ref{fig:Fig2}.
+		The reconfigurable architectures need configuration of hardware. This can be at compile time or at runtime of an application as in  Fig.~\ref{fig:Fig2}.
 
 		\begin{figure}[!htb]
 		\centering
@@ -253,16 +349,16 @@
 		\label{fig:Fig2}
 		\end{figure}
 
-		In Compile time reconfiguration model, the reconfigurable hardware system is configured at compile time and will be static during the application run time.In this model the programmable logic can be configured to perform some specific task like hardware accelerators to achieve high performance.FPGA configured to perform floating point multiplication together with a GPP will accelerate the performance of the application if the GPP doesn't have a Floating Point Unit.
-		In Run time reconfiguration model, the reconfiguration hardware is configured at run time and will be dynamically programmed to perform different tasks.The decision for making such dynamic reconfiguration has to be embedded coupled with the application and hence it increase the overhead.The Dynamic Reprogrammable Resource Array(DRRA) fabric developed at KTH Electronic System Dept is an example of this model\cite{5351593}.   
+		In compile time reconfiguration model, the reconfigurable hardware system is configured at compile time and will be static during the application run time. In this model the programmable logic can be configured to perform some specific task like hardware accelerators to achieve high performance. FPGA configured to perform floating point multiplication together with a GPP will accelerate the performance of the application if the GPP doesn't have a Floating Point Unit.
+		In run time reconfiguration model, the reconfiguration hardware is configured at run time and will be dynamically programmed to perform different tasks. The decision for making such dynamic reconfiguration has to be embedded coupled with the application and hence it increase the overhead. The Dynamic Reprogrammable Resource Array(DRRA) fabric developed at KTH Electronic System Dept is an example of this model\cite{5351593}.   
 
 		\subsubsection{Reconfiguration rate}
-		The Fine grain Systems will have more reconfiguration data(In FPGAs it is in term of bit streams) which leads to more time and the Coarse Grained Reconfigurable systems will have comparatively less blocks as they have higher granularity and will contain less reconfiguration data.Hence the Coarse Grain architecture will take less time to re configure. This depends on the dynamic reconfiguration architecture whether the complete fabric is reconfigured or partially reconfigured during runtime. 
+		The Fine grain Systems will have more reconfiguration data(In FPGAs it is in term of bit streams) which leads to more time and the Coarse Grained Reconfigurable systems will have comparatively less blocks as they have higher granularity and will contain less reconfiguration data. Hence the Coarse Grain architecture will take less time to re configure. This depends on the dynamic reconfiguration architecture whether the complete fabric is reconfigured or partially reconfigured during runtime. 
 
 
 		\subsection{Protocols}\label{protocols}
 
-		The communication between chips in Radio Base station equipments has many protocols to fulfill the requirements of the specification.The protocols differ by standards.The Data link layer protocol's of the \acs{osi} model share some common functionalities.The different protocols being used at Ericsson AB and related to this thesis work are described below:  
+		The communication between chips in Radio Base station equipments has many protocols to fulfill the requirements of the specification. The protocols differ by standards. The Data link layer protocol's of the \acs{osi} model share some common functionalities. The different protocols being used at Ericsson AB and related to this thesis work are described below:  
 
 		\subsubsection{Ethernet}
 		Ethernet is a widely used protocol for data communication. It is typically used in Local Area Network (LAN) applications. IEEE organization has standardized the protocol and revises it according to the technological advancement. The recent standard available is from 2012 and it defines the protocol for different applications.
@@ -277,11 +373,11 @@
             \label{fig:EthTx}
        \end{figure}
        
-       The \textit{DataIn} is from the Job description tokens which contains the data to be transmitted using MAC layer protocol.Physical layer protocols are out of this thesis scope and not explained.
+       The \textit{DataIn} is from the Job description tokens which contains the data to be transmitted using MAC layer protocol. Physical layer protocols are out of this thesis scope and not explained.
        
         
        \subsubsection*{Ethernet Receive}
-           The Ethernet Receive sequence is shown in Fig.~\ref{fig:EthRx}. \textit{DataIn } is from the Physical transmission layer and \textit{Dataout} is to the higher protocol layers.
+           The Ethernet receive sequence is shown in Fig.~\ref{fig:EthRx}. \textit{DataIn } is from the physical transmission layer and \textit{Dataout} is to the higher protocol layers.
        
             \begin{figure}[!htb]
              \centering
@@ -292,8 +388,7 @@
             
        \subsubsection*{Ethernet Raw frame}
        
-       The Ethernet raw frame format is represented as in Fig.~\ref{fig:ethframe}.Each of these frames enter the transmitter as Datain as in
-       Fig.~\ref{fig:EthTx} and in the receiver as Data out as shown in Fig.~\ref{fig:EthRx}. 
+       The Ethernet raw frame format is represented as in Fig.~\ref{fig:ethframe}. Each of these frames enter the transmitter \textit{Datain} as in  Fig.~\ref{fig:EthTx} and in the receiver \textit{ Dataout} as shown in Fig.~\ref{fig:EthRx}. 
        
         \begin{figure}[!htb]
             \centering
@@ -338,11 +433,9 @@
               \label{fig:encoder}
             \end{figure}
          
-         The Encoder block is represented as show in Fig.~\ref{fig:encoder}. The 8 octet data is encoded using the control word into 66 bit output. The first 2 bits of the output are called sync header which is used for the synchronization from the receiver. The synch header \quotes{10} correspond to data and \quotes{01} corresponds to control codes
-         
-         
-        
-        In the decoder the synch header is used to synchronize the 66bit data. The process of decoder is the reverse interpretation of the encoder module.
+         The Encoder block is represented as show in Fig.~\ref{fig:encoder}. The 8 octet data is encoded using the control word into 66 bit output. The first 2 bits of the output are called sync header which is used for the synchronization from the receiver. The sync header \quotes{10} correspond to data and \quotes{01} corresponds to control codes
+      
+        In the decoder the sync header is used to synchronize the 66bit data. The process of decoder is the reverse interpretation of the encoder module.
         
         \begin{figure}[!htb]
             \centering
@@ -356,11 +449,11 @@
             
             This block is used to randomize the signal so that long sequence of 1?s and 0?s are eliminated. This is performed using the Scrambler polynomial.
             
-            The Descrambler will take the scrambled input and will output the unscrambled data.  
+            The De-scrambler will take the scrambled input and will output the unscrambled data.  
         
          \subsubsection*{Gearbox}
 
-           This block is used to switch between different output rates. The incoming data is transmitted at different rates based on the clock frequency.
+           This block is used to switch output rates. The incoming data is transmitted at different rates based on the clock frequency.
            
 
         
@@ -414,7 +507,7 @@
         
         
         \subsubsection*{Encoder/Decoder}
-        The encoder module will encode one octet at a time to 10bits.So for 8 octects it outputs 80bits The encoder 8B/10B is invented by IBM and famous for short run length and DC balance.
+        The encoder module will encode one octet at a time to 10bits. So for 8 octects it outputs 80bits The encoder 8B/10B is invented by IBM and famous for short run length and DC balance.
         
         The decoder module does the reverse of encoder and thus the output of decoder will be the same as the input of encoder.
         
@@ -441,7 +534,7 @@
              \label{fig:cpritx}
             \end{figure}
             
-         \acs{cpri} is an industry cooperation aimed at defining a publicly available specification for the key internal interface of radio base stations between Radio Equipment Control(REC) and the Radio Equipment(RE).It is the co operating work of Ericsson AB,Huawei Technologies Co.Ltd,NEC corporation,Nortel Networks SA and Siemens AG.   
+         \acs{cpri} is an industry cooperation aimed at defining a publicly available specification for the key internal interface of radio base stations between Radio Equipment Control(REC) and the Radio Equipment(RE). It is the co operating work of Ericsson AB,Huawei Technologies Co.Ltd,NEC corporation,Nortel Networks SA and Siemens AG.   
          All the blocks in this protocol are similar to the blocks in Ethernet protocol. The frame structure is similar to the Xio-s protocol.
          
             
@@ -505,30 +598,29 @@
 
 	
 		\subsection{Environment and Tools}
-        The Linux based server environment is used for compiling and testing the project files.The Antlr tool is used to define the protocols in a language defined in the grammar using EBNF. The Antlr tool is made to ouput the state table information which contains all the states with transition information.This will be used to reconfigure the hardware to process the input packets according to the protocols.
+        The Linux based server environment is used for compiling and testing the project files. The Antlr tool is used to define the protocols in a language defined in the grammar using EBNF. The Antlr tool is made to ouput the state table information which contains all the states with transition information. This will be used to reconfigure the hardware to process the input packets according to the protocols.
         
            
         \subsubsection{SystemC}
-         SystemC is an ANSI standard C++ class library for system and hardware design for use by designers and architects who need to address complex
-         systems that are hybrid between hardware and software \cite{1617814}.It helps in modeling the concurrent processes.This makes it possible to model the hardware which are concurrent systems by nature.  
+         SystemC is an ANSI standard C++ class library for system and hardware design for use by designers and architects who need to address complex systems that are hybrid between hardware and software \cite{1617814}. It helps in modeling the concurrent processes. This makes it possible to model the hardware which are concurrent systems by nature.  
         
         \subsubsection{TLM}
-         Transaction level Modeling is the approach of abstracting the lower implementation details of the function units and representing the overall system architecture.TLM helps in modeling the communication and the function unit implementation separately. The Transaction refers to the set of data being exchanged.TLM speeds up the simulation by replacing a set of pin level events with a single function call.\\
+         Transaction level Modeling is the approach of abstracting the lower implementation details of the function units and representing the overall system architecture. TLM helps in modeling the communication and the function unit implementation separately. The Transaction refers to the set of data being exchanged. TLM speeds up the simulation by replacing a set of pin level events with a single function call.\\
          
          TLM 2.0 standard is used for the implementation of the bus system.
          
        \subsubsection{UVM}
-       Universal Verification Methodology(UVM) is a verification methodology based on the best features of OVM(Open verification Methodology) and Verification Methodology Manual(VMM).A Base version of UVM is built to verify the functionality of the architecture.  
+       Universal Verification Methodology(UVM) is a verification methodology based on the best features of OVM(Open verification Methodology) and Verification Methodology Manual(VMM). A Base version of UVM is built to verify the functionality of the architecture.  
        
 		\clearpage
 
 
        \section{Methodology}
        
-      This chapter explains the process applied in describing the protocol for the hardware architecture.This chapter also explains the details of reconfigurable architecture under study, the common protocol functions and the methodology used to verify the result. 
+      This chapter explains the process applied in describing the protocol for the hardware architecture. This chapter also explains the details of reconfigurable architecture under study, the common protocol functions and the methodology used to verify the result. 
        
        \subsection{Research process}
-            The hardware architecture and its interconnections need to be understood to design the protocol processor. The reconfigurable architecture developed at Ericsson AB is called as Freyja architecture.The hardware architecture details has to be abstracted out to define it in high level description.Similarly the protocols details has to be abstracted using the same description to reconfigure the hardware for different protocols.The mapping between them requires a custom set of files to define and reconfigure the architecture according to the requirement.To accomplish this,the research involves the following major steps:
+            The hardware architecture and its interconnections need to be understood to design the protocol processor. The reconfigurable architecture developed at Ericsson AB is called as Freyja architecture. The hardware architecture details has to be abstracted out to define it in high level description. Similarly the protocols details has to be abstracted using the same description to reconfigure the hardware for different protocols. The mapping between them requires a custom set of files to define and reconfigure the architecture according to the requirement. To accomplish this,the research involves the following major steps:
             \begin{itemize}
                 \item{Study the Reconfigurable hardware architecture}
                 \item{Identify the common protocol functions}
@@ -536,7 +628,7 @@
                 \item{Test the developed system}
                \end{itemize} 
        
-       The Study of the architecture is explained in detail in the next section.The further sections explains the process involved in achieving the remaining steps. 
+       The study of the architecture is explained in detail in the next section. The further sections explains the process involved in achieving the remaining steps. 
        
        \subsection{Freyja Architecture}
            As in Figure~\ref{fig:Freyja} , Freyja architecture is a reconfigurable protocol processor. It consists of different protocol operators which are connected through the central switch. This switch based network topology can be configured to process the data based on protocols. The Ring bus (RB) interface the Freyja with the higher layers of protocol and it issues the data frames of different protocols as tokens. The Common Memory Interface(CMI) is used to fetch the data from memory. 
@@ -562,7 +654,7 @@
             
         \end{wrapfigure} 
         
-       Freyja Switch port is the smallest unit in the architecture which receives the transactions from different functions and then forwards it to the internally connected next switch port based on the destination of the transaction. It consists of a simple initiator socket,simple target socket,Multipass through initiator socket and Multi pass through target socket.It is represented as in \lipsum[0-0] Figure~\ref{wrap-fig:switchport}
+       Freyja Switch port is the smallest unit in the architecture which receives the transactions from different functions and then forwards it to the internally connected next switch port based on the destination of the transaction. It consists of a simple initiator socket,simple target socket,Multipass through initiator socket and Multi pass through target socket. It is represented as in \lipsum[0-0] Figure~\ref{wrap-fig:switchport}
  
     \subsubsection{Operator units}\label{operator}
        
@@ -580,8 +672,7 @@
        
        
        \subsubsection{Switch wrapper}
-        The switch wrapper instantiates the switch ports and their interconnections. 
-        Based on the number of operators the required number of switch ports is instantiated.
+        The switch wrapper instantiates the switch ports and their interconnections. Based on the number of operators the required number of switch ports is instantiated.
         
         
          \begin{figure}[!htb]
@@ -610,15 +701,15 @@
        \clearpage
        
        \subsection{High level description of the protocol}
-          High level language description requires the design of Lexer and parser as explained in Section \ref{grammar}.They can be designed using languages like C,C++,java,C\# and more. Based on the application requirement, a parsing strategy needs to be decided. As the machine resources grew in today's world, researchers have developed more complex and powerful Non Deterministic parsing strategies. Today both \quotes{bottom-up} and \quotes{top-down} approaches exist. Debugging a \quotes{bottom-up} parsers are hard to understand and debug compared to the \quotes{top-down} parsers.\\
+          High level language description requires the design of Lexer and parser as explained in Section \ref{grammar}. They can be designed using languages like C,C++,java,C\# and more. Based on the application requirement, a parsing strategy needs to be decided. As the machine resources grew in today's world, researchers have developed more complex and powerful Non Deterministic parsing strategies. Today both \quotes{bottom-up} and \quotes{top-down} approaches exist. Debugging a \quotes{bottom-up} parsers are hard to understand and debug compared to the \quotes{top-down} parsers.\\
           
-          There are many tools like ANTLR4,APG,AXE,YACC etc which helps to build a language application.They provide the user with Lexer and Parser implementations for the matched grammar defined by the user.This helps in reducing time for building the language in a short time. Antlr is one such tool which helps in designing the recursive descent top-down parser and a clear error recovery mechanism.           
+          There are many tools like ANTLR4,APG,AXE,YACC etc which helps to build a language application. They provide the user with Lexer and Parser implementations for the matched grammar defined by the user. This helps in reducing time for building the language in a short time. Antlr is one such tool which helps in designing the recursive descent top-down parser and a clear error recovery mechanism.           
        
          
          
          	\subsubsection{Antlr}
              
-            ANTLR4 accepts as inputs any context-free grammar that does not contain indirect or hidden left-recursion.\cite{antlr4}.Antlr 4 generates a recursive descent top down parser. It uses ALL(*) production prediction function. ALL(*) prediction mechanism launches sub parsers at decision point and they operate in pseudo parallel to explore all possibilities of input combinations. Antlr 4 currently generates parsers in Java or c\# and the previous version supports even C and C++.\\ 
+            ANTLR4 accepts as inputs any context-free grammar that does not contain indirect or hidden left-recursion.\cite{antlr4}. Antlr 4 generates a recursive descent top down parser. It uses ALL(*) production prediction function. ALL(*) prediction mechanism launches sub parsers at decision point and they operate in pseudo parallel to explore all possibilities of input combinations. Antlr 4 currently generates parsers in Java or c\# and the previous version supports even C and C++.\\ 
             
             
               \begin{figure}[!htb]
@@ -628,10 +719,10 @@
                   \label{fig:antlr}
                 \end{figure}
             
-            Antlr 4 grammar use yacc-like syntax with EBNF operators like Kleene star(*) and token literals in single quotes.Both Lexical and syntactic rules are specified in the same grammar file. The Lexical rules are specified in capital letters which distinguishes them from others.\\
+            Antlr 4 grammar use yacc-like syntax with EBNF operators like Kleene star(*) and token literals in single quotes. Both Lexical and syntactic rules are specified in the same grammar file. The Lexical rules are specified in capital letters which distinguishes them from others.\\
             
             
-            Figure~\ref{fig:antlr} illustrates ANTLRs yacc-like metalanguage .Antlr 4 automatically rewrites the rule to be non left recursive and unambiguous.The grammar analysis is performed at parse time and caching results in lookahead DFA for efficiency.\cite{antlr4}. 
+            Figure~\ref{fig:antlr} illustrates ANTLRs yacc-like metalanguage. Antlr 4 automatically rewrites the rule to be non left recursive and unambiguous. The grammar analysis is performed at parse time and caching results in lookahead DFA for efficiency.\cite{antlr4}. 
              
           
              \subsubsection*{Parse tree listners and Visitors}
@@ -640,7 +731,7 @@
               
         \subsubsection{Comparison of 3 Protocols}
         
-        The parser generator tools need to be used to describe the protocols and produce the reconfigurable files for the hardware architecture.The protocols of the MAC layer considered in this work are explained in section \ref*{protocols}. 
+        The parser generator tools need to be used to describe the protocols and produce the reconfigurable files for the hardware architecture. The protocols of the MAC layer considered in this work are explained in section \ref*{protocols}. 
         
         The common functions in each protocol are highlighted with the same color for the boundary line in Figure~\ref{fig:common_tx} \& Figure~\ref{fig:common_rx}. A common hardware architecture can be designed with minimal reconfiguration to perform the protocol processing of different protocols stated above.\\
         
@@ -675,7 +766,7 @@
             A language description is developed to define the Freyja architecture which maps different protocol operators and their interconnections. The high level description accounts for different operator?s instantiation, transaction routing, constants in memory and error handling. Each of these is explained in detail in this chapter.
             
         \subsection{Parser implementation}
-            Antlr tool is used as a parser generator to develop the language. The grammar is defined using EBNF. Antlr parser use a new parsing technology called Adaptive LL(*).This parsing strategy combines the simplicity, efficiency and predictability of conventional top-down LL(k) parser with the power of GLR like mechanism to make parsing decision. It performs the grammar analysis dynamically at runtime rather statically. The grammar analysis is moved to parse time which helps to handle any non-left recursive context free grammar.
+            Antlr tool is used as a parser generator to develop the language. The grammar is defined using EBNF. Antlr parser use a new parsing technology called Adaptive LL(*). This parsing strategy combines the simplicity, efficiency and predictability of conventional top-down LL(k) parser with the power of GLR like mechanism to make parsing decision. It performs the grammar analysis dynamically at runtime rather statically. The grammar analysis is moved to parse time which helps to handle any non-left recursive context free grammar.
             
             
              \begin{figure}[!htb]
@@ -699,7 +790,7 @@
         
         
         \subsection{Operator Instantiation}
-        As explained in the Fig <operator figure>, each of the operator in Freyja architecture consists of a control block to take of the transaction routing and error handling and a memory block for storing the constants and results and the process block to perform the operator function.
+        As explained in the Figure~\ref{fig:CRC}, each of the operator in Freyja architecture consists of a control block to take of the transaction routing and error handling and a memory block for storing the constants and results and the process block to perform the operator function.
         
         
          \begin{figure}[!htb]
@@ -714,11 +805,11 @@
  
             The control block of each operator has to identify the destination operator within the process block to forward the payload to exact operator. The language described has to consider this feature when instantiating the operator and defining the control blocks for each operator. An example of CRC block with CRC ADD and CRC check operators are discussed further.\\
             
-            As in Fig <>, the CRC function to compute the CRC is used by both CRC ADD and CRC CHECK operators. The control block has to check if the destination operator is CRC add or CRC check and forwards the data to be processed to the correct operator and also should indicate the memory block to forward the required constants for the process blocks. This is further explained in the next section.\\
+            As in Figure~\ref{fig:CRC}, the CRC function to compute the CRC is used by both CRC ADD and CRC CHECK operators. The control block has to check if the destination operator is CRC add or CRC check and forwards the data to be processed to the correct operator and also should indicate the memory block to forward the required constants for the process blocks. This is further explained in the next section.\\
             
             The operator is defined as below:
             
-            \begin{lstlisting}
+            \begin{lstlisting}[caption={Freyja Operator Instantiation}]
             
 <@\textcolor{blue}{Operator}@> CHECKSUM{
 <@\textcolor{red}{sc\_name} @>: crc;
@@ -735,7 +826,7 @@
         
         The context switching in the process block is performed based on the destination operator for the data packet. The interconnect information is by the control block to determine the protocol and destination operator for the data packet. The control block will then forwards the transaction to the process block where the context switching between the operators are performed. The operator type field will indicate the process block to switch between the operators.\\
         
-        The control block also indicates the memory block to send the required constants for the process block. For the CRC operator, as in Fig <>, the control block will determine the protocol and the operator type and then informs the memory blocks with the transaction payload. The control block will send the received transaction to the process block. The memory block will decodes the operator and then sends the constants required for the operator through a transaction. The process block will do the context switching of operator between CRC add and CRC check to obtain the result according to the destination operator.\\ 
+        The control block also indicates the memory block to send the required constants for the process block. For the CRC operator, as in Figure~\ref{fig:CRC}, the control block will determine the protocol and the operator type and then informs the memory blocks with the transaction payload. The control block will send the received transaction to the process block. The memory block will decodes the operator and then sends the constants required for the operator through a transaction. The process block will do the context switching of operator between CRC add and CRC check to obtain the result according to the destination operator.\\ 
         
         Once the results are obtained, the process block will send it to the control block. The control block will forward the transaction to the next block.\\ 
         
@@ -748,7 +839,7 @@
          
         Memory transaction for each protocol are described in the language as below  
         
-         \begin{lstlisting}
+         \begin{lstlisting}[caption={Freyja Memory content definition}]
 <@\textcolor{blue}{memory} @>{
 <@\textcolor{red}{crc\_add} @>   :00 to 08;
 <@\textcolor{red}{crc\_check} @> :00 to 07,09;
@@ -786,7 +877,7 @@
          This chapter describes the test system, testing strategy, input protocol file, discussion about output obtained.
          
          \subsection{Complete Test System}
-            As in Fig <>, the first switch port is connected to the UVM test bench. The UVM environment will drive the input signals according to the Freyja architecture. The Freyja interconnect consists of 4 bytes header field and the data payload as in Fig <>. 
+            As in Figure~\ref{fig:testsystem}, the first switch port is connected to the UVM test bench. The UVM environment will drive the input signals according to the Freyja architecture. The Freyja interconnect consists of 4 bytes header field and the data payload as in Figure~\ref{fig:header}. 
             In SystemC implementation the first byte is considered to hold the unique protocol id and the second byte to have the unique operator id, the third byte and fourth byte are for Flow control and Context/error handling. 
             
         
@@ -820,11 +911,6 @@
         The default values are set for the unused attributes. The address is initially set in the test bench and in the Freyja architecture; each operator control block will modify the address field based on the destination operator address. The data field is set to the result of the operator process blocks.
         
         
-        
-        
-       
-        
-        
         \subsection{Input and output}
         
          \begin{figure}[!htb]
@@ -834,9 +920,9 @@
              \label{fig:inputoutput}
             \end{figure}
         
-        The input file is the description of the protocol using the language defined by the EBNF grammar. The input file is parsed by the Antlr tool; the backend functions are triggered during parsing to output the Freyja architecture and the reconfigurable files. The UVM test bench will send the transaction to the Freyja architecture. The simulation is performed using Quartus tool chain. The transaction is initiated from the UVM to the Freyja architecture and the final transaction is received back in the UVM. An example of instantiating 4 operator blocks as in Figure~\ref{fig:Overallarchitecture} is shown below :
+        The input file is the description of the protocol using the language defined by the EBNF grammar. The input file is parsed by the Antlr tool; the backend functions are triggered during parsing to output the Freyja architecture and the reconfigurable files. The UVM test bench will send the transaction to the Freyja architecture. The transaction is initiated from the UVM to the Freyja architecture and the final transaction is received back in the UVM. An example of instantiating 4 operator blocks as in Figure~\ref{fig:Overallarchitecture} is shown below :
         
-        \begin{lstlisting}
+        \begin{lstlisting}[caption={Freyja Overall architecture definition}]
         <@\textcolor{blue}{Operator}@> OPERATOR1{
         <@\textcolor{red}{sc\_name}@> : op1;
         <@\textcolor{red}{op\_type}@> : op11,op12;
@@ -878,13 +964,13 @@
         
         
         \subsection{Ethernet}
-            Ethernet Transmit and Receive operations are explained in Fig.~\ref{fig:EthTx} and Fig.~\ref{fig:EthRx}.The \textit{Datain} in the transmit is passed from the UVM test bench.The UVM sequence is generated with first byte indicating the protocol and the second byte containing the address of the operator.Once the transaction reaches the Switch wrapper,it is decoded and forwarded to the first operator as defined by the input file.\\
+            Ethernet Transmit and Receive operations are explained in Fig.~\ref{fig:EthTx} and Fig.~\ref{fig:EthRx}. The \textit{Datain} in the transmit is passed from the UVM test bench.The UVM sequence is generated with first byte indicating the protocol and the second byte containing the address of the operator. Once the transaction reaches the Switch wrapper,it is decoded and forwarded to the first operator as defined by the input file.\\
             
-            \autoref{Ethernet} shows the complete description of Ethernet protocol.The interconnection between different Ethernet operator is explained in this section.
+            \autoref{Ethernet} shows the complete description of Ethernet protocol. The interconnection between different Ethernet operator is explained in this section.
             
             A part of the Ethernet description is shown in code below:
             
-            \begin{lstlisting}
+            \begin{lstlisting}[caption={Freyja protocol Interconnection}]
                 <@\textcolor{blue}{Tx\_PATH} @>{
                 <@\textcolor{red}{CONNECT} @>: proc_tx <@\textcolor{red}{to} @> crc_add; 
                 <@\textcolor{red}{CONNECT} @>: crc_add <@\textcolor{red}{to} @> pre_sfd_add;
@@ -897,7 +983,7 @@
                 
           \end{lstlisting}
             
-          The operators required by the protocols are first instantiated by defining them in the description.The string \quotes{protocol} indicates the definition of new protocol in Freyja architecture. The new protocol definition consists of 3 segments : Fields,Tx\_path,Rx\_Path. 
+          The operators required by the protocols are first instantiated by defining them in the description. The string \quotes{protocol} indicates the definition of new protocol in Freyja architecture. The new protocol definition consists of 3 segments : Fields,Tx\_path,Rx\_Path. 
           \begin{itemize}
           
           \item{The Fields section is defined to indicate the details of transaction contents in each protocol}
@@ -906,13 +992,13 @@
         
          \end{itemize}
         
-         The Tx\_Path and Rx\_Path are for the user to distinguish between the Transmitter and Receiver sequence for each protocol.In Freyja architecture the interconnections have no difference w.r.t Tx\_Path and Rx\_Path. The interconnect information is used to code the control block of each operator to forward the transaction to the correct destination.          
+         The Tx\_Path and Rx\_Path are for the user to distinguish between the Transmitter and Receiver sequence for each protocol. In Freyja architecture the interconnections have no difference w.r.t Tx\_Path and Rx\_Path. The interconnect information is used to code the control block of each operator to forward the transaction to the correct destination.          
         
       
          A part of control block of CRC operator for the description of Ethernet protocol is shown below:
          
          
-         \begin{lstlisting}
+         \begin{lstlisting}[caption={Freyja CRC operator Control Block code segment}]
 //part of fre_op_ctrl_crc.cpp block 
             
 if(type == ethernet){
@@ -932,13 +1018,13 @@ if(type == ethernet){
          \end{lstlisting}
          
          
-         In the above code the CRC operator's control block initially check for the Protocol and then for the type of the operator.As explained in Fig.~\ref{fig:CRC},the CRC operator multiplex 2 operations. CRC ADD and CRC check operators are having the same destination operator control block. They share the common memory,hardware for CRC computation and control function. The extra logic required to perform the CRC add and CRC compare are different.\\ 
+         In the above code the CRC operator's control block initially check for the protocol and then for the type of the operator. As explained in Fig.~\ref{fig:CRC},the CRC operator multiplex 2 operations. CRC add and CRC check operators are having the same destination operator control block. They share the common memory,hardware for CRC computation and control function. The extra logic required to perform the CRC add and CRC compare are different.\\ 
          
-         The destination address of the transaction is obtained from the input file.This information is compiled in the form of constants in SystemC environment.The same information can be stored in shared or in the operator memory based on architecture requirement.\\ 
+         The destination address of the transaction is obtained from the input file. This information is compiled in the form of constants in SystemC environment. The same information can be stored in shared or in the operator memory based on architecture requirement.\\ 
          
          The parser implemented will generate these constants which are required for the reconfiguration of hardware. The context here is the possibility to send the transaction to different operators from the same source.\\ 
          
-         \begin{lstlisting}
+         \begin{lstlisting}[caption={Freyja Reconfiguration constants}]
 //constants for the protocol : ethernet
 const unsigned char ethernet = 0;
 const  int proc_2_crc_add=0;
@@ -961,15 +1047,15 @@ const  int crc_check_2_proc=0;
          
          The constant value assigned is calculated by the parser based on the Multipass through ports of switch port to which the source and destination operators are connected.
          
-         The CRC operator also contains 19 bytes of memory elements.These 19 bytes are used by both CRC32 and CRC16 Operators.Ethernet protocol uses only CRC32 and hence only crc\_add and crc\_check uses first 9 bytes of the memory elements.The parser supports the access of contiguous or individual elements. After the control block informs the memory about the protocol and operator, the memory block will send the transaction to the process block which includes the constants required by the operator.   
+         The CRC operator also contains 19 bytes of memory elements. These 19 bytes are used by both CRC32 and CRC16 Operators. Ethernet protocol uses only CRC32 and hence only crc\_add and crc\_check uses first 9 bytes of the memory elements. The parser supports the access of contiguous or individual elements. After the control block informs the memory about the protocol and operator, the memory block will send the transaction to the process block which includes the constants required by the operator.   
          
         
         \subsection{Xio-s}
         
-        Xio-s protocol is breifly explained in section \ref{xio}. The Xio-s protocol CRC block is integrated into the system.The control block will check for the type of protocol, prioritized according to the description in the input file. Similarly Operators are prioritized in the order they have been defined in the input file.
+        Xio-s protocol is breifly explained in section \ref{xio}. The Xio-s protocol CRC block is integrated into the system. The control block will check for the type of protocol, prioritized according to the description in the input file. Similarly Operators are prioritized in the order they have been defined in the input file.
         Defining Xio-s after Ethernet protocol description will change the control block  code segment as shown below.\\ \\
         
-        \begin{lstlisting}
+        \begin{lstlisting}[caption={Freyja CRC Ctrl block with 2 protocols}]
 //part of fre_op_ctrl_crc.cpp block             
 if(type == ethernet){
     if(op_type == crc_add){
@@ -989,9 +1075,9 @@ else if(type == xios){
 }
 \end{lstlisting}
         
-        As illustrated in Fig.~\ref{fig:Xiotx} and Fig.~\ref{fig:XioRx}, Xio-s protocol requires 2 interfaces to transmit the transaction from one operator to multiple operators. The transactions are sent from \textit{packet service} block to two other operators both in transmission and during receiving stage. This feature is included in the input description. The \textit{Tx\_path} and \textit{Rx\_Path} in each protocol description will allow the user to define multiple destination operators for the same source operator.The code below depicts a scenario of Xio-s protocol assuming \textbf{ps}, \textbf{crc\_add\_16} and \textbf{cc\_a\_xio} are the operators described in the input file.  
+        As illustrated in Fig.~\ref{fig:Xiotx} and Fig.~\ref{fig:XioRx}, Xio-s protocol requires 2 interfaces to transmit the transaction from one operator to multiple operators. The transactions are sent from \textit{packet service} block to two other operators both in transmission and during receiving stage. This feature is included in the input description. The \textit{Tx\_path} and \textit{Rx\_Path} in each protocol description will allow the user to define multiple destination operators for the same source operator. The code below depicts a scenario of Xio-s protocol assuming \textbf{ps}, \textbf{crc\_add\_16} and \textbf{cc\_a\_xio} are the operators described in the input file.  
         
-        \begin{lstlisting}
+        \begin{lstlisting}[caption={Freyja One source to multiple destination interconnection}]
         <@\textcolor{blue}{Tx\_PATH} @>{
         <@\textcolor{red}{CONNECT} @>: ps <@\textcolor{red}{to} @> crc_add_16; 
         <@\textcolor{red}{CONNECT} @>: ps <@\textcolor{red}{to} @> cc_a_xio;
@@ -999,9 +1085,9 @@ else if(type == xios){
         
         \end{lstlisting}
         
-        Similar logic applies to the receiver section which can be parsed to receive the transaction from different source operators.Assuming \textbf{fs1},\textbf{fs2} and \textbf{aligner} are Xio-s protocol operators, the below code indicate the way to receive transaction from multiple sources.
+        Similar logic applies to the receiver section which can be parsed to receive the transaction from different source operators. Assuming \textbf{fs1},\textbf{fs2} and \textbf{aligner} are Xio-s protocol operators, the below code indicate the way to receive transaction from multiple sources.
         
-        \begin{lstlisting}
+        \begin{lstlisting}[caption={Freyja multiple source to one destination interconnection}]
         <@\textcolor{blue}{Rx\_PATH} @>{
         <@\textcolor{red}{CONNECT} @>: fs1 <@\textcolor{red}{to} @> aligner; 
         <@\textcolor{red}{CONNECT} @>: fs2 <@\textcolor{red}{to} @> aligner;
@@ -1017,8 +1103,27 @@ else if(type == xios){
         \clearpage
 
 		\section{Conclusion}
+        
+        
+        \subsubsection{Reconfigurable architecture}
+        
+        \subsubsection{Protocol sharing}
+        
+        \subsubsection{Language framework}
+        
         \subsection{Limitations}
+        
         \subsection{Future work}
+        
+        \subsubsection{Architecture update}
+        
+        \subsubsection{hardware compiler approach}
+        
+        \subsubsection{Resource estimation}
+        
+        
+        
+        
 		\clearpage
 
 
@@ -1165,6 +1270,65 @@ else if(type == xios){
                                howpublished = "\url{http://www.antlr.org/papers/allstar-techreport.pdf}",
                                note = "[Online; accessed 1-March-2015]",
                                url = {http://www.antlr.org/papers/allstar-techreport.pdf}}
+                            
+                            
+                          @INPROCEEDINGS{4291932, 
+                              author={Genest, G. and Chamberlain, R. and Bruce, R.}, 
+                              booktitle={Adaptive Hardware and Systems, 2007. AHS 2007. Second NASA/ESA Conference on}, 
+                              title={Programming an FPGA-based Super Computer Using a C-to-VHDL Compiler: DIME-C}, 
+                              year={2007}, 
+                              month={Aug}, 
+                              pages={280-286}, 
+                              keywords={field programmable gate arrays;hardware description languages;logic CAD;parallel machines;program compilers;programming;64-node FPGA-based supercomputer programming;C-to-VHDL compiler;Nallatech DIME-C compiler;design methodology;ANSI standards;Algorithm design and analysis;Circuits;Electronic design automation and methodology;Field programmable gate arrays;Hardware design languages;High level languages;Logic;Pipelines;Program processors}, 
+                              doi={10.1109/AHS.2007.89},}
+                            
+                            
+                            
+                          @ARTICLE{998629, 
+                              author={Bergamaschi, R.}, 
+                              journal={Computer-Aided Design of Integrated Circuits and Systems, IEEE Transactions on}, 
+                              title={Bridging the domains of high-level and logic synthesis}, 
+                              year={2002}, 
+                              month={May}, 
+                              volume={21}, 
+                              number={5}, 
+                              pages={582-596}, 
+                              keywords={data flow graphs;high level synthesis;logic CAD;minimisation of switching nets;processor scheduling;RTL/gate-level network;algorithmic decision;allocation;control/data flow graphs;hardware cost estimation;hardware implementation;high-level synthesis;interleaving;internal model;logic synthesis;logic transformations;register-transfer-level model;scheduling;Costs;Flow graphs;Hardware;High level synthesis;Logic design;Logic gates;Network synthesis;Processor scheduling;Resource management;Scheduling algorithm}, 
+                              doi={10.1109/43.998629}, 
+                              ISSN={0278-0070},}
+                            
+                            
+                            @INPROCEEDINGS{5469564, 
+                                author={Mena, J.G. and Deken, R. and Coker, J.E. and Johnstone, M.S. and Ramirez, S.R. and Frey, P.}, 
+                                booktitle={VLSI Test Symposium (VTS), 2010 28th}, 
+                                title={High level synthesis of a Front End filter and DSP engine for analog to digital conversion x2013; a case study}, 
+                                year={2010}, 
+                                month={April}, 
+                                pages={252-252}, 
+                                keywords={analogue-digital conversion;digital signal processing chips;electronic engineering computing;high level synthesis;object-oriented programming;SystemC;analog to digital conversion;front end DSP engine;front end filter;high level synthesis;object oriented programming;sine cubed decimator;Analog-digital conversion;Digital filters;Digital signal processing;Engines;High level synthesis;Microarchitecture;Object oriented modeling;Productivity;Silicon compiler;Timing}, 
+                                doi={10.1109/VTS.2010.5469564}, 
+                                ISSN={1093-0167},}
+                            
+                            @INPROCEEDINGS{5681536, 
+                                author={Kaneta, Y. and Yoshizawa, S. and Minato, S. and Arimura, H. and Miyanaga, Y.}, 
+                                booktitle={Field-Programmable Technology (FPT), 2010 International Conference on}, 
+                                title={Dynamic reconfigurable bit-parallel architecture for large-scale regular expression matching}, 
+                                year={2010}, 
+                                month={Dec}, 
+                                pages={21-28}, 
+                                keywords={deterministic automata;field programmable gate arrays;finite automata;parallel architectures;random-access storage;reconfigurable architectures;string matching;DFA-based dynamic reconfigurable architectures;FPGA-based architecture;bit-masks;bit-parallel NFA-simulation;bit-parallel pattern matching approach;block RAM;dynamic BP-NFA;dynamic reconfigurable bit-parallel NFA architecture;dynamic reconfigurable bit-parallel architecture;large-scale regular expression matching;nondeterministic finite automata;string matching;Decoding;Field programmable gate arrays;Hardware;Indexes;Pattern matching;Random access memory;Registers}, 
+                                doi={10.1109/FPT.2010.5681536},}
+                            
+                            @INPROCEEDINGS{1395538, 
+                                author={Panainte, E.M. and Bertels, K. and Vassiliadis, S.}, 
+                                booktitle={Design, Automation and Test in Europe, 2005. Proceedings}, 
+                                title={Instruction scheduling for dynamic hardware configurations [M-JPEG encoder case study]}, 
+                                year={2005}, 
+                                month={March}, 
+                                pages={100-105 Vol. 1}, 
+                                keywords={directed graphs;discrete cosine transforms;field programmable gate arrays;processor scheduling;quantisation (signal);reconfigurable architectures;variable length codes;video coding;DCT;FCCM;FPGA area placement conflicts;FPGA reconfiguration latency;M-JPEG encoder speedup;compiler analyses techniques;control flow graph;directed graph;dynamic hardware configuration;executed hardware reconfiguration instructions minimization;feedback-directed techniques;field-programmable custom computing machines;instruction scheduling algorithm;operation hardware execution;operation software execution;quantization;variable length coding;Algorithm design and analysis;Application software;Delay;Dynamic scheduling;Field programmable gate arrays;Hardware;Scheduling algorithm;Software algorithms;Switches;Testing}, 
+                                doi={10.1109/DATE.2005.184}, 
+                                ISSN={1530-1591},}
                            
                            
                         
