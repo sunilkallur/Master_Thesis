@@ -162,8 +162,10 @@
         
        
   		\begin{abstract}
-        \normalsize
-		
+          
+        %\normalsize
+        \vspace*{3\baselineskip}
+		%\vspace*{1in}
         Reconfigurable hardware architectures have been the topic of research for many years. Programming such architectures requires manual coding or the design of custom compilers to generate the required files for the architecture.\\
         
         A protocol processor,in general processes the packets according to the protocol. There are number of protocols like Ethernet,\acs{cpri} to define how the data has to be sent and received between the source and destination points. Data packets can be processed using a generic processors programmed in software,but hardware processing is always faster and energy efficient.\\  
@@ -849,7 +851,7 @@
         \end{lstlisting}
        
         
-        As in code above the first 8 bytes of memory contents are sent as a transaction from memory for the CRC ADD operation in CHECKSUM operator. The different forms of notation can be observed in the CRC check wherein the memory bytes can be specified with individual address. Each protocol with the memory code as above can send transaction for different operators. In the above code, the crc add,crc check,scram and descram send the transaction to their respective blocks.
+        As in code above the first 8 bytes of contents are sent as a transaction from memory for the CRC ADD operation in CHECKSUM operator. The different forms of notation can be observed in the CRC check wherein the memory bytes can be specified with individual address. Each protocol with the memory code as above can send transaction for different operators. In the above code, the crc add,crc check,scram and descram send the transaction to their respective blocks.
         
         
         
@@ -1047,7 +1049,7 @@ const  int crc_check_2_proc=0;
          
          The constant value assigned is calculated by the parser based on the Multipass through ports of switch port to which the source and destination operators are connected.
          
-         The CRC operator also contains 19 bytes of memory elements. These 19 bytes are used by both CRC32 and CRC16 Operators. Ethernet protocol uses only CRC32 and hence only crc\_add and crc\_check uses first 9 bytes of the memory elements. The parser supports the access of contiguous or individual elements. After the control block informs the memory about the protocol and operator, the memory block will send the transaction to the process block which includes the constants required by the operator.   
+         The CRC operator also contains 19 bytes of memory elements. These 19 bytes are used by both CRC32 and CRC16 Operators. Ethernet protocol uses only CRC32 and hence only crc\_add and crc\_check uses first 9 bytes of the memory elements. The parser supports the access of contiguous or individual element. After the control block informs the memory about the protocol and operator, the memory block will send the transaction to the process block which includes the constants required by the operator.   
          
         
         \subsection{Xio-s}
@@ -1102,25 +1104,41 @@ else if(type == xios){
   
         \clearpage
 
-		\section{Conclusion}
+		\section{Conclusion and Future work}
+        This chapter concludes the thesis by describing the learning outcomes of reconfigurable architectures used for protocol processing and the framework design by grammar based language application. It also describes the limitations encountered during the thesis work and further section describes the future work specific to the thesis work and in general to the research topic. 
         
         
-        \subsubsection{Reconfigurable architecture}
+        \subsection{Reconfigurable architecture}
+           The reconfigurable architecture programming is considered by modeling the system using high level SystemC modeling. This leads to the abstraction of architectural details. It is still considered that the next step is to transform the architecture into RTL level. The mapping from SystemC level to RTL will need further refinement of the architectural details. This will introduce the finer details and the format of the reconfigurable data required for hardware configuration. These details are not feasible to assume at the current level of Freyja architecture.
         
-        \subsubsection{Protocol sharing}
+        \subsection{Protocol sharing}
+         As illustrated in section <protocols> the common functions of protocols can be shared among resources. The gain of sharing and reducing the hardware cost comes with the problem of reconfiguration and back pressure in the system. The queue length required to handle this and further details can be abstracted to the higher level to produce the reconfiguration content for the architecture.
         
-        \subsubsection{Language framework}
+        \subsection{Language framework}
+        There are many tools which support building the language application.Antlr4 is one such latest tool with support for building the top down recursive descent parser. The timeframe of buidling such application is faster and can speedup overall the process of building the reconfigurable architectures.  
         
         \subsection{Limitations}
+         The design of Freyja architecture is still under development and hence it is very tough to identify the reconfigurable data for a commercial protocol processor.
+        
+        
         
         \subsection{Future work}
+        The framework can be used to further produce the data required to identify the resources required through simulation. 
+        
+        
         
         \subsubsection{Architecture update}
+        The architecture needs to be updated to allow the framework to produce the result. 
+        
         
         \subsubsection{hardware compiler approach}
+        Design of a hardware compiler ! 
+        
+        
+        
         
         \subsubsection{Resource estimation}
-        
+        Taco protocol processor details
         
         
         
