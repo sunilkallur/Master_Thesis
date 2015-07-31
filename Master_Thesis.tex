@@ -15,6 +15,8 @@
 \graphicspath{{Images/}}
 \usepackage{booktabs}
 
+
+
 \usepackage{textcomp,xspace}
 \newcommand\la{\textlangle\xspace}
 \newcommand\ra{\textrangle\xspace}
@@ -138,11 +140,13 @@
 
 \begin{document}
 % Information to appear on the title page:
-\ititle{Reconfigurable hardware programming in a protocol processor unit}
-\isubtitle{}
-\iauthor{- Sunil Kallur Ramegowda}
+\ititle{\textbf{Reconfigurable hardware programming  \\ in a   protocol processor unit}\\}
+\isubtitle{Grammar based language framework \\ for hardware/software co-design}
+%\isubtitle{}
+\iauthor{ - Sunil Kallur Ramegowda}
 \idate{2015}
-\irefnr{IR-EE-Dummy 2000:099}
+
+%\irefnr{IR-EE-Dummy 2000:099}
 
 \iaddress{ICT Labs\\
 	Major in Embedded Platforms\\
@@ -155,6 +159,13 @@
         
          \section*{Acknowledgement}
          \thispagestyle{empty}
+         
+         
+         
+         First of all i would like to thank MR. Pierre Rohdin G for selecting and providing me an opportunity to pursue Master thesis at Ericsson AB. I wish to extend my sincere thanks to Mr. Tume Wihamre and Dr. Johny oberg for supporting me to accomplish
+         
+         
+        
          \clearpage
 
 		\title{Reconfigurable hardware programming in a protocol processor unit}
@@ -343,7 +354,7 @@
 		To understand the reconfigurable hardware and its terminologies, this chapter explains in detail about the architecture and its meaning. Protocols and their common functions are also explained which helps in designing the reconfigurable protocol processors. The further sections explains the meaning of grammar and language and its terms.    
 
 
-		\subsection{Reconfigurable Systems}
+		\subsection{Reconfigurable Systems} \label{reconf}
 
 
 		In the field of computer architecture, designers make decisions based on flexibility and performance requirement\cite{JACST518}. \acs{asic} are the least flexible in terms of adapting for any change in the application and GPP are the most flexible as they are independent of the application and the core can be programmed to make the required algorithm work at the cost of higher power and lower efficiency. ASIC and GPP lies in extreme corners of the graph between Flexibility Vs Performance as in Fig.~\ref{fig:Fig1}. Reconfigurable architectures are intended to fill the gap and provide more flexibility in terms of hardware and potentially higher performance than software\cite{JACST518}.
@@ -355,7 +366,7 @@
 		\label{fig:Fig1}
 		\end{figure}
 
-		\subsubsection{Granularity}
+		\subsubsection{Granularity} 
 
 		Reconfigurable devices like \acs{fpga} have the configurable logic blocks(CLB) which can be configured to map the required functionality. The complexity of the function is not a concern but the number of inputs and output of the function has to be considered based on the FPGA architecture. This level of granularity in implementing the functions is called as Fine grained Reconfigurable architecture as it provides the reconfigurable granularity till lowest possible level. These reconfigurable devices are not energy efficient and the execution speed is too less than the ASIC counterpart. Another type of reconfigurable devices are the coarse grained reconfigurable architectures. These devices have the granularity at function levels. They will configure the function blocks to achieve the efficient algorithm implementation.The function blocks can vary from constant block to complex functions which are commonly used based by the application.   
 
@@ -1151,7 +1162,7 @@ else if(type == xios){
         This chapter concludes the thesis by describing the learning outcomes of reconfigurable architectures used for protocol processing and the framework design by grammar based language application. It also describes the limitations encountered during the thesis work and further section describes the future work specific to the thesis work and in general to the research topic. 
         
         
-        \subsection{Reconfigurable architecture}
+        \subsection{Reconfigurable architecture} \label{rconf}
            
            Ericsson AB investigated Switch and Mesh based network topology for efficient protocol processing. Based on performance,cost,scalability and other internal factors switch based network topology named as Freyja is considered for further implementation and research. The reconfigurable hardware implemented using systemC consisted of a central switch with all the operators connected to it as explained in section \ref{freyja}.\\       
            
@@ -1160,17 +1171,13 @@ else if(type == xios){
            The main objective of this work is to show the complete process of mapping from high level description to the system level implementation. The features mapped consisted of different operator instantiation,interconnections,memory,error handling and routing to multiple destinations from each operators for different protocols. In general protocol processors are more complex including features like Flow control,FIFOs,arbitration mechanism,latency of each computation,dead lock avoidance etc.\\    
            
            The mapping of such finer details in the high level description will be straight forward with the approach presented in this work.
-           For example the FIFOs can be instantiated similar to the Operator instantiation by extending the grammar. The FIFO block can be further configured with the variable depth of the buffer and signaling the overloading because of back pressure. How these details are represented in high level description depends on the architecture implementation. Another example of extension is to extend the grammar to hold the latency of each operator.\\
+           For example the FIFOs can be instantiated similar to the Operator instantiation by extending the grammar. The FIFO block can be further configured with the variable depth of the buffer and signaling the overloading because of back pressure. How these details are represented in high level description depends on the architecture implementation. Another example of extension is to extend the grammar to hold the latency of each operator.
            
-           The same framework can be used to at different levels of synthesis to output the required files for the architecture. This reduces the time to reconfigure and setup the environment. For all these to accomplish the reconfigurable architecture should be defined. The framework can be adapted based on the architecture and they are mutually exclusive in design. The approach shows the concept of mapping few core features which are easy to extend for more refined details.\\
+           The same framework can be used at different levels of synthesis to output the required files for the architecture. This reduces the time to reconfigure and setup the environment. For all these to accomplish, the reconfigurable architecture should be defined. The framework can be adapted based on the architecture. The approach in this work shows the concept of mapping few core features which are easy to extend for more refined details.\\
            
-           Apart from abstracting high level architecture details, the core functions of each operator can also be represented using high level description. More research in academia and industry have already proved the concept.\\
-           
-           include johnny's work!  
+           Apart from abstracting high level architecture details, the core functions of each operator can also be represented using high level description. More research in academia and industry have already proved the concept. These tools input from Algorithms to Register Transfer level (ALU,Reg,Mux). This transformation is called as High level synthesis \cite{hls} \cite{5209958}.\\
            
            
-            
-        
         \subsection{Protocol sharing} 
          
          As illustrated in section \ref{protocol} the protocols share common functions. The features that can be shared are discussed at system level based on algorithms. The gain of sharing and reducing the hardware cost comes with the need of reconfiguration and back pressure in the system. The buffer length required to handle this and further details can be abstracted to the higher level to produce the reconfiguration content for the architecture. Automating the calculation of these resource utilization through simulation and importing the result to configure the hardware will reduce the architecture design time. \\
@@ -1182,50 +1189,37 @@ else if(type == xios){
         
         \subsection{Language framework}
         
-        Programmers are building domain-specific languages,configuration file formats,network protocols and numerous data file formats as well as traditional programming language compilers and interpreters. The development from scratch is a time consuming for the beginners to the world of language developers.
+        Programmers are building domain-specific languages, configuration file formats, network protocols and numerous data file formats as well as traditional programming language compilers and interpreters. The development of such systems can be made faster by using the language building tools.\\
+        
+        Programmers tend to avoid using language tools, resorting to adhoc methods, partly because of the raw and low level interface to these tools \cite{Bovet:2008:AAG:1410270.1410275}. Using grammar based approach to build parsers will offer a more natural, high fidelity, robust and maintainable means of encoding a language-related problem. Most grammar development is done today with a simple text editor. The ANTLR4 parser generator \cite{Parr:2007:DAR:1209320} attempts to make grammars more accessible to the programmer by generating recursive descent parsers that are very similar to what programmer would build by hand.\\
         
         
-        There are many tools which support building the language application. Antlr4 is one such latest tool for building the top down recursive descent parser. The timeframe of buidling such application is faster and can speedup overall the process of building the reconfigurable architectures.  
+        Antlr4 supports rapid grammar developemnt by using ANTLR's built in interpreter, thus, providing immediate feedback during development \cite{Daly:2006:PES:1142473.1142568}. The parse tree associated with matching input (as in Fig.~\ref{fig:parsetree}), helps in debugging for error in grammar definition. If the input sequence is not in the language recognized by specified start rule, Antlr4 inserts an error node into the parse tree to indicate where the problem occurred. 
+        
+       All the above features of Antlr4 tool helps to build the language application in a more structured way. Providing the framework in multiple languages makes the programmer comfortable to build with their skilled language. The most encountered problems are resolved with the community support and the book written from the author Terrence Parr \cite{Parr:2007:DAR:1209320}.
+        
         
         \subsection{Limitations}
-         The design of Freyja architecture is still under development and hence it is very tough to identify the reconfigurable data for a commercial protocol processor.
+         
+         The thesis started with the focus of developing the complete framework and to show the concept of using grammar based language application in hardware/software co design. The reconfigurable architecture modeled in systemC abstracted more hardware details. 
+         Though language is developed to include all future requirements, the implementations in the backend has to be extended for the new features of the hardware. Even though 3 protocols and their functions are discussed, it is not targeted to integrate all the protocols. As stated in section \ref{rconf} the high level description is targeted with respect to current Freyja architecture. The Antlr4 tool supports java language to output the framework and support for other languages are yet to be released.
+         
+         \subsection{Future work}
         
+          Freyja architecture is still under implementation and in future, the complete details of the architecture can be abstracted into high level description by extending the grammar. Features like multiple core instantiations and transaction from different sources to same destination (required for Xio-s protocol) are possible to represent but still requires the backend implementations to modify according to the interconnection defined in future. Once the reconfigurable file format required by RTL hardware implementations are defined, the same framework can output such files to speedup the design process. As explained in section \ref{reconf} the granularity of Freyja architecture is at algorithmic level. Common hardware blocks at logic levels and exploiting the reconfigurability for freyja architecture can be considered further and then the grammar can be extended similar to TACO protocol processor \cite{taco}. The header as explained in Fig.~\ref{fig:header}, can be described in the high level description which provides control in manipulating the length of each field.\\
+          
+          The integration of Xio-s and CPRI protocols into the framework is straight forward. The process block i.e core functions of each operator needs to be modified to integrate these protocols into the system. Ethernet integration is set as an example. The grammar supports definition of multiple protocols in the language. The implementation of protocol functions doesn't require any modifications in the grammar. \\
+          
+          Antlr4 is made to output the framework in Java language and the tool (in future!) will support other languages like c,c++. Based on the project requirement the language can be selected. Java has good commands for File IO operations and handling the objects. Major backend implementation deals with storing the parsed data in the form of Hashmap and Linkedlist. These facts can be considered when building similar concept for other reconfigurable architectures. \\ 
         
-        
-        \subsection{Future work}
-        The framework can be used to further produce the data required to identify the resources required through simulation. 
-        
-        
-        
-        \subsubsection{Architecture update}
-        The architecture needs to be updated to allow the framework to produce the result. 
-        
-        
-        \subsubsection{hardware compiler approach}
-        Design of a hardware compiler ! 
-        
-        
-        
-        
-        \subsubsection{Resource estimation}
-        Taco protocol processor details
-        
-        
+         
+          In general, the framework can be extended for all levels of synthesis while designing the hardware. The development environment will be heterogeneous at different levels and a common framework for producing the top level configurable files will reduce the errors. Once the architecture is specified, the tool can be made to generate SystemC model for simulation, a Matlab model for estimation of resources and VHDL model for synthesis of the architecture. The resource estimation can also be integrated within the tool by developing an interpreter using the parsed input. 
+         
+             
         
 		\clearpage
 
-
-
-       
-       
-       
-       
-       
-       
-       
-
-
-		\begin{filecontents*}{references.bib}
+	\begin{filecontents*}{references.bib}
 
 
 		@INPROCEEDINGS{5335678, 
@@ -1501,8 +1495,74 @@ else if(type == xios){
                                 publisher = {},
                                 editor = {},
                                 pages = {},}
+                            
+                         @article{Bovet:2008:AAG:1410270.1410275,
+                             author = {Bovet, Jean and Parr, Terence},
+                             title = {ANTLRWorks: An ANTLR Grammar Development Environment},
+                             journal = {Softw. Pract. Exper.},
+                             issue_date = {October 2008},
+                             volume = {38},
+                             number = {12},
+                             month = oct,
+                             year = {2008},
+                             issn = {0038-0644},
+                             pages = {1305--1332},
+                             numpages = {28},
+                             url = {http://dx.doi.org/10.1002/spe.v38:12},
+                             doi = {10.1002/spe.v38:12},
+                             acmid = {1410275},
+                             publisher = {John Wiley \& Sons, Inc.},
+                             address = {New York, NY, USA},
+                             keywords = {GUI, debugger, grammar development, parser, rapid prototyping},
+                            } 
                          
-                                                    
+                         @book{Parr:2007:DAR:1209320,
+                             author = {Parr, Terence},
+                             title = {The Definitive ANTLR Reference: Building Domain-Specific Languages},
+                             year = {2007},
+                             isbn = {0978739256},
+                             publisher = {Pragmatic Bookshelf},
+                         }   
+                         
+                         @inproceedings{Daly:2006:PES:1142473.1142568,
+                             author = {Daly, Mark and Mandelbaum, Yitzhak and Walker, David and Fern\'{a}ndez, Mary and Fisher, Kathleen and Gruber, Robert and Zheng, Xuan},
+                             title = {PADS: An End-to-end System for Processing Ad Hoc Data},
+                             booktitle = {Proceedings of the 2006 ACM SIGMOD International Conference on Management of Data},
+                             series = {SIGMOD '06},
+                             year = {2006},
+                             isbn = {1-59593-434-0},
+                             location = {Chicago, IL, USA},
+                             pages = {727--729},
+                             numpages = {3},
+                             url = {http://doi.acm.org/10.1145/1142473.1142568},
+                             doi = {10.1145/1142473.1142568},
+                             acmid = {1142568},
+                             publisher = {ACM},
+                             address = {New York, NY, USA},
+                            } 
+                         
+                          @book{hls,
+                              author = {Philippe Coussy, Adam Morawiec},
+                              title = {High-Level Synthesis: From Algorithm to Digital Circuit},
+                              year = {2008},
+                              isbn = {978-1-4020-8588-8},
+                              publisher = {Springer Netherlands},
+                            } 
+                         
+                         @ARTICLE{5209958, 
+                             author={Coussy, P. and Gajski, D.D. and Meredith, M. and Takach, A.}, 
+                             journal={Design Test of Computers, IEEE}, 
+                             title={An Introduction to High-Level Synthesis}, 
+                             year={2009}, 
+                             month={July}, 
+                             volume={26}, 
+                             number={4}, 
+                             pages={8-17}, 
+                             keywords={high level synthesis;HLS techniques;abstraction level design;high-level synthesis;optimized RTL hardware;Application software;Assembly;Circuit simulation;Circuit synthesis;Computer architecture;Design methodology;Design optimization;Hardware design languages;High level synthesis;Space exploration;RTL abstraction;architectures;custom processors;design and test;hardware synthesis and verification;high-level synthesis}, 
+                             doi={10.1109/MDT.2009.69}, 
+                             ISSN={0740-7475},}
+                         
+                                                  
 }
 
 
