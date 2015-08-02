@@ -15,6 +15,19 @@
 \graphicspath{{Images/}}
 \usepackage{booktabs}
 
+\usepackage{titlesec, blindtext, color}
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\section}[hang]{\Huge\bfseries}{\thesection\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+
+
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\rightmark}
+\lhead{\leftmark}
+\cfoot{\thepage}
 
 
 \usepackage{textcomp,xspace}
@@ -157,12 +170,43 @@
 		% the layout of that document should not be affected in any
 		% way by the title page.
         
+        
+         \section*{}
+         \thispagestyle{empty}
+        %  \begin{figure}[!htb]
+              {\centering
+              \includegraphics[scale=0.45]{logo}\\
+              \vskip1.0cm
+              Ericsson AB \\
+              Department of Asic/FPGA \\
+              Stockholm,Sweden.\\
+               \vskip3.0cm}
+               
+              
+               This thesis is carried out in cooperation with Ericsson AB.\\
+               
+               I would like to thank my manager Mr. Pierre Rohdin G , for selecting and providing me an opportunity to pursue Master thesis at Ericsson. I wish to extend sincere thanks to my senior supervisor Mr. Tume Wihamre for all his guidance and support to make me understand and solve the research question. Its my pleasure to thank my immediate supervisors Katarina Nilsson and Orri Tomasson who helped me all along my thesis by guiding patiently, providing constructive feedback, arranging weekly meetings and reviewing my work. I would also take this opportunity to thank other thesis students Mehdi Taabouri,Jing Zhang X and Marcus Andersson who were next to me all the time, for all the discussions at my work place.                
+               
+               
+               
+        %      \caption{}
+        %      \label{}
+        %    \end{figure}
+            
+            
+            
+          \clearpage
+        
          \section*{Acknowledgement}
          \thispagestyle{empty}
          
+         \vskip1.0cm
          
+         First of all i would like to thank Dr.Johnny Öberg for being my supervisor and examiner and for his support, guidance, advice throughout the research project. I wish to thank EIT ICT Labs Master school for providing me an opportunity to study Master's in Embedded platforms. I am pleased to thank all the Professors of AES dept, TU Berlin and ICT school, KTH. I extend my gratitude to the coordinators Nina Reinecke at TU Berlin and Helena Törnkvist at KTH for all the administrative help.\\
+    
+         Last but not the least, i would like to thank my parents and sisters for their unconditional support, both financially and emotionally throughout my degree. In particular i am grateful for my 2 year old nephew who made them happy all the time in my absence. I would also extend my thanks to all those who sponsored my studies including Vijaya Bank, India. 
          
-         First of all i would like to thank MR. Pierre Rohdin G for selecting and providing me an opportunity to pursue Master thesis at Ericsson AB. I wish to extend my sincere thanks to Mr. Tume Wihamre and Dr. Johny oberg for supporting me to accomplish
+               
          
          
         
@@ -171,10 +215,12 @@
 		\title{Reconfigurable hardware programming in a protocol processor unit}
 		\author{Sunil Kallur Ramegowda}
 
-		\maketitle
 		\pagenumbering{roman}
         
+       \phantomsection
        
+       \addcontentsline{toc}{section}{Abstract}
+        \maketitle
         
        
   		\begin{abstract}
@@ -194,9 +240,7 @@
         
         
 		\end{abstract}
-        \phantomsection
         
-		\addcontentsline{toc}{section}{Abstract}
        	\cleardoublepage
 
         %\renewcommand\contentsname{\centerline{\underline{\underline{Table of Contents}}}}
@@ -232,7 +276,9 @@
 		\pagenumbering{arabic}
          
        \section{Introduction}
-
+       \vspace{1cm}
+       \thispagestyle{plain}
+      
 		A set of rules define the communication strategy between digital systems. There are many rules which makes the communication possible between systems. Over the decades the rules have evolved into standards. \gls{osi} is an international effort to facilitate communications among different manufacture and technology. OSI reference model partition the communication system into 7 abstraction layers. It address the interconnection requirement of an open systems environment.
         
  %       \begin{figure}[!htb]
@@ -299,7 +345,7 @@
              \begin{figure}[!htb]
                             \centering
                            \includegraphics[scale=0.45]{designgap}
-                            \caption{Hardware Software Design Gaps versus Time.}
+                            \caption{Hardware Software Design Gaps versus Time \cite{book}.}
                             \label{fig:designgap}
              \end{figure}
             
@@ -351,6 +397,8 @@
 
 
 		\section{Background}
+        \vspace{1cm}
+        \thispagestyle{plain}
 		To understand the reconfigurable hardware and its terminologies, this chapter explains in detail about the architecture and its meaning. Protocols and their common functions are also explained which helps in designing the reconfigurable protocol processors. The further sections explains the meaning of grammar and language and its terms.    
 
 
@@ -442,7 +490,7 @@
         In transmitter side the \gls{fcs} is computed for the incoming data and appended as last 4 bytes (32bits). In the Ethernet receive, the \gls{fcs} is again computed for the incoming data and is compared with the FCS field for any errors.  This block will not change the incoming data apart from appending the \gls{fcs} field.
         
         \subsubsection*{Preamble and SFD}
-        Preamble is added at the start of the frame to indicate the new Ethernet frame. This block will not change the incoming data apart from adding the Preamble(7bytes) and \gls{sfd} at the beginning of the frame(1byte).\\ \\
+        Preamble is added at the start of the frame to indicate the new Ethernet frame. This block will not change the incoming data apart from adding the Preamble(7bytes) and \gls{sfd} at the beginning of the frame(1byte).\\ 
         
         \begin{table}[!htb]
             \centering
@@ -671,8 +719,9 @@
 		\clearpage
 
 
-       \section{Methodology}
-       
+       \section{Methodology and architecture}
+        \vspace{1cm}
+        \thispagestyle{plain}
       This chapter explains the process applied in describing the protocol for the hardware architecture. It also explains the details of reconfigurable architecture under study, the common protocol functions and the methodology used to verify the result. 
        
        \subsection{Research process}
@@ -688,16 +737,16 @@
        
        \subsection{Freyja Architecture} \label{freyja}
            As in Figure~\ref{fig:Freyja} , Freyja architecture is a reconfigurable protocol processor. It consists of different protocol operators which are connected through the central switch. This switch based network topology can be configured to process the data based on protocols. The Ring bus (RB) interface the Freyja with the higher layers of protocol and it issues the data frames of different protocols as tokens. The Common Memory Interface(CMI) is used to fetch the data from memory. 
-           The physical interface is represented by the Serializer/Deserializer block i.e SERDES. The details of each of the Freyja architecture blocks are discussed below.
+           The physical interface is represented by the Serializer/Deserializer block i.e SERDES. The details of each of the Freyja architecture blocks are discussed below.\\
            
             \begin{figure}[!htb]
-                \centering
-                \includegraphics[scale=0.4]{Freyja}
-                \caption{Freyja Architecture}
+                %\centering
+                \includegraphics[width=1.1\textwidth]{Freyja}
+                \caption{Switch based Freyja network topology}
                 \label{fig:Freyja}
             \end{figure}
            
-       
+       %\clearpage
        \subsubsection{Switch port}
        
        \begin{wrapfigure}{R}{0.4\textwidth}
@@ -754,7 +803,7 @@
        
        The overall Frejya architecture consists of switch wrapper instantiating switch ports and the operator blocks for each of the operator functions. A transaction originating from operator 1 as shown in fig with orange box can be routed to any of the other operators as destination based on the address of the payload. This will be assigned in the control block of the operator where the transaction is originated. 
        
-       \clearpage
+       %\clearpage
        
        \subsection{High level description of the protocol}
           High level language description requires the design of Lexer and parser as explained in Section \ref{grammar}. They can be designed using languages like C,C++,java,C\# and more. Based on the application requirement, a parsing strategy needs to be decided. As the machine resources grew in today's world, researchers have developed more complex and powerful Non Deterministic parsing strategies. Today both \quotes{bottom-up} and \quotes{top-down} approaches exist. Debugging a \quotes{bottom-up} parsers are hard to understand and debug compared to the \quotes{top-down} parsers.\\
@@ -795,7 +844,7 @@
         
         \begin{figure}[!htb]
             \centering
-            \includegraphics[scale=0.35]{common_tx}
+            \includegraphics[width=1.0\textwidth]{common_tx}
             \caption{Transmitter of all 3 protocols}
             \label{fig:common_tx}
         \end{figure}
@@ -803,22 +852,24 @@
         
         \begin{figure}[!htb]
             \centering
-            \includegraphics[scale=0.4]{common_rx}
+            \includegraphics[width=1.1\textwidth]{common_rx}
             \caption{Receiver of all 3 protocols}
             \label{fig:common_rx}
         \end{figure}
         
         \clearpage
        
-         \subsection{Modelling and Testing}
+        % \subsection{Modelling and Testing}
          
          
          
          
-       \clearpage
+       %\clearpage
        
 
 		\section{Developed language}
+        \vspace{1cm}
+        \thispagestyle{plain}
             A language description is developed to define the Freyja architecture which maps different protocol operators and their interconnections. The high level description accounts for different operator?s instantiation, transaction routing, constants in memory and error handling. Each of these is explained in detail in this chapter.
             
         \subsection{Parser implementation}
@@ -929,7 +980,9 @@
         
 		\clearpage
 
-		\section{Tests}
+		\section{Test system}
+        \vspace{1cm}
+        \thispagestyle{plain}
          This chapter describes the test system, testing strategy, input protocol file, discussion about output obtained.
          
          \subsection{Complete Test System}
@@ -939,7 +992,7 @@
         
           \begin{figure}[!htb]
               \centering
-              \includegraphics[scale=0.5]{testsystem}
+              \includegraphics[scale=0.45]{testsystem}
               \caption{Complete Test System(*Multiport interconnections not shown)}
               \label{fig:testsystem}
             \end{figure}
@@ -1016,6 +1069,8 @@
 		\clearpage
 
         \section{Analysis}
+        \vspace{1cm}
+        \thispagestyle{plain}
             This chapter explains the analysis of the framework through the integration of Ethernet protocol into the Freyja architecture. Ethernet operators are integrated into the system of files generated from the Antlr tool. To show the context switching between different protocols, Xio-s CRC16 operator is also integrated. The first section analyses the process and results of Ethernet integration and section 6.2 explains the Xio-s protocol integration.
         
         
@@ -1109,7 +1164,7 @@ const  int crc_check_2_proc=0;
         \subsection{Xio-s}
         
         Xio-s protocol is breifly explained in section \ref{xio}. The Xio-s protocol CRC block is integrated into the system. The control block will check for the type of protocol, prioritized according to the description in the input file. Similarly Operators are prioritized in the order they have been defined in the input file.
-        Defining Xio-s after Ethernet protocol description will change the control block  code segment as shown below.\\ \\
+        Defining Xio-s after Ethernet protocol description will change the control block  code segment as shown below.\\ 
         
         \begin{lstlisting}[caption={Freyja CRC Ctrl block with 2 protocols}]
 //part of fre_op_ctrl_crc.cpp block             
@@ -1159,6 +1214,8 @@ else if(type == xios){
         \clearpage
 
 		\section{Conclusion and Future work}
+        \vspace{1cm}
+        \thispagestyle{plain}
         This chapter concludes the thesis by describing the learning outcomes of reconfigurable architectures used for protocol processing and the framework design by grammar based language application. It also describes the limitations encountered during the thesis work and further section describes the future work specific to the thesis work and in general to the research topic. 
         
         
@@ -1567,12 +1624,15 @@ else if(type == xios){
 
 
 \end{filecontents*}
+\thispagestyle{plain}
 \bibliographystyle{ieeetr}
+\phantomsection
 \bibliography{references}
 \addcontentsline{toc}{section}{References}
 \cleardoublepage
 
 \phantomsection
+
 \appendix
 \appendixpage
 \addcontentsline{toc}{section}{\appendixname}
@@ -1580,6 +1640,7 @@ else if(type == xios){
 
 \section{Ethernet Protocol Description}
 \label{Ethernet}
+\thispagestyle{plain}
 \begin{lstlisting}
 
 <@\textcolor{blue}{FunctionUnits}@> FREYJA:
@@ -1699,7 +1760,7 @@ PL[20]
 
 \section{Language Recognition terms}
 \label{language}
-
+\thispagestyle{plain}
 \subsubsection*{Language}  A Language is a set of valid sentences which are  composed of phrases,sub-phrases and so on. 
 
 \subsubsection*{Grammar}  A Grammar formally defines the syntax rules of a language.
