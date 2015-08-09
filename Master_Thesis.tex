@@ -228,15 +228,15 @@
         %\normalsize
         \vspace*{3\baselineskip}
 		%\vspace*{1in}
-        Reconfigurable hardware architectures have been the topic of research for many years. Programming such architectures requires manual coding or the design of custom compilers to generate the required files for the architecture.\\
+        Reconfigurable hardware architectures have been a research topic for many years. Programming such architectures requires manual low level coding or the design of custom compilers to generate the required configuration data for the architecture.\\
         
-        A protocol processor,in general processes the packets according to the protocol. There are number of protocols like Ethernet,\acs{cpri} to define how the data has to be sent and received between the source and destination points. Data packets can be processed using a generic processors programmed in software,but hardware processing is always faster and energy efficient.\\  
+        A protocol processor, in general processes the packets according to the protocol. There are number of protocols like Ethernet and \acs{cpri} to define how the data has to be sent and received between the source and destination points. Data packets can be processed using generic processors programmed in software, but hardware processing is always faster and energy efficient.\\  
         
-        A compiler/mapper is investigated in this thesis work. The language application is developed using a parser generator tool called Antlr. The grammar is written in \gls{ebnf} and the corresponding language is used to describe the architecture and the protocols. The tool will generate the hardware model and their interconnection in SystemC based on the protocol description.\\ 
+        A compiler/mapper is investigated in this thesis work. The language application is developed using a parser generator tool called Antlr. The grammar is written in \gls{ebnf} and the corresponding language is used to describe the architecture and the protocols. The tool will generate a hardware model and its interconnections in SystemC based on the protocol description. Ethernet protocol is described using the developed language and the complete framework is verified by simulation.\\ 
+      
         
-        The complete system is verified by integrating the Ethernet protocol. Parts of the protocol implementation in SystemC is also considered in the work. The system is verified for different protocols. The framework works based on the user defined description of the protocol. \\
         
-        Future work involves the integration of further protocols into the system and then adapt the language to further involve all the future requirements. The concept of mapping can be used to design the hardware blocks and their interconnections in different languages. 
+        Future work involves the integration of other protocols into the system and then adapt the language to involve all the future requirements. The concept of mapping can be used to design the hardware blocks and their interconnections in different languages. 
         
         
 		\end{abstract}
@@ -279,7 +279,7 @@
        \vspace{1cm}
        \thispagestyle{plain}
       
-		A set of rules define the communication strategy between digital systems. There are many rules which makes the communication possible between systems. Over the decades the rules have evolved into standards. \gls{osi} is an international effort to facilitate communications among different manufacture and technology. OSI reference model partition the communication system into 7 abstraction layers. It address the interconnection requirement of an open systems environment.
+		A set of rules define the communication strategy between digital systems. There are many rules which makes the communication possible between systems. Over the decades the rules have evolved into standards. \gls{osi} is an international effort to facilitate communications among different manufacturers and technologies. OSI reference model partition communication systems into 7 abstraction layers. It addresses the interconnection requirement of an open systems environment.
         
  %       \begin{figure}[!htb]
  %           \centering
@@ -309,30 +309,60 @@
         \end{table}
         
        
-        The rules are called as protocols in communication systems. The software and/or hardware changes based on the protocol chosen to process the message and extract the relevant information at each layer of abstraction. The hardware solutions based on a \gls{gpp}  or an \gls{asic} exists \cite{5335678}\cite{558379}. GPP will have more flexibility but are less energy efficient when compared to \acs{asic} which are less flexible and most energy efficient. \acs{asip} or domain specific processors are more suitable for the protocol processing task and depending on their architectural characteristics they allow varying degrees of trade-off between flexibility and energy-efficiency\cite{1106752}. Resource and performance varies depending on the reconfigurable architecture and its level of abstraction\cite{6868627}.\\   
+        The rules are called as \textit{protocols} in communication systems. The software and/or hardware changes based on the protocol chosen to process the message and extract the relevant information at each layer of abstraction. Hardware solutions based on \gls{gpp}  or \gls{asic} exist \cite{5335678}\cite{558379}. GPP will have more flexibility but are less energy efficient when compared to \acs{asic} which are less flexible and most energy efficient. \acs{asip} or domain specific processors are more suitable for the protocol processing task and depending on their architectural characteristics they allow varying degrees of trade-off between flexibility and energy-efficiency \cite{1106752}. Resource and performance varies depending on the reconfigurable architecture and its level of abstraction \cite{6868627}.\\   
 
-		The design of reconfigurable hardware architecture requires the compiler to produce the configuration or the hardware compatible code\cite{5681536}. These files can be produced on run time when the application is running or in a static way before execution. The complexity of the system depends on the selected design. The hardware for processing the different protocols can be made reconfigurable. Investigation and design of such a concept is performed in this thesis work.\\ 
+		The design of reconfigurable hardware architecture requires the compiler to produce the configuration or the hardware compatible code \cite{5681536}. These files can be produced on run time when the application is running or in a static way before execution. The complexity of the system depends on the selected design. The hardware for processing different protocols can be made reconfigurable. Investigation and design of such a concept is performed in this thesis work.\\ 
 
-		The reconfigurable hardware is modeled in SystemC language using \acs{tlm}. The files required for the reconfiguration is obtained by parsing the description of protocols using the language defined by the grammar. Antlr tool is used for building the base parser file for the defined grammar and then the required functions are implemented to output the complete system and configuration files. 
+		The reconfigurable hardware is modeled in SystemC language using \acs{tlm}. The files required for the reconfiguration is obtained by parsing the description of protocols using the language defined by the grammar. Antlr tool is used for building the base parser file for the defined grammar and then the required functions are implemented to output the complete system and configuration data. 
         
 
 		
-		\subsection{Background}
-		In 1960 Gerald Estrin, proposed the idea of a fixed plus variable structure computer \cite{1114865}. It consisted of a fixed processor and an array of reconfigurable hardware which was controlled by the fixed processor. Even though the idea was demonstrated with a proof,the industry did not consider to further innovate in these field and till 1980's there were no significant developments. In  1985,the reconfigurable \gls{pla} was patented\cite{page1985re}. Innovation in \acs{pla}'s further continued with the commercially available \gls{fpga} in today's market.\\
+	%	\subsection{Background}
         
-        \acs{fpga} introduction led to the research of optimizing and reusing the reconfigurable logic blocks. The  \gls{eda} tools compile and synthesize \gls{hdls}  to create a physical design in terms of the \acs{fpga}'s resources. There were many academic and industry projects showing the concept of \gls{hls}\cite{4291932} \cite{5469564}. They operate on internal models known as control/data flow graphs (CDFG) and produces a \gls{rtl} model of the hardware implementation\cite{998629}.Increasing design complexity also created the necessity for the innovation of new \gls{eda} tools.\\ 
-                  
-
-		Ericsson AB \cite{ericsson} is a market leader in the radio base station equipments. There are different protocols being used for communication in the Radio Base Station (RBS) units. Ethernet explained by \acs{ieee} in 802.3 standard defines the protocol for 10Gbit transfer which is mainly used for communication between the silicon chips. Other protocols include \gls{cpri},Serial Rapid IO(SRIO),Xio-s(Ericsson Specific protocol) for reliable communication between chips at high data rate. Most of these protocols in MAC layer of abstraction share common functions. Ericsson design and manufacture custom \acs{asic} chips for these protocols. The common functions which can be used by different protocols for designing a reconfigurable architecture which will minimize the hardware cost and will provide more flexibility compared to ASIC chips. More details about the protocols and reconfigurable architecture is explained in Chapter 3.\\ 
-
-		The reconfigurable architecture requires a new hardware and software co-design. The reconfiguration details are extracted based on the hardware design and the compiler/mapper should be able to produce such reconfiguration. This is accomplished  by using Grammar based technique i.e by defining a language based on \gls{ebnf} grammar and then describing the protocols using this language. The overall architecture and working principle will be explained in further chapters.\\
-
-		The thesis deals with understanding the reconfigurable architecture and identifying the configuration details to make the system work for different protocols. The description in high level language is used to extract these configuration details and to verify the complete system using a test bench.\\   
-
-	
-
-
+        
+        	\subsection{Reconfigurable Systems} \label{reconf}
+            
+            	In 1960 Gerald Estrin, proposed the idea of a fixed plus variable structure computer \cite{1114865}. It consisted of a fixed processor and an array of reconfigurable hardware which was controlled by the fixed processor. Even though the idea was demonstrated with a proof, the industry did not consider to further innovate in these field and till 1980's there were no significant developments. In  1985, the reconfigurable \gls{pla} was patented \cite{page1985re}. Innovation in \acs{pla}'s further continued with the commercially available \gls{fpga} in today's market.\\
+                
+                
+            In the field of computer architecture, designers make decisions based on flexibility and performance requirement\cite{JACST518}. \acs{asic} are the least flexible in terms of adapting for any change in the application and GPP are the most flexible as they are independent of the application and the core can be programmed to make the required algorithm work at the cost of higher power and lower efficiency. ASIC and GPP lies in extreme corners of the graph between Flexibility Vs Performance as in Fig.~\ref{fig:Fig1}. Reconfigurable architectures are intended to fill the gap and provide more flexibility in terms of hardware and potentially higher performance than software\cite{JACST518}.
+            
+            \begin{figure}[!htb]
+                \centering
+                \includegraphics[scale=0.45]{Fig1}
+                \caption{Flexibility Vs Performance of Hardware Classes}
+                \label{fig:Fig1}
+            \end{figure}
+            
+            \subsubsection{Granularity} 
+            
+            Reconfigurable devices like \acs{fpga} have the configurable logic blocks(CLB) which can be configured to map the required functionality. The complexity of the function is not a concern but the number of inputs and output of the function has to be considered based on the FPGA architecture. This level of granularity in implementing the functions is called as Fine grained Reconfigurable architecture as it provides the reconfigurable granularity till lowest possible level. These reconfigurable devices are not energy efficient and the execution speed is too less than the ASIC counterpart. Another type of reconfigurable devices are the coarse grained reconfigurable architectures. These devices have the granularity at function levels. They will configure the function blocks to achieve the efficient algorithm implementation.The function blocks can vary from constant block to complex functions which are commonly used based by the application.   
+            
+            
+            \subsubsection{Reconfiguration Models}
+            The reconfigurable architectures need configuration of hardware. This can be at compile time or at runtime of an application as in  Fig.~\ref{fig:Fig2}.
+            
+            \begin{figure}[!htb]
+                \centering
+                \includegraphics[scale=0.45]{Fig2}
+                \caption{Reconfiguration Models}
+                \label{fig:Fig2}
+            \end{figure}
+            
+            In compile time reconfiguration model, the reconfigurable hardware system is configured at compile time and will be static during the application run time. In this model the programmable logic can be configured to perform some specific task like hardware accelerators to achieve high performance. FPGA configured to perform floating point multiplication together with a GPP will accelerate the performance of the application if the GPP doesn't have a Floating Point Unit.
+            In run time reconfiguration model, the reconfiguration hardware is configured at run time and will be dynamically programmed to perform different tasks. The decision for making such dynamic reconfiguration has to be embedded coupled with the application and hence it increase the overhead. The Dynamic Reprogrammable Resource Array(DRRA) fabric developed at KTH Electronic System Dept is an example of this model\cite{5351593}.   
+            
+            \subsubsection{Reconfiguration rate}
+            The Fine grain Systems will have more reconfiguration data(In FPGAs it is in term of bit streams) which leads to more time and the Coarse Grained Reconfigurable systems will have comparatively less blocks as they have higher granularity and will contain less reconfiguration data. Hence the Coarse Grain architecture will take less time to re configure. This depends on the dynamic reconfiguration architecture whether the complete fabric is reconfigured or partially reconfigured during runtime.\\ 
+        
+        
 		\subsection{Purpose}
+        
+        Ericsson AB \cite{ericsson} is a market leader in the radio base station equipments. There are different protocols being used for communication in the Radio Base Station (RBS) units. Ethernet, explained by \acs{ieee} in 802.3 standard, defines the protocol for 10Gbit transfer which is mainly used for communication between the silicon chips. Other protocols include \gls{cpri}, Serial Rapid IO (SRIO), Xio-s (Ericsson Specific protocol) for reliable communication between chips at high data rate. Most of these MAC layer protocols share common hardware functions. Ericsson design and manufacture custom \acs{asic} chips for Baseband signal processing and Radio signal processing. Data is received and transmitted from these chips by one of the agreed protocols. A reconfigurable hardware can be designed to route the data using different protocols.\\ 
+        
+        The reconfigurable architecture requires a new hardware and software co-design. The reconfiguration details are extracted based on the hardware design and the compiler/mapper should be able to produce such reconfiguration. This is accomplished  by using Grammar based technique i.e by defining a language based on \gls{ebnf} grammar and then describing the protocols using this language. The overall architecture and working principle will be explained in further chapters.\\
+        
+        The thesis deals with understanding the reconfigurable architecture and identifying the configuration details to make the system work for different protocols. The description in high level language is used to extract these configuration details and to verify the complete system using a test bench.\\   
 
 		The thesis purpose is to investigate an approach of a compiler or mapper to describe the protocols in high level language and then map it to hardware blocks and their interconnection. This involves showing the proof of concept by SystemC TLM simulation models. The Individual hardware blocks are modeled in SystemC and can vary from a simple block to complex functions of the protocols. This thesis work serves as a proof for the project in Ericsson AB to further investigate the feasibility of developing such architectures.
 
@@ -340,7 +370,7 @@
         \subsection{Problem Description}
             As explained in the previous section reconfigurable architecture with lowest granularity are available for different applications.They still face the challenges of lower speed,high energy consumption and the compatibility of tool chains between different vendors. The lowest reconfigurable granularity can be designed at bit,block or function level. When targeting hybrid architectures to improve either performance,cost or speed, the application must be partitioned in such a way that certain repetitive or computation intensive functions are mapped on a reconfigurable hardware. Such mapping is not simple as it requires deep understanding of both hardware and software design \cite{1395538}. 
             
-            Reference for below figure \cite{book}
+            
             
              \begin{figure}[!htb]
                             \centering
@@ -401,39 +431,41 @@
         \thispagestyle{plain}
 		To understand the reconfigurable hardware and its terminologies, this chapter explains in detail about the architecture and its meaning. Protocols and their common functions are also explained which helps in designing the reconfigurable protocol processors. The further sections explains the meaning of grammar and language and its terms.    
 
-
-		\subsection{Reconfigurable Systems} \label{reconf}
-
-
-		In the field of computer architecture, designers make decisions based on flexibility and performance requirement\cite{JACST518}. \acs{asic} are the least flexible in terms of adapting for any change in the application and GPP are the most flexible as they are independent of the application and the core can be programmed to make the required algorithm work at the cost of higher power and lower efficiency. ASIC and GPP lies in extreme corners of the graph between Flexibility Vs Performance as in Fig.~\ref{fig:Fig1}. Reconfigurable architectures are intended to fill the gap and provide more flexibility in terms of hardware and potentially higher performance than software\cite{JACST518}.
-
-		\begin{figure}[!htb]
-		\centering
-		\includegraphics[scale=0.45]{Fig1}
-		\caption{Flexibility Vs Performance of Hardware Classes}
-		\label{fig:Fig1}
-		\end{figure}
-
-		\subsubsection{Granularity} 
-
-		Reconfigurable devices like \acs{fpga} have the configurable logic blocks(CLB) which can be configured to map the required functionality. The complexity of the function is not a concern but the number of inputs and output of the function has to be considered based on the FPGA architecture. This level of granularity in implementing the functions is called as Fine grained Reconfigurable architecture as it provides the reconfigurable granularity till lowest possible level. These reconfigurable devices are not energy efficient and the execution speed is too less than the ASIC counterpart. Another type of reconfigurable devices are the coarse grained reconfigurable architectures. These devices have the granularity at function levels. They will configure the function blocks to achieve the efficient algorithm implementation.The function blocks can vary from constant block to complex functions which are commonly used based by the application.   
-
-
-		\subsubsection{Reconfiguration Models}
-		The reconfigurable architectures need configuration of hardware. This can be at compile time or at runtime of an application as in  Fig.~\ref{fig:Fig2}.
-
-		\begin{figure}[!htb]
-		\centering
-		\includegraphics[scale=0.45]{Fig2}
-		\caption{Reconfiguration Models}
-		\label{fig:Fig2}
-		\end{figure}
-
-		In compile time reconfiguration model, the reconfigurable hardware system is configured at compile time and will be static during the application run time. In this model the programmable logic can be configured to perform some specific task like hardware accelerators to achieve high performance. FPGA configured to perform floating point multiplication together with a GPP will accelerate the performance of the application if the GPP doesn't have a Floating Point Unit.
-		In run time reconfiguration model, the reconfiguration hardware is configured at run time and will be dynamically programmed to perform different tasks. The decision for making such dynamic reconfiguration has to be embedded coupled with the application and hence it increase the overhead. The Dynamic Reprogrammable Resource Array(DRRA) fabric developed at KTH Electronic System Dept is an example of this model\cite{5351593}.   
-
-		\subsubsection{Reconfiguration rate}
-		The Fine grain Systems will have more reconfiguration data(In FPGAs it is in term of bit streams) which leads to more time and the Coarse Grained Reconfigurable systems will have comparatively less blocks as they have higher granularity and will contain less reconfiguration data. Hence the Coarse Grain architecture will take less time to re configure. This depends on the dynamic reconfiguration architecture whether the complete fabric is reconfigured or partially reconfigured during runtime. 
+       \subsection{Coarse Grain Reconfigurable systems}
+       
+       \acs{fpga} introduction led to the research of optimizing and reusing the reconfigurable logic blocks. \acs{fpga} is a scalable chip architecture based on a 2D array of simple computational cells with individually configurable processing functions and an electronically configurable interconnect structure allowing complex application circuits to be built from the available cells \cite{5382069}. The  \gls{eda} tools compile and synthesize \gls{hdls}  to create a physical design in terms of the \acs{fpga}'s resources. This basic structure suffers from large reconfiguration overheads and large signal routing delays through the interconnect structure.\\ 
+       
+       \begin{figure}[!htb]
+           \centering
+           \includegraphics[scale=0.45]{cgra}
+           \caption{Coarse Grain Reconfigurable blocks \cite{1303110}}
+           \label{fig:cgra}
+        \end{figure}
+        
+        
+        
+        \acs{gpp} with programmed embedded software is the classical approach which tightly couples Data flow and control flow for many applications. Additional hardware units can be used to accelerate the performance or increase the throughput of the overall system. These added hardware units can be coupled to the traditional CPU  in different ways as illustrated in Fig. \ref{fig:cgra}. The coarse grain reconfiguration models have higher granularity than the \acs{fpga} counterparts. Register-mapped reconfigurable block (C1) can be created by modifying the micro-architecture for example by integrating a custom data path next to the ALU. Memory mapped reconfigurable blocks (C2) have a shared memory locations which can convey control and data flow orientation information. In Network mapped reconfigurable blocks (C3), the network packets have the control and data flow information. Table.\ref{cgra}  shows the comparison of different coarse grain reconfigurable systems. As discussed in \cite{1303110}, Network mapped systems deviates more from the classic sequential model and hence the programming model is more complicated. 
+        
+        \begin{table}[!htb]
+            \centering
+            \resizebox{\textwidth}{!}{%
+                \begin{tabular}{ccccc}
+                    \hline
+                    {\bf Mapping} & {\bf \begin{tabular}[c]{@{}c@{}}Architecture \\ Strategy\end{tabular}} & {\bf \begin{tabular}[c]{@{}c@{}}Reconfiguration\\  Mechanism\end{tabular}} & {\bf \begin{tabular}[c]{@{}c@{}}Data flow / \\ Control flow \\ Coupling\end{tabular}} & {\bf \begin{tabular}[c]{@{}c@{}}Energy \\ Efficiency\\  Improvement\end{tabular}} \\ \hline\\
+                    \begin{tabular}[c]{@{}c@{}}Register-\\ Mapped\end{tabular} & \begin{tabular}[c]{@{}c@{}}Custom \\ Datapath\end{tabular} & \begin{tabular}[c]{@{}c@{}}Custom \\ Instructions\end{tabular} & \begin{tabular}[c]{@{}c@{}}Tightly\\  Synchronized\end{tabular} & Low \\\\
+                    \begin{tabular}[c]{@{}c@{}}Memory-\\ Mapped\end{tabular} & Co processor & \begin{tabular}[c]{@{}c@{}}Memory mapped \\ instructions\end{tabular} & \begin{tabular}[c]{@{}c@{}}Loosely \\ Synchronized\end{tabular} & Medium \\\\
+                    \begin{tabular}[c]{@{}c@{}}Network-\\ Mapped\end{tabular} & Peer processor & \begin{tabular}[c]{@{}c@{}}Configuration\\  Packets\end{tabular} & Uncoupled & High \\ \hline
+                \end{tabular}
+            }
+            \caption{Coarse Grain Reconfiguration Mechanism \cite{1303110}}
+            \label{cgra}
+        \end{table}
+        
+        
+        
+        
+        There were many academic and industry projects showing the concept of \gls{hls} \cite{4291932} \cite{5469564}. They operate on internal models known as control/data flow graphs (CDFG) and produces a \gls{rtl} model of the hardware implementation \cite{998629}. Increasing design complexity also created the necessity for the innovation of new \gls{eda} tools.\\ 
+	
 
 
 		\subsection{Protocols}\label{protocols}
@@ -1618,6 +1650,28 @@ else if(type == xios){
                              keywords={high level synthesis;HLS techniques;abstraction level design;high-level synthesis;optimized RTL hardware;Application software;Assembly;Circuit simulation;Circuit synthesis;Computer architecture;Design methodology;Design optimization;Hardware design languages;High level synthesis;Space exploration;RTL abstraction;architectures;custom processors;design and test;hardware synthesis and verification;high-level synthesis}, 
                              doi={10.1109/MDT.2009.69}, 
                              ISSN={0740-7475},}
+                            
+                         @INPROCEEDINGS{5382069, 
+                             author={Mayer-Lindenberg, F.}, 
+                             booktitle={Reconfigurable Computing and FPGAs, 2009. ReConFig '09. International Conference on}, 
+                             title={High-Level FPGA Programming through Mapping Process Networks to FPGA Resources}, 
+                             year={2009}, 
+                             month={Dec}, 
+                             pages={302-307}, 
+                             keywords={codes;field programmable gate arrays;microprocessor chips;program compilers;FPGA based scalable processor networks;FPGA configuration bitstream;close-to-interactive speeds;coarse-grained processor network;floating point processing;high-level FPGA programming;high-level programming interface;mixed multicomponent FPGA;p-Nets language;process network mapping;program code;Arithmetic;Computer networks;Costs;Delay;Field programmable gate arrays;Hardware design languages;Integrated circuit interconnections;Libraries;Routing;SDRAM}, 
+                             doi={10.1109/ReConFig.2009.73},}
+                            
+                            
+                       
+                       @INPROCEEDINGS{1303110, 
+                           author={Schaumont, P. and Sakiyama, K. and Hodjat, A. and Verbauwhede, I.}, 
+                           booktitle={Parallel and Distributed Processing Symposium, 2004. Proceedings. 18th International}, 
+                           title={Embedded software integration for coarse-grain reconfigurable systems}, 
+                           year={2004}, 
+                           month={April}, 
+                           pages={137-}, 
+                           keywords={coprocessors;embedded systems;integrated software;reconfigurable architectures;system-on-chip;coarse-grain reconfigurable system;embedded software integration;energy-efficiency improvement;network-on-chip system;network-processing acceleration unit;processor network;programming complexity;run-time reconfiguration mechanism;tightly-coupled coprocessor;Acceleration;Application software;Coprocessors;Costs;Cryptography;Embedded software;Energy efficiency;Hardware;Runtime;Software systems}, 
+                           doi={10.1109/IPDPS.2004.1303110},}
                          
                                                   
 }
