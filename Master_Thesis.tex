@@ -358,7 +358,7 @@
         
 		\subsection{Purpose}
         
-        Ericsson AB \cite{ericsson} is a market leader in the radio base station equipments. There are different protocols being used for communication in the Radio Base Station (RBS) units. Ethernet, explained by \acs{ieee} in 802.3 standard, defines the protocol for 10Gbit transfer which is mainly used for communication between the silicon chips. Other protocols include \gls{cpri}, Serial Rapid IO (SRIO), Xio-s (Ericsson Specific protocol) for reliable communication between chips at high data rate. Most of these MAC layer protocols share common hardware functions. Ericsson design and manufacture custom \acs{asic} chips for Baseband signal processing and Radio signal processing. Data is received and transmitted from these chips by one of the agreed protocols. A reconfigurable hardware can be designed to route the data using different protocols.\\ 
+        Ericsson AB \cite{ericsson} is a market leader in the radio base station equipments. There are different protocols being used for communication in the Radio Base Station (RBS) units. Ethernet, explained by \acs{ieee} in 802.3 standard, defines the protocol for 10Gbit transfer which is mainly used for communication between the silicon chips. Other protocols include \gls{cpri}, Serial Rapid IO (SRIO), Xio-s (Ericsson Specific protocol) for reliable communication between chips at high data rate. Most of these MAC layer protocols share common hardware functions. Ericsson design and manufacture custom \acs{asic} chips for Baseband signal processing and Radio signal processing. Data is received and transmitted from these chips by one of the agreed protocols. A reconfigurable hardware can be designed to route the data using different protocols.\\\\ 
         
         The reconfigurable architecture requires a new hardware and software co-design. The reconfiguration details are extracted based on the hardware design and the compiler/mapper should be able to produce such reconfiguration. This is accomplished  by using Grammar based technique i.e by defining a language based on \gls{ebnf} grammar and then describing the protocols using this language. The overall architecture and working principle will be explained in further chapters.\\
         
@@ -368,7 +368,7 @@
 
 
         \subsection{Problem Description}
-            As explained in the previous section reconfigurable architecture with lowest granularity are available for different applications.They still face the challenges of lower speed,high energy consumption and the compatibility of tool chains between different vendors. The lowest reconfigurable granularity can be designed at bit,block or function level. When targeting hybrid architectures to improve either performance,cost or speed, the application must be partitioned in such a way that certain repetitive or computation intensive functions are mapped on a reconfigurable hardware. Such mapping is not simple as it requires deep understanding of both hardware and software design \cite{1395538}. 
+            As explained in the previous section reconfigurable architecture with lowest granularity are available for different applications. They still face the challenges of lower speed, high energy consumption and the compatibility of tool chains between different vendors. The lowest reconfigurable granularity can be designed at bit, block or function level. When targeting hybrid architectures to improve either performance, cost or speed, the application must be partitioned in such a way that certain repetitive or computation intensive functions are mapped on a reconfigurable hardware. Such mapping is not simple as it requires deep understanding of both hardware and software design \cite{1395538}. The know how of this process to build the complete system which solves the practical problems are of great importance. Fig.~\ref{fig:designgap} from the International Technology  Roadmap for semiconductors shows how hardware and software design productivity has lagged Moore's law. The need of configuration data for the reconfigurable hardware requires the design of new software tools.\\
             
             
             
@@ -381,7 +381,7 @@
             
             
             
-            The know how of this process to build the complete system which solves the practical problems are of great importance. The MAC layer shares the common functions among different protocols. How the reconfigurable hardware can be programmed to accomplish the protocol processing in an efficient way by designing the framework using high level description needs to be explored. This allows the user with minimal know how about hardware to reconfigure and show result in short time.
+             The \acs{rbs} receives and transmit data using different protocols. Identifying errors, providing security are some of the main features for reliable communications. Algorithms used by different protocols for providing such features differ by minor polynomial change. Identifying such functions is required for efficient reconfigurable hardware design. The designer need to have the overall understanding of hardware and software for such a system. How the reconfigurable hardware can be programmed to accomplish the protocol processing in an efficient way by designing the framework using high level description needs to be explored. High level language development provides flexibility for the designer to describe in their own syntax. The development time need to be evaluated for such an approach.  This allows the user with minimal know how about hardware to reconfigure and show result in short time.
 
 		\subsection{Goals}
 		The thesis goal is to achieve the below milestones:
@@ -418,7 +418,7 @@
         
         \textbf{chapter 6}  This chapter explains the integration of Ethernet protocol functions into the  system of files auto generated from the language application. The challenges and the mapping of input description are discussed in detail. The Xio-s protocol is also considered but part of the functions are integrated to show the context switching and highlighting the control block changes.\\
         
-        \textbf{chapter 7}  This chapter explains the conclusion and future work.\\
+        \textbf{chapter 7}  This chapter concludes the thesis by explaining the outcome of connecting 3 dots namely reconfigurable hardware, protocols and Grammar based high level description framework. The limitations encountered and the future work is discussed further.\\
         
         
         
@@ -433,7 +433,7 @@
 
        \subsection{Coarse Grain Reconfigurable systems}
        
-       \acs{fpga} introduction led to the research of optimizing and reusing the reconfigurable logic blocks. \acs{fpga} is a scalable chip architecture based on a 2D array of simple computational cells with individually configurable processing functions and an electronically configurable interconnect structure allowing complex application circuits to be built from the available cells \cite{5382069}. The  \gls{eda} tools compile and synthesize \gls{hdls}  to create a physical design in terms of the \acs{fpga}'s resources. This basic structure suffers from large reconfiguration overheads and large signal routing delays through the interconnect structure.\\ 
+       \acs{fpga} is a scalable chip architecture based on a 2D array of simple computational cells with individually configurable processing functions and an electronically configurable interconnect structure allowing complex application circuits to be built from the available cells \cite{5382069}.  \acs{fpga} introduction led to the research of optimizing and reusing the reconfigurable logic blocks. The  \gls{eda} tools compile and synthesize \gls{hdls}  to create a physical design in terms of the \acs{fpga}'s resources. This basic structure suffers from large reconfiguration overheads and large signal routing delays through the interconnect structure.\\ 
        
        \begin{figure}[!htb]
            \centering
@@ -1241,30 +1241,29 @@ else if(type == xios){
         But the Freyja Operator as explained in section \ref{operator} consists of only one interface. This need the change in architecture of operator units and a single interface will not be possible to model the Xio-s protocol. The operators can be customized by defining more strings in the operator instantiation stage. Once the architecture is modeled, the parsed input description can be used to output the architecture to match the interface requirement.     
         
         
-        context switching at process block 
+       
   
         \clearpage
 
 		\section{Conclusion and Future work}
         \vspace{1cm}
         \thispagestyle{plain}
-        This chapter concludes the thesis by describing the learning outcomes of reconfigurable architectures used for protocol processing and the framework design by grammar based language application. It also describes the limitations encountered during the thesis work and further section describes the future work specific to the thesis work and in general to the research topic. 
+        This chapter concludes the thesis by describing the learning outcomes of reconfigurable architectures used for protocol processing and the framework design by grammar based language application. It also describes the limitations encountered during the thesis work and further section describes the future work specific to the thesis and in general to the research topic. 
         
         
         \subsection{Reconfigurable architecture} \label{rconf}
            
-           Ericsson AB investigated Switch and Mesh based network topology for efficient protocol processing. Based on performance,cost,scalability and other internal factors switch based network topology named as Freyja is considered for further implementation and research. The reconfigurable hardware implemented using systemC consisted of a central switch with all the operators connected to it as explained in section \ref{freyja}.\\       
+           Ericsson AB investigated Switch and Mesh based network topology for efficient protocol processing. Based on performance, cost, scalability and other internal factors switch based network topology named as Freyja is considered for further implementation and research. The reconfigurable hardware implemented using systemC consisted of a central switch with all the operators connected to it as explained in section \ref{freyja}.\\       
            
-           The design of a new architecture require manually setting up simulations,estimation of resources and synthesizing the hardware which consists of system,logic and physical synthesis. This is a time consuming process and decreases the productivity of the research. Research project called TACO(Tools for Application-specific Hardware/Software Codesign) at university of Turku, explains the functions,features and capabilities required by such a tool \cite{taco}. One such requirement is importing architecture details in the tool from systemC top level files. The same approach is carried in Freyja architecture by abstracting the systemC details into the high level description.\\ 
+           The design of a new architecture require manually setting up simulations, estimation of resources and synthesizing the hardware which consists of system, logic and physical synthesis. This is a time consuming process and decreases the productivity of the research. Research project called TACO(Tools for Application-specific Hardware/Software Codesign) at university of Turku, explains the functions, features and capabilities required by such a tool \cite{taco}. One such requirement is importing architecture details in the tool from systemC top level files. The same approach is applied in Freyja architecture by abstracting the systemC details into the high level description.\\ 
            
-           The main objective of this work is to show the complete process of mapping from high level description to the system level implementation. The features mapped consisted of different operator instantiation,interconnections,memory,error handling and routing to multiple destinations from each operators for different protocols. In general protocol processors are more complex including features like Flow control,FIFOs,arbitration mechanism,latency of each computation,dead lock avoidance etc.\\    
+           The main objective of this work is to show the complete process of mapping from high level description to the system level implementation. The features mapped consisted of different operator instantiation, interconnections, memory, error handling and routing to multiple destinations from each operators for different protocols. In general protocol processors are more complex including features like Flow control, FIFOs, arbitration mechanism, latency of each computation, dead lock avoidance etc.         
+            Mapping of such finer details in the high level description will be straight forward with the approach presented in this work.
+           For example the FIFOs can be instantiated similar to the Operator instantiation by extending the grammar. The FIFO block can be further configured with the variable depth of the buffer and signaling the overloading because of back pressure. How these details are represented in high level description depends on the architecture implementation. Another example of extension is to extend the grammar to hold the latency of each operator.\\
            
-           The mapping of such finer details in the high level description will be straight forward with the approach presented in this work.
-           For example the FIFOs can be instantiated similar to the Operator instantiation by extending the grammar. The FIFO block can be further configured with the variable depth of the buffer and signaling the overloading because of back pressure. How these details are represented in high level description depends on the architecture implementation. Another example of extension is to extend the grammar to hold the latency of each operator.
+           The same framework can be used at different levels of synthesis to output the required files for the architecture. This reduces the time to reconfigure and setup the environment. For all these to accomplish, the reconfigurable architecture should be known. The framework can be adapted based on the architecture. The approach in this work shows the concept of mapping few core features which are easy to extend for more refined details.\\
            
-           The same framework can be used at different levels of synthesis to output the required files for the architecture. This reduces the time to reconfigure and setup the environment. For all these to accomplish, the reconfigurable architecture should be defined. The framework can be adapted based on the architecture. The approach in this work shows the concept of mapping few core features which are easy to extend for more refined details.\\
-           
-           Apart from abstracting high level architecture details, the core functions of each operator can also be represented using high level description. More research in academia and industry have already proved the concept. These tools input from Algorithms to Register Transfer level (ALU,Reg,Mux). This transformation is called as High level synthesis \cite{hls} \cite{5209958}.\\
+           Apart from abstracting high level architecture details, the core functions of each operator can also be represented using high level description. More research in academia and industry have already proved the concept. These tools input from Algorithms to Register Transfer level (ALU, Reg \& Mux). This transformation is called as High level synthesis \cite{hls} \cite{5209958}.\\
            
            
         \subsection{Protocol sharing} 
@@ -1274,7 +1273,7 @@ else if(type == xios){
          The implemented work shows the concept of mapping one resource to different protocols. Sharing requires arbitration algorithms to decide who can access the operator at any instant of time. It can be based on priority. However mathematical tools like Matlab can be used to implement the equations and calculate the resource usage. More utilized resources like CRC computation can be replicated for avoiding the back pressure. TACO project \cite{taco} provides a similar research conclusion for the protocol processor which exploits the resource sharing at logic levels. The tool identifies the common hardware blocks and creates multiple cores of them to meet the constraints. Similar approach can be extended with Freyja architecture for frequently used operators.\\
          
          
-         Some bottlenecks would be the memory interface and token access from higher layers. The system needs to be configured with different feasible combinations for higher throughput. In future,these details can be abstracted to high level description for configure the overall system.  
+         Some bottlenecks would be the memory interface and token access from higher layers. The system needs to be configured with different feasible combinations for higher throughput. In future, these details can be abstracted to high level description for configure the overall system.  
         
         \subsection{Language framework}
         
@@ -1837,10 +1836,10 @@ PL[20]
 \subsubsection*{LookAhead parser}  It defines the number of tokens accessible to the parser in making decisions at each point. 
 
 
-\subsubsection*{Left recursion} 
+\subsubsection*{Left recursion} A grammar is left recursive if there a non terminal symbol which is derived in such a way that it exist as the left most symbol.  
 
-\subsubsection*{context free grammar}
+\subsubsection*{context free grammar} A formal grammar is context free when its production rules can be applied regardless of the context of a non terminal.
 
-\subsubsection*{Regular grammar}
+%\subsubsection*{Regular grammar} 
 
 \end{document}
