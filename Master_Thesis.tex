@@ -309,9 +309,9 @@
         \end{table}
         
        
-        The rules are called as \textit{protocols} in communication systems. The software and/or hardware changes based on the protocol chosen to process the message and extract the relevant information at each layer of abstraction. Hardware solutions based on \gls{gpp}  or \gls{asic} exist \cite{5335678}\cite{558379}. GPP will have more flexibility but are less energy efficient when compared to \acs{asic} which are less flexible and most energy efficient. \acs{asip} or domain specific processors are more suitable for the protocol processing task and depending on their architectural characteristics they allow varying degrees of trade-off between flexibility and energy-efficiency \cite{1106752}. Resource and performance varies depending on the reconfigurable architecture and its level of abstraction \cite{6868627}.\\   
+        The rules are called as \textit{protocols} in communication systems. They help in exchange of information between the digital systems. Most of the higher layers (4 to 7) are processed through generic computer systems and the lower layers with dedicated embedded hardware. Such a design consists of a general purpose processor which can adapt for different application. \gls{gpp} found in embedded systems cover a broad range from 8 bit low cost micro controllers, to 32 bit RISC micro processors, to todays high performance processors with DSP enhancements.  These can be considered as hybrid processors which incorporated signal processing features into embedded hardware that unify control and signal processing in a single core. For communication domain, a network processor, is a programmable microprocessor optimized for processing network data packets. Common functions include header parsing, pattern matching, bit manipulation, packet modification, shift and data movement. Software programmability of network processors allows it to be more flexible across a range of applications. Even though all network processors are programmable, the user might not be given access for programming restricting the programmability with vendors. Other \gls{gpp} can also be programmed for protocol processing as they are less expensive. The software and/or hardware changes based on the protocol chosen to process the message and extract the relevant information at each layer of abstraction. Solutions based on \gls{gpp}  or \gls{asic} exist \cite{5335678}\cite{558379} for protocol processing. GPP will have more flexibility but are less energy efficient when compared to \acs{asic} which are less flexible and most energy efficient. \acs{asip} or domain specific processors are more suitable for the protocol processing task and depending on their architectural characteristics they allow varying degrees of trade-off between flexibility and energy-efficiency \cite{1106752}.\\   
 
-		The design of reconfigurable hardware architecture requires the compiler to produce the configuration or the hardware compatible code \cite{5681536}. These files can be produced on run time when the application is running or in a static way before execution. The complexity of the system depends on the selected design. The hardware for processing different protocols can be made reconfigurable. Investigation and design of such a concept is performed in this thesis work.\\ 
+	     Another class of hardware architecture called as Reconfigurable architectures, are devices that contain programmable function blocks and programmable interconnects between function blocks. The most mature class of reconfigurable architectures is \gls{fpga} which are considered fine-grained reconfigurable architectures. Recent advance research in these field have led to the Coarse grain reconfigurabe architectures and reconfigurable computing platforms. Resource and performance varies depending on the reconfigurable architecture and its level of abstraction \cite{6868627}.	The design of coarse grain reconfigurable hardware architecture requires the compiler to produce the configuration or the hardware compatible code \cite{5681536}. These files can be produced on run time when the application is running or in a static way before execution. The complexity of the system depends on the selected design.\\ 
 
 		The reconfigurable hardware is modeled in SystemC language using \acs{tlm}. The files required for the reconfiguration is obtained by parsing the description of protocols using the language defined by the grammar. Antlr tool is used for building the base parser file for the defined grammar and then the required functions are implemented to output the complete system and configuration data. 
         
@@ -319,8 +319,23 @@
 		
 	%	\subsection{Background}
         
+        \subsection{Hardware and Programming}
         
-        	\subsection{Reconfigurable Systems} \label{reconf}
+        Back in old days, till late 1960s, ICs were designed, optimized, and laid out by hand. Gate level simulation appeared in the early 1970s, and cycle based simulation became available by 1979. Place and Route, schematic circuit capture, formal verification and static timing analysis techniques were introduced during the 1980s. Meanwhile Gajski and Kuhn introduced the Y chart for describing  
+        the hardware as 3 different domains namely \textit{Behavioural Domain}, the \textit{Structural Domain} and the \textit{Physical Domain} \cite{1654264}. It represents different levels of hardware abstraction which are indicated by concentric circles as shown in  Fig.~\ref{fig:Gajski}. The three axis represents the 3 different domains and the synthesis can be viewed as a process of transformation from one axis to another and/or from higher level to lower level. Behavioural domain describes the functional behavior of the system. Structual domain maps the hardware into subsystems and how they are interconnected. Geometrical domain represents the geometric properties of the system and its subsystems. Each intersection points of domains and concentric circles represents different abstraction levels with respect to their domains. Simulation tools to represent the hardware are widely adapted during 1980s based on hardware description languages such as Verilog(1986) and VHDL(1987).\\ 
+        
+        
+        \begin{figure}[!htb]
+            \centering
+            \includegraphics[scale=0.55]{Gajski}
+            \caption{Domains and level of description in Gajski Y-chart}
+            \label{fig:Gajski}
+        \end{figure}
+        
+        
+        In software domain, similar to the hardware domain, progress in design methodologies for programming the hardware have helped with today's sophisticated hardware independent compiler environment. Machine code i.e binary sequence was once the only means of programming the hardware. In 1950s, assembly level programming was introduced which abstracted the programming through one step higher. With the compilers becoming more intelligent, High level languages evolved and associated compilation techniques were developed to improve software productivity. High level languages like C, C++, Java etc are platform independent and provide the user with flexibility and  portability by hiding details of hardware architecture. With the new hardware architecture becoming more complex in nature, the software applications are developed to provide good solutions which are in parallel becoming more complex. 
+        
+        \subsection{Reconfigurable Systems} \label{reconf}
             
             	In 1960 Gerald Estrin, proposed the idea of a fixed plus variable structure computer \cite{1114865}. It consisted of a fixed processor and an array of reconfigurable hardware which was controlled by the fixed processor. Even though the idea was demonstrated with a proof, the industry did not consider to further innovate in these field and till 1980's there were no significant developments. In  1985, the reconfigurable \gls{pla} was patented \cite{page1985re}. Innovation in \acs{pla}'s further continued with the commercially available \gls{fpga} in today's market.\\
                 
@@ -336,7 +351,7 @@
             
             \subsubsection{Granularity} 
             
-            Reconfigurable devices like \acs{fpga} have the configurable logic blocks(CLB) which can be configured to map the required functionality. The complexity of the function is not a concern but the number of inputs and output of the function has to be considered based on the FPGA architecture. This level of granularity in implementing the functions is called as Fine grained Reconfigurable architecture as it provides the reconfigurable granularity till lowest possible level. These reconfigurable devices are not energy efficient and the execution speed is too less than the ASIC counterpart. Another type of reconfigurable devices are the coarse grained reconfigurable architectures. These devices have the granularity at function levels. They will configure the function blocks to achieve the efficient algorithm implementation.The function blocks can vary from constant block to complex functions which are commonly used based by the application.   
+            Reconfigurable devices like \acs{fpga} have the configurable logic blocks(CLB) which can be configured to map the required functionality. The complexity of the function is not a concern but the number of inputs and output of the function has to be considered based on the FPGA architecture. This level of granularity in implementing the functions is called as Fine grained Reconfigurable architecture as it provides the reconfigurable granularity till lowest possible level. These reconfigurable devices are not energy efficient and the execution speed is too less than the ASIC counterpart. Another type of reconfigurable devices are the coarse grained reconfigurable architectures. These devices have the granularity at function levels. They will configure the function blocks to achieve the efficient algorithm implementation.The function blocks can vary from constant block to complex functions which are commonly used by the application.   
             
             
             \subsubsection{Reconfiguration Models}
@@ -431,9 +446,38 @@
         \thispagestyle{plain}
 		To understand the reconfigurable hardware and its terminologies, this chapter explains in detail about the architecture and its meaning. Protocols and their common functions are also explained which helps in designing the reconfigurable protocol processors. The further sections explains the meaning of grammar and language and its terms.    
 
-       \subsection{Coarse Grain Reconfigurable systems}
+       \subsection{Fine Grain Reconfigurable systems}
        
-       \acs{fpga} is a scalable chip architecture based on a 2D array of simple computational cells with individually configurable processing functions and an electronically configurable interconnect structure allowing complex application circuits to be built from the available cells \cite{5382069}.  \acs{fpga} introduction led to the research of optimizing and reusing the reconfigurable logic blocks. The  \gls{eda} tools compile and synthesize \gls{hdls}  to create a physical design in terms of the \acs{fpga}'s resources. This basic structure suffers from large reconfiguration overheads and large signal routing delays through the interconnect structure.\\ 
+        Fine grain reconfigurable logic arrays have evolved into commercially available \acs{fpga}s. They are scalable chip architecture based on a 2D array of simple computational cells with individually configurable processing functions and an electronically configurable interconnect structure allowing complex application circuits to be built from the available cells \cite{5382069}.  
+        
+        \begin{figure}[!htb]
+            \centering
+            \includegraphics[scale=0.45]{fpga}
+            \caption{Field Programmable Gate Array \cite{xilinx}}
+            \label{fig:fpga}
+        \end{figure}
+        
+        
+        Fig.~\ref{fig:fpga} shows the FPGA architecture with a matrix of Configurable Logic Blocks (CLBs) connected through programmable interconnects. The CLB is the basic logic unit in a FPGA wherein the number of such units in each device varies depending on price. Each CLB consists of a configurable switch matrix with 4 or 6 inputs, some selection circuitry and flip-flops. The highly flexible switch matrix can be configured to handle combinatorial logic, shift registers or RAM \cite{xilinx}. IOBs refers to the Basic select IO structure. The interconnect routes the signals between CLBs and to and from IOs. Most of the modern FPGA boards include the Embedded block RAM and Digital Clock Management (DCM).\\  
+        
+        
+         \begin{figure}[!htb]
+             \centering
+             \includegraphics[scale=0.55]{clb}
+             \caption{Configurable Logic block \cite{xilinx}}
+             \label{fig:clb}
+            \end{figure}
+        
+        
+        \acs{fpga} introduction led to the research of optimizing and reusing the reconfigurable logic blocks. The  \gls{eda} tools compile and synthesize \gls{hdls}  to create a physical design in terms of the \acs{fpga}'s resources. They are attractive compared to the ordinary CPUs because of less power consumption per computation and price per performance \cite{839320}. Despite these merits, FPGAs have still achieved limited applicability in industries. The main reason is that most software programmers lacks the knowledge of hardware description languages which are used to describe the complex algorithms in FPGAs. FPGA programming requires a more rigorous development process, involving training the programmers beyond application level, resulting in an increase in development cost and time to market.\\
+        
+        To overcome the problems stated above, research on mapping high level description to rtl level started. The growing capabilities of silicon technology and the increasing complexity of applications in recent decades have also forced design methodologies and tools to move to higher abstraction levels. This methodology is called as High Level Synthesis (HLS). HLS enables the automatic synthesis of high level, untimed or partially timed specification (SystemC) to a low-level cycle accurate register transfer level (RTL) specifications for efficient implementations in ASICs or FPGAs.  During the 1990s, the first generation of commercial HLS tools was available  \cite{5209958}. HLS tools helped the designer to use High Level Languages (HLLs) for FPGA programming similar to processor programming. The latest generation of HLS tools, in most cases, uses either ANSI C, C++, or languages such as SystemC that are based on C or C++ that add hardware-specific constructs such as timing, hardware hierarchy, interface ports, signals, explicit specification of parallelism, and others \cite{5209958}. Some of the commercial HLS tools are Mentor's Catapult C, Forte's Cynthesizer, Cadence C-to-Silicon, NEC's CyberWorkbench and a new French company \textit{Synflow}  tool has its own language named Cx.\\
+        
+        FPGA requires the reconfiguration of programmable fabric either before the program execution or partial reconfiguration on the fly when the program is running. The streaming and multimedia application requires the reconfiguration of fabric on the fly to optimally utilize the fabric. As FPGAs have granularity at the lowest possible bit level, the reconfiguration data is huge and the time for the hardware to reconfigure increases with the complexity. Most of the data handled in real world is either in Byte or word width and reconfiguring the interconnect at bit level can be abstracted at hardware level. This reduces the overhead of reconfiguring each bits. Similarly the commonly used combinatorial logics can be defined as standards for the custom design with the standard set of reconfiguration details. These features will reduce the amount of data and time required for reconfiguration and such a hardware class is called as Coarse Grain Reconfigurable Logic.   
+        
+         \subsection{Coarse Grain Reconfigurable systems}
+       
+      
        
        \begin{figure}[!htb]
            \centering
@@ -469,6 +513,24 @@
 
 
 		\subsection{Protocols}\label{protocols}
+        
+        The most commonly used protocols in the wireless base stations are discussed briefly in below section. 
+        
+        \subsubsection*{Gb Ethernet (GbE)}  Is used for low rate signaling paths for which latency is not critical. It supports communication over a wide variety of physical media and transmission ranges, and is therefore well-suited for inter-module communication. 
+        
+        \subsubsection*{10 Gb Ethernet (10GbE)} It is increasingly being used for critical low-latency, fast-path communication. The data rate is consistent with the throughput and latency requirement of typical macrocell base stations.  Like all Ethernet variants 10GbE can support communication over a wide variety of physical media and transmission ranges and is well suited for inter module communication  
+        
+        \subsubsection*{Serial Rapid I/O (SRIO)} Is used for low latency, fast path communication, particularly within the BBU (Baseband Unit). SRIO is flexible serial interface standard which is well suited to these requirements. It offers the possibility of very high throughput (5 Gb/s and 6.25 Gb/s) per lane (v2) with low latency. The range of components which support SRIO is more limited than
+        Ethernet but many components associated with wireless baseband processing have adopted it as their principal high-speed data interface. SRIO is less widely used on general-purpose processors (GPPs); hence, its utilization is often limited to the BBU application.
+        
+        \subsubsection*{Peripheral Component Interconnect Express ( PCIe) }  is sometimes used for both slow- and fast-path communication within the base station. It is able to support high data rates (5 Gb/s per lane [v2] and 8 Gb/s [v3] ) and low latency. Its use is less widespread in wireless base stations than either Ethernet or SRIO, and it is normally used to provide connectivity to a GPP. 
+
+        \subsubsection*{Processor local buses} have been used to provide intra-module communication between a host GPP and its peripherals. Such interfaces are used to support both slow- and fast-path communication. This type of architecture is now rarely used in new designs and has largely been superseded by serial interfaces and/or Ethernet-based interconnect systems
+
+
+        \subsubsection*{Proprietary interfaces like Xio-s}  can be used to provide slow- and fast-path communication within the
+        base station when the system designer has control of both ends of the link. 
+
 
 		The communication between chips in Radio Base station equipments has many protocols to fulfill the requirements of the specification. The protocols differ by standards. The different protocols being used at Ericsson AB and related to this thesis work are described below:  
 
@@ -733,20 +795,9 @@
 	
 
 	
-		\subsection{Environment and Tools}
-         The EBNF description of the grammar is used by the Antlr4 tool to parse the input file and  produce the source and configuration files of the architecture. The hardware modeling is achieved by using SystemC and the verification by \gls{uvm}. 
-        
-           
-        \subsubsection{SystemC}
-         SystemC is an ANSI standard C++ class library for system and hardware design for use by designers and architects who need to address complex systems that are hybrid between hardware and software \cite{1617814}. It helps in modeling the concurrent processes. This makes it possible to model the hardware which are concurrent systems by nature.  
-        
-        \subsubsection{TLM}
-         Transaction level Modeling is the approach of abstracting the lower implementation details of the function units and representing the overall system architecture. TLM helps in modeling the communication and the function unit implementation separately \cite{tlm}. The Transaction refers to the set of data being exchanged. TLM speeds up the simulation by replacing a set of pin level events with a single function call.TLM 2.0 standard is used for the implementation of the bus system.\\
-         
-         
-         
-       \subsubsection{UVM}
-       Universal Verification Methodology(UVM) is a verification methodology based on the best features of OVM(Open verification Methodology) and Verification Methodology Manual(VMM) \cite{uvm}. A Base version of UVM is used to verify the functionality of the architecture.  
+	
+       
+       
        
 		\clearpage
 
@@ -765,6 +816,100 @@
                 \item{Test the developed system}
                \end{itemize} 
        
+      
+      	\subsection{System-Level Modeling}
+          
+          Hardware system requires modeling concepts that allow designers to explore different aspects of the system. These concepts include communication, time, structure, hierarchy etc. As explained in Fig.~\ref{fig:Gajski}, there are different domains of abstraction and views in which development phases varies.  For example in software, designers carry performance exploration to identify bottlenecks with respect to time, excluding the lower hardware details. Y chart maps the different modeling styles of hardware as 3 different domains. In order to represent the hardware in these domains at different abstraction levels, an executable model is required. The designer should be able to model different aspects of hardware, it should be scalable, possible to simulate, test and verify the functions. The Register transfer level description of the hardware is synthesized into gate level netlist by logic synthesis tools. This level of hardware abstraction describes signal transition between synchronously clocked registers. Traditional modeling languages have emphasized the hardware design flow, whereas the recent languages have incorporated concepts for efficient modeling at system level. With traditional languages like VHDL/Verilog which are more used for rtl level, it takes too much time to develop for architectural exploration and software development. They also have poor performance i.e takes longer time to simulate complex systems and are not available early in the development phase. In this section, Transaction Level Modeling (TLM) is introduced which is an alternative to traditional approaches for efficient abstraction and exploration of architectural details. Transaction level modeling is supported in languages such as SystemC and SpecC by abstract channels that connect communicating modules.\\
+          
+          
+          \subsubsection{Language comparison}
+          
+          Several languages have emerged to address various aspects of system design. Fig.~\ref{fig:languagec} illustrates the comparison of different languages. Although Ada and Java have proven their value, C/C++ is predominately used today for embedded system software. The Hardware description languages, VHDL and Verilog,  are used for simulating and synthesizing digital circuits. With the increase in design complexity, with multi million gates being fabricated, the increase in pressure to get design out faster with first time design success is also higher. Many new languages are used in industries which helps in designing the higher abstraction models of hardware to be used for function verification and software validation. Systemverilog helped the designer with more constructs compared to Verilog, which address many hardware-oriented system design issues.       
+          
+          
+          \begin{figure}[!htb]
+              \centering
+              \includegraphics[scale=0.5]{languagec}
+              \caption{Hardware description languages and abstraction levels \cite{groundup}}
+              \label{fig:languagec}
+            \end{figure}
+            
+            SystemC is an ANSI standard C++ class library for system and hardware design for use by designers and architects who need to address complex systems that are hybrid between hardware and software \cite{1617814}. SystemC provide an event-driven simulation kernel in C++, together with signals, events, and synchronization primitives, deliberately mimicking the hardware description languages VHDL and Verilog. Matlab and several other tools are widely used for capturing system requirements and developing signal processing algorithms. 
+            
+            \subsubsection{Transaction Level Modeling}
+            
+            Transaction level models use abstract channels to model communication between concurrent processes in the system using function calls \cite{tlm}. In RT level each bit is instantiated as a port and hence in TLM level it can be abstracted to a byte, word or according to the architecture requirement. Also the signal assignments of individual bits in RT level are abstracted with function calls which either sends or receive the transaction. A transaction can be defined as exchange of information between processes in the simulation. It may contain complex data structure with control and data information, burst of data or a simple word of data packet. Time within TLM components are modeled as untimed, approximately or cycle accurate \cite{ARM:07}.\\
+            
+            Transaction level modeling complements RT-level modeling, in order to perform following activities \cite{groundup} :
+            
+            \begin{itemize}
+                \item{Hardware micro-architecture exploration and starting point for more detailed hardware modeling.} 
+                
+                \item{System level architectural exploration, such as selecting communication and processing components and HW/SW partitioning.} 
+                
+                \item{Virtual platform for software development.}
+                
+                \item{Reference model for hardware functional verification. }
+            \end{itemize}
+            
+            Transaction level modeling is supported by languages like SystemC and SpecC. The communicating modules which are either initiators or targets are connected through channels. An initiator will start sending the transaction while the target will respond to the initiator request. Arbitration and routing algorithms are necessary for multiple initiators and targets to communicate in the system. The arbitration algorithm selects the initiator to be given access to the channel, and the routing algorithm assures that the correct target is addressed by transaction information. All these concepts are used to model the interconnects found in SoCs. 
+            
+            
+            \subsubsection{SystemC}
+            
+            SystemC is a system design language that has evolved in response to a pervasive need for a language that improves overall productivity for designers of electronic systems \cite{groundup}. The open SystemC initiative (OSCI) formed in 1999, maintained a simulation library for SystemC. In December 5.2011, Accellera Systems Initiative was formed by the merger of Accellera and the Open SystemC Initiative. It is a C++ library that contains routines and macros to simulate concurrent processes using HDL like semantic. SystemC is now the IEEE Std. 1666 for system-level modeling, design and verificaiton. It offers real productivity gains for the designer by providing hardware and software components design in parallel, but at a high level of abstraction. This higher level of abstraction gives the design team a fundamental understanding early in the design process of the intricacies and interactions of the entire system and enables better system trade offs, better and earlier verification, and over all productivity gains through reuse of early system models as executable specifications \cite{groundup}.\\
+            
+            \begin{figure}[!htb]
+                \centering
+                \includegraphics[scale=0.5]{Systemc}
+                \caption{Layered SystemC Architecture}
+                \label{fig:Systemc}
+            \end{figure}
+            
+            
+            
+            Fig.~\ref{fig:Systemc} illustrates the layered architecture of SystemC. The shaded blocks are the SystemC core language standard, build upon standard C++. The layers above the standards are additional libraries available for system-level design and verification. A SystemC module encapsulates processes, which describe behavior, and communicates through ports and channels with other SystemC modules. Processes are used to describe concurrency and wait-statements are used to halt process execution for a specific time or until an event occurs. The OSCI SystemC TLM library contains ports, interfaces, channels, and also data structures used to represent request and response in an initiator-to-target communication scenario. The C++ notion of header (.h file) is used for entity and the notion of implementation (.cpp file) for the architecture. Hardware by nature is concurrent and modeling it through simulation on a host processor is an illusion. It is accomplished by simulating each concurrent unit (defined as SC\_METHOD, SC\_THREAD or SC\_CTHREAD). Each unit is allowed to execute until simulation of the other unit is required. The simulation of concurrency is the same for SystemC, Verilog, VHDL or any other Hardware Description Languages. The simulator kernel will handle these tasks. \\
+            
+            In TLM2.0, an \textit{initiator} is a module that initiates the transaction and a \textit{target} is a module that responds to transaction initiated by other module. The same module can act as an initiator and as a target for example in the case of modeling a bus or a router. TLM2.0 uses sockets to send/receive transaction. 
+            
+            
+            \begin{figure}[!htb]
+                \centering
+                \includegraphics[scale=0.5]{sockets}
+                \caption{Initiator and Target sockets}
+                \label{fig:sockets}
+            \end{figure}
+            
+            An interconnect is a component which doesn't modify the transaction but merely forward the transaction.  Fig.~\ref{fig:sockets} illustrates the different ways of function calls for data exchange through transaction. The TLM2.0 library utils provide the simple initiator and simple target sockets for user convenience. These are used in modeling the reconfigurable architecture discussed in further section together with sockets which allow transactions to be sent to multiple destinations.
+            
+            \begin{figure}[!htb]
+                \centering
+                \includegraphics[scale=0.45]{multisocket}
+                \caption{Many to many binding}
+                \label{fig:multisocket}
+            \end{figure}
+            
+            The transaction being routed can be represented by a simple data structure provided by TLM2.0 utils called as Generic payload. It has standard set of bus attributes like command, address, data, byte enables, streaming width, and response status. The command can be either write or read, data attribute points to a data buffer within the initiator and the data length attribute will give the length of the data array. The streaming width attribute specifies the width of a streaming burst where the address repeats itself. This Generic payload is modeled in each of the reconfigurable operator blocks for initiating the transaction and the attributes are handled accordingly.    
+            
+            
+            \subsubsection{Verification using UVM}
+            
+            While in the early days, digital designs were verified by looking at waveforms and performing manual checks. This is a very tedious and time consuming task for the present day complex systems. So automating the verification process using better and efficient framework is always preferred. The SystemVerilog language came to aid many verification engineers. Its features like classes, covergroups and constraints have helped verifying complex digital systems. Later Verification Methodologies started to appear. \gls{uvm} is one of the methodologies that were created from the need to automate verification. Universal Verification Methodology(UVM) is a verification methodology based on the best features of OVM(Open verification Methodology) and Verification Methodology Manual(VMM) \cite{uvm}.\\
+            
+            
+            \begin{figure}[!htb]
+                \centering
+                \includegraphics[scale=0.45]{sequencer}
+                \caption{UVM Sequencer}
+                \label{fig:sequencer}
+            \end{figure}
+            
+            
+            The first step in verifying the designed system is by defining what kind of data to be sent to the Design under Test. Detailed architecture of UVM is not discussed as it is out of the thesis scope. Only features relevant to the work are summarized. A transaction can be built form uvm\_transaction or uvm\_sequence\_item classes similar to the transaction in SystemC. The "random" keyword is used to generate transaction according to the constraints. The sequencer is responsible for sending the transaction to the driver component which in turn connects to the Design Under Test.
+            
+      
+      
+      
        The study of the architecture is explained in detail in the next section. The further sections explains the process involved in achieving the remaining steps. 
        
        \subsection{Freyja Architecture} \label{freyja}
@@ -1515,6 +1660,17 @@ else if(type == xios){
                             
                             
                             
+                        @MISC{xilinx,
+                            author = {},
+                            title = {Xilinx, All programmable},
+                            month = Aug,
+                            year = {2015},
+                            howpublished = "\url{http://www.xilinx.com/fpga/}",
+                            note = "[Online; accessed 1-Sept-2015]",
+                            url = {http://www.xilinx.com/fpga/}}  
+                            
+                            
+                            
                         @MISC{iethernet,
                             author = {},
                             title = {IEEE Standard for Ethernet},
@@ -1636,6 +1792,17 @@ else if(type == xios){
                               isbn = {978-1-4020-8588-8},
                               publisher = {Springer Netherlands},
                             } 
+                            
+                            @book{groundup,
+                                author = {David C. Black, Jack Donovan},
+                                title = {SystemC: From the Ground Up},
+                                year = {2004},
+                                isbn = {978-0-387-30864-7},
+                                publisher = {Springer US},
+                               }  
+                           
+                           
+                           
                          
                          @ARTICLE{5209958, 
                              author={Coussy, P. and Gajski, D.D. and Meredith, M. and Takach, A.}, 
@@ -1671,6 +1838,55 @@ else if(type == xios){
                            pages={137-}, 
                            keywords={coprocessors;embedded systems;integrated software;reconfigurable architectures;system-on-chip;coarse-grain reconfigurable system;embedded software integration;energy-efficiency improvement;network-on-chip system;network-processing acceleration unit;processor network;programming complexity;run-time reconfiguration mechanism;tightly-coupled coprocessor;Acceleration;Application software;Coprocessors;Costs;Cryptography;Embedded software;Energy efficiency;Hardware;Runtime;Software systems}, 
                            doi={10.1109/IPDPS.2004.1303110},}
+                        
+                        @ARTICLE{839320, 
+                            author={DeHon, A.}, 
+                            journal={Computer}, 
+                            title={The density advantage of configurable computing}, 
+                            year={2000}, 
+                            volume={33}, 
+                            number={4}, 
+                            pages={41-49}, 
+                            keywords={field programmable gate arrays;reconfigurable architectures;DNA sequence matching;FPGAs;RSA decryption;absolute performance;configurable computing;configurable machines;cryptographic attacks;emulation;programmable computing;signal processing;Acceleration;Array signal processing;Computer applications;Cryptography;DNA computing;Digital signal processing;Emulation;Field programmable gate arrays;Microprocessors;Sequences}, 
+                            doi={10.1109/2.839320}, 
+                            ISSN={0018-9162}, 
+                            month={Apr},}
+                        
+                        @ARTICLE{5209958, 
+                            author={Coussy, P. and Gajski, D.D. and Meredith, M. and Takach, A.}, 
+                            journal={Design Test of Computers, IEEE}, 
+                            title={An Introduction to High-Level Synthesis}, 
+                            year={2009}, 
+                            volume={26}, 
+                            number={4}, 
+                            pages={8-17}, 
+                            keywords={high level synthesis;HLS techniques;abstraction level design;high-level synthesis;optimized RTL hardware;Application software;Assembly;Circuit simulation;Circuit synthesis;Computer architecture;Design methodology;Design optimization;Hardware design languages;High level synthesis;Space exploration;RTL abstraction;architectures;custom processors;design and test;hardware synthesis and verification;high-level synthesis}, 
+                            doi={10.1109/MDT.2009.69}, 
+                            ISSN={0740-7475}, 
+                            month={July},}
+                        
+                        @ARTICLE{1654264, 
+                            author={Gajski, D.D. and Kuhn, R.H.}, 
+                            journal={Computer}, 
+                            title={Guest Editors' Introduction: New VLSI Tools}, 
+                            year={1983}, 
+                            volume={16}, 
+                            number={12}, 
+                            pages={11-14}, 
+                            keywords={Algorithm design and analysis;Computer graphics;Design automation;Design optimization;Expert systems;Integrated circuit synthesis;Programmable logic arrays;Special issues and sections;Very large scale integration}, 
+                            doi={10.1109/MC.1983.1654264}, 
+                            ISSN={0018-9162}, 
+                            month={Dec},}
+                        
+                        @inproceedings{ARM:07,
+                            author = {Chulho Shin and Peter Grun and Nizar Romdhane and Christopher Lennard and Gabor Madl and Sudeep Pasricha and Nikil Dutt and Mark Noll},
+                            title = {{Enabling heterogeneous cycle-based and event-driven simulation in a design flow integrated using the SPIRIT consortium specifications}},
+                            journal = {{Design Automation for Embedded Systems}},
+                            volume = {11},
+                            number = {2--3},
+                            year = {2007},
+                            month = {September}
+                        }
                          
                                                   
 }
