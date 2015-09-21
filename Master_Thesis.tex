@@ -171,7 +171,7 @@
 		% way by the title page.
         
         
-         \section*{}
+        % \section*{}
          \thispagestyle{empty}
         %  \begin{figure}[!htb]
               {\centering
@@ -473,11 +473,31 @@
         
         To overcome the problems stated above, research on mapping high level description to rtl level started. The growing capabilities of silicon technology and the increasing complexity of applications in recent decades have also forced design methodologies and tools to move to higher abstraction levels. This methodology is called as High Level Synthesis (HLS). HLS enables the automatic synthesis of high level, untimed or partially timed specification (SystemC) to a low-level cycle accurate register transfer level (RTL) specifications for efficient implementations in ASICs or FPGAs.  During the 1990s, the first generation of commercial HLS tools was available  \cite{5209958}. HLS tools helped the designer to use High Level Languages (HLLs) for FPGA programming similar to processor programming. The latest generation of HLS tools, in most cases, uses either ANSI C, C++, or languages such as SystemC that are based on C or C++ that add hardware-specific constructs such as timing, hardware hierarchy, interface ports, signals, explicit specification of parallelism, and others \cite{5209958}. Some of the commercial HLS tools are Mentor's Catapult C, Forte's Cynthesizer, Cadence C-to-Silicon, NEC's CyberWorkbench and a new French company \textit{Synflow}  tool has its own language named Cx.\\
         
-        FPGA requires the reconfiguration of programmable fabric either before the program execution or partial reconfiguration on the fly when the program is running. The streaming and multimedia application requires the reconfiguration of fabric on the fly to optimally utilize the fabric. As FPGAs have granularity at the lowest possible bit level, the reconfiguration data is huge and the time for the hardware to reconfigure increases with the complexity. Most of the data handled in real world is either in Byte or word width and reconfiguring the interconnect at bit level can be abstracted at hardware level. This reduces the overhead of reconfiguring each bits. Similarly the commonly used combinatorial logics can be defined as standards for the custom design with the standard set of reconfiguration details. These features will reduce the amount of data and time required for reconfiguration and such a hardware class is called as Coarse Grain Reconfigurable Logic.   
+        FPGA requires the reconfiguration of programmable fabric either before the program execution or partial reconfiguration on the fly when the program is running. The streaming and multimedia application requires the reconfiguration of fabric on the fly to optimally utilize the fabric. As FPGAs have granularity at the lowest possible bit level, the reconfiguration data is huge and the time for the hardware to reconfigure increases with the complexity. Most of the data handled in real world is either in Byte or word width and reconfiguring the interconnect at bit level can be abstracted to higher level. This reduces the overhead of reconfiguring each bits. Similarly the commonly used combinatorial logics can be defined as standards blocks for the custom design with the standard set of reconfiguration details. These features will reduce the amount of data and time required for reconfiguration and such a hardware class is called as Coarse Grain Reconfigurable Logic.   
         
-         \subsection{Coarse Grain Reconfigurable systems}
+         \subsection{Coarse Grain Reconfigurable systems} \label{cgr}
        
-      
+         To overcome the limitations of Fine grained reconfigurable systems, new architectures were explored. Optimally designed processing elements which perform word level data processing are configured with few configuration bits at word level. Due to the word level reconfiguration, a small number of configuration bits is required resulting into a massive reduction of configuration data, memory needs, and reconfiguration time \cite{cgra}. Even the interconnections, since they are grouped in buses they are configured by a single control signal instead of separate control signal for each wire. Also, because few programmable switches are used for configuration purposes and the PE's are optimally-designed hardwired units; high performance, small area, and low power
+         consumption are achieved \cite{cgra}.\\
+         
+         \begin{figure}[!htb]
+             \centering
+             \includegraphics[scale=0.55]{basic}
+             \caption{Basic Coarse grain reconfigurable architecture \cite{1303110}}
+             \label{fig:basic}
+            \end{figure}
+         
+         
+         A generic architecture of Coarse grain reconfigurable system is illustrated in Fig.~\ref{fig:basic}. It consists of a set of Reconfigurable units (RU), a programmable interconnect, a configuration memory and a controller. The coarse grain reconfigurable part will be designed to take the computationally intensive parts of application and in most cases coupled to the main processor which takes care of other tasks. Coarse grain architectures are always optimized for the target domain. The number of reconfigurable units, their design, the interconnection network, memory and controller are tailored to the domain's needs. Memory will hold the control (configuration information) bits that are used to program the reconfigurable units and interconnection network. The configuration memory may store multiple configuration contexts but one context active at a time \cite{cgra}. The controller is responsible to control the loading of configuration context from the main memory to configuration memory, to monitor the execution process of the reconfigurable hardware and to activate reconfiguration contexts.\\
+         
+         The programmable interconnection network ensures the communication of data between the computing reconfigurable units. The wires are grouped into buses and are configured by single configuration bits. The interconnection network can be realized by a crossbar, mesh or a mesh variation structure.\\
+         
+         The reconfigurable units are the processing units, which are domain specific hardwired units, perform useful operation to accomplish the application requirements. The operations might refer to logic or arithmetic operation. They reconfigure autonomously based on the control information and are therefore different from the CLB's of fine grain architecture. Each unit is configured at word level, configuration bits reconfigures the entire unit and not each slice at bit level. Theoretically, the granularity might vary from bit to any word length. In most of the practical architectures which are designed, the granularity is either 8bits or above, as the processing of data happens with the word length of 8bits or more. \\
+         
+         The reconfigurable units in the architecture are optimized hardware units for the application domain. It can be designed to perform any word level arithmetic or logical operations. As coarse grain reconfigurable systems target at a specific domain, the RU's are designed in mind the operation required by the domain. The reconfigurable units are hardwired units optimized to perform for specific application domain to improve performance, area and power consumption.\\
+         
+         \acs{gpp} with programmed embedded software is the classical approach which tightly couples data and control flow for many applications. They can be coupled with the general purpose embedded processors in different ways. The design depends on the performance and requirements of the application. Three different scenarios are illustrated in Fig. \ref{fig:cgra}. These additional hardware units coupled to the processor will accelerate the performance or increase the throughput of the overall system. This illustration also helps to understand the different ways of reconfiguring the fabric.         
+         
        
        \begin{figure}[!htb]
            \centering
@@ -487,10 +507,13 @@
         \end{figure}
         
         
+        Register mapped reconfigurable blocks gives the tightest integration with embedded software. They are created by modifying the micro-architecture of the embedded core. For example as in Fig. \ref{fig:cgra}, C1 is an additional data path next to ALU. For programming such an architecture, it should be visible in the instruction set of the embedded core. Since it requires tight coupling, the exploiting the parallelism with the introduction of new hardware unit becomes cumbersome. The tools need to provide such features for the user to map the application for the new hardware architecture. \\           
         
-        \acs{gpp} with programmed embedded software is the classical approach which tightly couples Data flow and control flow for many applications. Additional hardware units can be used to accelerate the performance or increase the throughput of the overall system. These added hardware units can be coupled to the traditional CPU  in different ways as illustrated in Fig. \ref{fig:cgra}. The coarse grain reconfiguration models have higher granularity than the \acs{fpga} counterparts. Register-mapped reconfigurable block (C1) can be created by modifying the micro-architecture for example by integrating a custom data path next to the ALU. Memory mapped reconfigurable blocks (C2) have a shared memory locations which can convey control and data flow orientation information. In Network mapped reconfigurable blocks (C3), the network packets have the control and data flow information. Table.\ref{cgra}  shows the comparison of different coarse grain reconfigurable systems. As discussed in \cite{1303110}, Network mapped systems deviates more from the classic sequential model and hence the programming model is more complicated. 
+        Memory mapped reconfiguration is the next variant illustrated as C2 in Fig. \ref{fig:cgra}. This is achieved by providing a memory interface to the reconfigurable block. It results in looser coupling between software and the reconfigurable block. A set of shared memory locations can convey control and data flow orientation information. As explained in \cite{1303110}, reconfigurable blocks need to share memory address space with other peripherals. The control and data flow information might need to be routed through the CPU which increases the bottleneck.\\
         
-        \begin{table}[!htb]
+        In Network mapped reconfigurable blocks (C3), the network packets have the control and data flow information. In this case integration of embedded software and reconfigurable blocks can be done using communication primitives.  As discussed in \cite{1303110}, Network mapped systems deviates more from the classic sequential model and hence the programming model is more complicated. Table.\ref{cgra}  shows the comparison of different coarse grain reconfigurable systems.\\ 
+          
+         \begin{table}[!htb]
             \centering
             \resizebox{\textwidth}{!}{%
                 \begin{tabular}{ccccc}
@@ -506,11 +529,44 @@
         \end{table}
         
         
+        \subsection{High level synthesis}
+        
+        High level synthesis is the process of translation from Algorithmic description to Register transfer level description as explained in  Fig.~\ref{fig:Gajski}. Transforming application level programs which are described in high level languages directly into register transfer level will not require the programmer to know the detailed hardware architecture. High level synthesis tools explore the design space based on the information from high level abstraction with more degrees of freedom. There were many academic and industry projects showing the concept of \gls{hls} \cite{4291932} \cite{5469564}. They operate on internal models known as control/data flow graphs (CDFG) and produces a \gls{rtl} model of the hardware implementation \cite{998629}. The computationally intensive applications like DSP algorithms were the target in the initial research of HLS tools.\\ 
+        
+        A brief introduction to the academic and industry standard high level synthesis tools are discussed here.\\ 
+        
+        GAUT \cite{gaut} is an academic High level synthesis tool dedicated to Digital signal processing applications. It is an open source tool which takes a pure C function along with the constraints to extract the potential parallelism and data dependencies. After the allocation, scheduling and binding tasks it will generate the RTL code. \\
+        
+        Cynthesizer \cite{5209958} is a pin and protocol accurate SystemC model used as synthesis input of HLS tool. It produces the optimized RTL for specified target technology identified by the user in the form of a .lib file. \\
+        
+        A new approach called as \textit{interactive synthesis methodology} is explained in  \cite{4469916}, which takes C language as input and allow the user to control and change the synthesis decisions about scheduling, allocation and binding by using Graphical user interface (GUI) at any time.\\
+        
+        DRESC \cite{1188678} presents a retargetable compiler for a family of coarse grain reconfigurable architectures. It focuses on loop level parallelization for different segments of application code and uses modulo scheduling algorithm for mapping into hardware blocks.\\ 
+        
+        A generic compilation framework for architectures based on dataflow execution paradigm is explained in \cite{1530618}. It describes a method to transform applications described in HLL to Data flow graphs (DFGs) and technique to optimize the same.\\  
         
         
-        There were many academic and industry projects showing the concept of \gls{hls} \cite{4291932} \cite{5469564}. They operate on internal models known as control/data flow graphs (CDFG) and produces a \gls{rtl} model of the hardware implementation \cite{998629}. Increasing design complexity also created the necessity for the innovation of new \gls{eda} tools.\\ 
-	
-
+        All the above tools help the designers in exploring the hardware architectures with more degrees of freedom. In other words, the hardware architecture changes based on the designer input. In most of the coarse grain architecture designs, the synthesis tools are developed for the custom optimized hardware architectures by assuming that designer know the RTL implementation of the hardware. Few such cases are discussed below:\\   
+        
+        VESYLA (VEctorizing SYmbolic Language Assembler) \cite{5669439} is a semiautomatic framework for implementing DSP functions. This tool is relatively custom design for the coarse grain reconfigurable architecture designed at KTH called as DRRA (Dynamically Reconfigurable Resource Array). It takes an untimed C specification of a DSP function with pragmas and generates configware for DRRA architecture.\\  
+        
+        
+        RaPiD (Reconfigurable Pipeline Datapath) \cite{707889} architecture is a coarse grain architecture that allows pipelined computational structures to be constructed from an array of arithmetic units, registers and memories . Programming is performed using RaPiD-C,a C-like language with extensions to explicitly specify parallelism, data movement and partitioning \cite{groundup}.
+        The compilation process produces a structural specification with components specific to underlaying architecture.\\
+        
+        PipeRench \cite{839324} is a coarse grain reconfigurable system consisting of stages organized in a pipeline structure. It uses \textit{pipeline reconfiguration} technique to provide fast partial and dynamic reconfiguration and it also provides runtime scheduling of configuration and data streams. Programming such a complex model is performed using source language called \textit{dataflow intermediate language} (DIL) which is a single assignment language with C operators. After parsing, the compiler inlines all modules, unrolls all loops, and generates a straight-line, single-assignment code \cite{groundup}.\\
+        
+        
+        Pleiades \cite{Abnous98evaluationof} is a coarse grain reconfigurable template with heterogeneous processing elements, optimized for a given domain of algorithms and which allows runtime reconfiguration. Detailed architecture is discussed in \cite{groundup}, which indicates the mapping concept divided into 2 parts. The first task is to create the template instance and the other is to map an algorithm onto a processor instance. A reference of power and performance with respect to a general purpose processor is used to derive the resources for the architecture.\\
+        
+        Montium \cite{1213333} is a coarse grain reconfigurable architecture which resembles a VLIW architecture. It is optimized for the typical operations like correlation, finite impulse response (FIR) filters, matrix and vector multiplication, Max-Log-MAP
+        decoding, 8x8 point Discrete Cosine Transform (DCT) and Fast Fourier Transform (FFT). Programming this architecture consists of transforming C to directly architecture dependent code provided kernel written in C code is available. Otherwise the HLL C is translated into CDFG and then clustering and finally into Montium C code.\\
+        
+        
+        
+        The design of custom hardware architectures require a framework for producing the executable code and/or reconfiguration data. Most of the \gls{eda} tools are not matured to explore the coarse grain architectures. The projects discussed above develop their own framework for mapping application into their architecture. These tools are very specific to the architecture and might support the higher level languages.
+        
+        
 
 		\subsection{Protocols}\label{protocols}
         
@@ -802,13 +858,15 @@
 		\clearpage
 
 
-       \section{Methodology and architecture}
+       \section{Methodology}
         \vspace{1cm}
         \thispagestyle{plain}
-      This chapter explains the process applied in describing the protocol for the hardware architecture. It also explains the details of reconfigurable architecture under study, the common protocol functions and the methodology used to verify the result. 
-       
-       \subsection{Research process}
-            The hardware architecture and its interconnections need to be understood to design the protocol processor. The reconfigurable architecture developed at Ericsson AB is called as Freyja architecture. The hardware architecture details has to be abstracted out to define it in high level description. Similarly the protocols details has to be abstracted using the same description to reconfigure the hardware for different protocols. The mapping between them requires a custom set of files to define and reconfigure the architecture according to the requirement. To accomplish this,the research involves the following major steps:
+      
+      This chapter explains the research process. It further explains in detail about the system level modeling and its languages. It is followed by the section which explains the verification of the developed system. Why and how a new language is developed for programming the architecture at Ericsson is explained in the next section. The last section gives the configurable functions in protocol processing to achieve a reconfigurable hardware architecture. 
+      
+      \subsection{Research process}
+            The hardware architecture and its interconnections need to be understood to design the protocol processor. The reconfigurable architecture developed at Ericsson AB is called as Freyja architecture. The hardware architecture details has to be abstracted out to define it in high level description. Similarly the protocols details has to be abstracted using the same description to reconfigure the hardware for different protocols. Mapping between them requires a custom set of configuration data to define and reconfigure the architecture according to the requirement. To accomplish this, the research involves the following major steps:
+            
             \begin{itemize}
                 \item{Study the Reconfigurable hardware architecture}
                 \item{Identify the common protocol functions}
@@ -816,6 +874,9 @@
                 \item{Test the developed system}
                \end{itemize} 
        
+      
+        To study the reconfigurable hardware architecture developed at Ericsson, the language used to develop the architecture should be known. Why such a language is used to develop the architecture need to be understood. So the next section will provide details about the different system level modeling languages and their abstraction details.  
+      
       
       	\subsection{System-Level Modeling}
           
@@ -892,7 +953,7 @@
             The transaction being routed can be represented by a simple data structure provided by TLM2.0 utils called as Generic payload. It has standard set of bus attributes like command, address, data, byte enables, streaming width, and response status. The command can be either write or read, data attribute points to a data buffer within the initiator and the data length attribute will give the length of the data array. The streaming width attribute specifies the width of a streaming burst where the address repeats itself. This Generic payload is modeled in each of the reconfigurable operator blocks for initiating the transaction and the attributes are handled accordingly.    
             
             
-            \subsubsection{Verification using UVM}
+            \subsection{Verification using UVM}
             
             While in the early days, digital designs were verified by looking at waveforms and performing manual checks. This is a very tedious and time consuming task for the present day complex systems. So automating the verification process using better and efficient framework is always preferred. The SystemVerilog language came to aid many verification engineers. Its features like classes, covergroups and constraints have helped verifying complex digital systems. Later Verification Methodologies started to appear. \gls{uvm} is one of the methodologies that were created from the need to automate verification. Universal Verification Methodology(UVM) is a verification methodology based on the best features of OVM(Open verification Methodology) and Verification Methodology Manual(VMM) \cite{uvm}.\\
             
@@ -910,121 +971,74 @@
       
       
       
-       The study of the architecture is explained in detail in the next section. The further sections explains the process involved in achieving the remaining steps. 
        
-       \subsection{Freyja Architecture} \label{freyja}
-           As in Figure~\ref{fig:Freyja} , Freyja architecture is a reconfigurable protocol processor. It consists of different protocol operators which are connected through the central switch. This switch based network topology can be configured to process the data based on protocols. The Ring bus (RB) interface the Freyja with the higher layers of protocol and it issues the data frames of different protocols as tokens. The Common Memory Interface(CMI) is used to fetch the data from memory. 
-           The physical interface is represented by the Serializer/Deserializer block i.e SERDES. The details of each of the Freyja architecture blocks are discussed below.\\
-           
-            \begin{figure}[!htb]
-                %\centering
-                \includegraphics[width=1.1\textwidth]{Freyja}
-                \caption{Switch based Freyja network topology}
-                \label{fig:Freyja}
-            \end{figure}
-           
-       %\clearpage
-       \subsubsection{Switch port}
-       
-       \begin{wrapfigure}{R}{0.4\textwidth}
-           \vspace{-30pt}
-           \centering
-               \includegraphics[width=0.4\textwidth]{switchport}
-            
-            \caption{Switch port}
-            \label{wrap-fig:switchport}
-            
-        \end{wrapfigure} 
-        
-       Freyja Switch port is the smallest unit in the architecture which receives the transactions from different functions and then forwards it to the internally connected next switch port based on the destination of the transaction. It consists of a simple initiator socket,simple target socket,Multipass through initiator socket and Multi pass through target socket. It is represented as in \lipsum[0-0] Figure~\ref{wrap-fig:switchport}
- 
-    \subsubsection{Operator units}\label{operator}
-       
-       
-       \begin{figure}[!htb]
-           \centering
-           \includegraphics[scale=0.5]{operator}
-           \caption{Freyja operator}
-           \label{fig:operator}
-        \end{figure}
-       
-      
-       Freyja Operator units are designed to contain a control, process and memory blocks. Each operator function is implemented in the process block and the transaction routing and context switching is performed in the control block. The memory block stores the constants required for the process block. It can also be used to store the result and then the control block can access the results. 
-       As in Figure~\ref{fig:operator} , the 3 components of each operator is encapsulated with one simple initiator socket and one target socket which initiates the transaction and receives the transaction from the switch respectively. The transaction received in routed to the control block where it sends the transaction to memory block about the received transaction. Based on the required operator, the memory block will send the transaction to the process block. Meanwhile the received transaction is sent to the process block from the control block to perform the required operation. 
-       
-       
-       \subsubsection{Switch wrapper}
-        The switch wrapper instantiates the switch ports and their interconnections. Based on the number of operators the required number of switch ports is instantiated.
-        
-        
-         \begin{figure}[!htb]
-             \centering
-             \includegraphics[scale=0.5]{switchwrapper}
-             \caption{Freyja Switch Wrapper}
-             \label{fig:switchwrapper}
-            \end{figure}
-        
-        As in Figure~\ref{fig:switchwrapper}, each switch port can send the transaction to any of the other switch port through the internal multi pass through socket. The other switch ports can receive the transaction using the multi pass through receive socket. A transaction source and destination cannot be the same operator as there is no such interconnection.
-        
-        \subsubsection{Overall architecture}
-        
-        Assuming there are 4 operators in the Freyja architecture, an illustration of the system is shown in Figure~\ref{fig:Overallarchitecture}
-            
-        
-         \begin{figure}[!htb]
-             \centering
-             \includegraphics[scale=0.5]{Overallarchitecture}
-             \caption{Freyja Architecture for 4 operators}
-             \label{fig:Overallarchitecture}
-            \end{figure}    
-       
-       The overall Frejya architecture consists of switch wrapper instantiating switch ports and the operator blocks for each of the operator functions. A transaction originating from operator 1 as shown in fig with orange box can be routed to any of the other operators as destination based on the address of the payload. This will be assigned in the control block of the operator where the transaction is originated. 
        
        %\clearpage
        
        \subsection{High level description of the protocol}
+          
+          In general, how the reconfigurable architectures are programmed and the related work in this field is discussed briefly in Section \ref{cgr}. wherein it explained different tools and framework developed for computationally intensive DSP architectures. As coarse grain architectures are targeted for specific domain to optimize the architecture design, the synthesis tools designed for protocol processing are discussed here.\\  
+          
+                    
+          As discussed in previous section, systemC enables the specification of hierarchically structured communication protocols using the concepts of interfaces and channels. SystemC \textsuperscript{sv} \cite{1012696} discuss the way to model the complete protocol environment by  extending the SystemC language. It allows specifying the protocol  which generates the controller for producer and consumer and send the data through abstract channels. The tool is called COSYNE (Controller Synthesis Environment).\\
+          
+          Clairvoyant \cite{285744} describes the protocols using grammar based specification. It will generate an FSM described in VHDL which can be used by the logic synthesis tools. It was further commercialized and extended as Synopsys Protocol compiler.        
+          ProGrIL \cite{progril} is the Protocol Grammar Interface Language based on Context free LL(1) grammar. The configuration file will contain the information about the widths and depths of various parts of the grammar processors such as buses and memories.\\ 
+          
+          ProGram \cite{831438}  \cite{565871}, input specification is similar to the production based specification and the output is VHDL code of register transfer level. It is distinct in specification description when compared to the other approaches wherein the production rules are independent of port widths. The port widths are specified as design space constraints and the synthesis tool will generate different designs with varying performance for different values of constraints.\\            
+          
+          All the above discussed methodologies tries to develop a generic tool to map the protocol described in high level description directly as register transfer level. This includes the synthesis tools exploring design space for the optimized  hardware architecture with respect to area and performance. As discussed in Section. \ref{cgr}, for the computationally intensive DSP applications, there were tools which maps the high level description into specific architectures. Many case studies related to custom coarse grain architectures were also discussed which developed their own set of kernels, software, configuration data for programming such architectures. The architecture being developed at Ericsson is a custom architecture which requires a programming tool to generate the reconfiguration data and program it according to user definition. The architecture components are implemented in SystemC language and it requires a new tool to program it for different configurations. A new high level language is developed to describe the custom architecture.\\   
+         
+          
           High level language description requires the design of Lexer and parser as explained in Section \ref{grammar}. They can be designed using languages like C,C++,java,C\# and more. Based on the application requirement, a parsing strategy needs to be decided. As the machine resources grew in today's world, researchers have developed more complex and powerful Non Deterministic parsing strategies. Today both \quotes{bottom-up} and \quotes{top-down} approaches exist. Debugging a \quotes{bottom-up} parsers are hard to understand and debug compared to the \quotes{top-down} parsers.\\
           
-          There are many tools like ANTLR4,APG,AXE,YACC etc which helps to build a language application. They provide the user with Lexer and Parser implementations for the matched grammar defined by the user. This helps in reducing time for building the language in a short time. Antlr is one such tool which helps in designing the recursive descent top-down parser and a clear error recovery mechanism.           
+          There are many tools like ANTLR4, APG, AXE, YACC etc which helps to build a language application. They provide the user with Lexer and Parser implementations for the matched grammar defined by the user. This helps in reducing time for building the language in a short time. Antlr is one such tool which helps in designing the recursive descent top-down parser and a clear error recovery mechanism.           
        
          
          
          	\subsubsection{Antlr}
              
-            ANTLR4 accepts as inputs any context-free grammar that does not contain indirect or hidden left-recursion.\cite{antlr4}. Antlr 4 generates a recursive descent top down parser. It uses ALL(*) production prediction function. ALL(*) prediction mechanism launches sub parsers at decision point and they operate in pseudo parallel to explore all possibilities of input combinations. Antlr 4 currently generates parsers in Java or c\# and the previous version supports even C and C++.\\ 
+            ANTLR4 accepts as inputs any context-free grammar that does not contain indirect or hidden left-recursion.\cite{antlr4}. Antlr4 generates a recursive descent top down parser. It uses ALL(*) production prediction function. ALL(*) prediction mechanism launches sub parsers at decision point and they operate in pseudo parallel to explore all possibilities of input combinations. Antlr 4 currently generates parsers in Java or c\# and the previous version supports even C and C++.\\ 
             
             
               \begin{figure}[!htb]
                   \centering
-                  \includegraphics[scale=0.3]{antlr}
+                  \includegraphics[scale=0.45]{antlr}
                   \caption{Antlr}
                   \label{fig:antlr}
                 \end{figure}
             
-            Antlr 4 grammar use yacc-like syntax with EBNF operators like Kleene star(*) and token literals in single quotes. Both Lexical and syntactic rules are specified in the same grammar file. The Lexical rules are specified in capital letters which distinguishes them from others.\\
+            Antlr4 grammar use yacc-like syntax with EBNF operators like Kleene star(*) and token literals in single quotes. Both Lexical and syntactic rules are specified in the same grammar file. The Lexical rules are specified in capital letters which distinguishes them from others.\\
             
             
-            Figure~\ref{fig:antlr} illustrates ANTLRs yacc-like metalanguage. Antlr 4 automatically rewrites the rule to be non left recursive and unambiguous. The grammar analysis is performed at parse time and caching results in lookahead DFA for efficiency.\cite{antlr4}. 
+            Figure~\ref{fig:antlr} illustrates ANTLRs yacc-like metalanguage. Antlr4 automatically rewrites the rule to be non left recursive and unambiguous. The grammar analysis is performed at parse time and caching results in lookahead DFA for efficiency.\cite{antlr4}. 
              
           
              \subsubsection*{Parse tree listners and Visitors}
-             Antlr provides 2 tree walking mechanisms in its runtime library. In parse tree Listners, ANTLR generates a parsetreeListner subclass specific to each grammar with entry and exit methods for each rule. This is suitable for applications wherein the complete tree need to be invoked from root till the last leaf node in-order. The parse tree Visitor mechanism is used when the tree walking needs to be controlled.
+             Antlr provides 2 tree walking mechanisms in its runtime library. In parse tree Listners, ANTLR generates a parsetreeListner subclass specific to each grammar with entry and exit methods for each rule. This is suitable for applications wherein the complete tree need to be invoked from root till the last leaf node in-order. This is the default method in ANTLR. The advantage of using parsetreeListner mechanism is that it generates automatic APIs for the walker sequence and it is easier to build the language application.\\ 
+             
+             
+             In many circumstances, the designer need to control the walk sequence. It is not possible to design a language application with visitor method which generates APIs from left to right leaf node. The parse tree Visitor mechanism is used when the tree walking needs to be controlled. Option -visitor makes ANTLR4 to generate a visitor interface from a grammar with a visit method per rule. Then in the application-specific code, a visitor implementation can be called.\\
              
               
         \subsection{Comparison of 3 Protocols} \label{protocol}
         
-        The parser generator tools need to be used to describe the protocols and produce the reconfigurable files for the hardware architecture. The protocols of the MAC layer considered in this work are explained in section \ref*{protocols}. 
+        The parser generator tools need to be used to describe the protocols and produce the reconfigurable files for the hardware architecture. The protocols of the MAC layer considered in this work are explained in section \ref*{protocols}.\\ 
         
-        The common functions in each protocol are highlighted with the same color for the boundary line in Figure~\ref{fig:common_tx} \& Figure~\ref{fig:common_rx}. A common hardware architecture can be designed with minimal reconfiguration to perform the protocol processing of different protocols stated above.\\
+        The common functions in each protocol are highlighted with the same color for the boundary line in Figure~\ref{fig:common_tx} \& Figure~\ref{fig:common_rx}. Each of the operators are implemented in SystemC language and they receive and process the TLM2.0 transaction to perform the corresponding tasks.\\ 
         
         
         
         \begin{figure}[!htb]
             \centering
-            \includegraphics[width=1.0\textwidth]{common_tx}
+            \includegraphics[width=1.1\textwidth]{common_tx}
             \caption{Transmitter of all 3 protocols}
             \label{fig:common_tx}
         \end{figure}
+        
+        
+        The operators can be multiplexed and a generic operator unit can be designed for the blocks with same color boundary line. For example, the FCS computation is required in all 3 protocols. They require 16/32 bit polynomial to compute the checksum value. The memory unit is stored with polynomials and control data required for informing the CRC operator to perform a CRC16 or CRC32 operation. Since the CRC check operation performed in the receiver stage also require the computation of FCS, a single operator unit can be designed and configured to perform different operation. A common hardware architecture can be designed with minimal reconfiguration to perform the protocol processing of different protocols stated above.\\
+        
         
         
         \begin{figure}[!htb]
@@ -1048,6 +1062,76 @@
         \vspace{1cm}
         \thispagestyle{plain}
             A language description is developed to define the Freyja architecture which maps different protocol operators and their interconnections. The high level description accounts for different operator?s instantiation, transaction routing, constants in memory and error handling. Each of these is explained in detail in this chapter.
+            
+            
+            
+       \subsection{Freyja Architecture} \label{freyja}
+       As in Figure~\ref{fig:Freyja} , Freyja architecture is a reconfigurable protocol processor. It consists of different protocol operators which are connected through the central switch. This switch based network topology can be configured to process the data based on protocols. The Ring bus (RB) interface the Freyja with the higher layers of protocol and it issues the data frames of different protocols as tokens. The Common Memory Interface(CMI) is used to fetch the data from memory. 
+       The physical interface is represented by the Serializer/Deserializer block i.e SERDES. The details of each of the Freyja architecture blocks are discussed below.\\
+       
+       \begin{figure}[!htb]
+           %\centering
+           \includegraphics[width=1.1\textwidth]{Freyja}
+           \caption{Switch based Freyja network topology}
+           \label{fig:Freyja}
+       \end{figure}
+       
+       %\clearpage
+       \subsubsection{Switch port}
+       
+       \begin{wrapfigure}{R}{0.4\textwidth}
+           \vspace{-30pt}
+           \centering
+           \includegraphics[width=0.4\textwidth]{switchport}
+           
+           \caption{Switch port}
+           \label{wrap-fig:switchport}
+           
+       \end{wrapfigure} 
+       
+       Freyja Switch port is the smallest unit in the architecture which receives the transactions from different functions and then forwards it to the internally connected next switch port based on the destination of the transaction. It consists of a simple initiator socket,simple target socket,Multipass through initiator socket and Multi pass through target socket. It is represented as in \lipsum[0-0] Figure~\ref{wrap-fig:switchport}
+       
+       \subsubsection{Operator units}\label{operator}
+       
+       
+       \begin{figure}[!htb]
+           \centering
+           \includegraphics[scale=0.5]{operator}
+           \caption{Freyja operator}
+           \label{fig:operator}
+       \end{figure}
+       
+       
+       Freyja Operator units are designed to contain a control, process and memory blocks. Each operator function is implemented in the process block and the transaction routing and context switching is performed in the control block. The memory block stores the constants required for the process block. It can also be used to store the result and then the control block can access the results. 
+       As in Figure~\ref{fig:operator} , the 3 components of each operator is encapsulated with one simple initiator socket and one target socket which initiates the transaction and receives the transaction from the switch respectively. The transaction received in routed to the control block where it sends the transaction to memory block about the received transaction. Based on the required operator, the memory block will send the transaction to the process block. Meanwhile the received transaction is sent to the process block from the control block to perform the required operation. 
+       
+       
+       \subsubsection{Switch wrapper}
+       The switch wrapper instantiates the switch ports and their interconnections. Based on the number of operators the required number of switch ports is instantiated.
+       
+       
+       \begin{figure}[!htb]
+           \centering
+           \includegraphics[scale=0.5]{switchwrapper}
+           \caption{Freyja Switch Wrapper}
+           \label{fig:switchwrapper}
+       \end{figure}
+       
+       As in Figure~\ref{fig:switchwrapper}, each switch port can send the transaction to any of the other switch port through the internal multi pass through socket. The other switch ports can receive the transaction using the multi pass through receive socket. A transaction source and destination cannot be the same operator as there is no such interconnection.
+       
+       \subsubsection{Overall architecture}
+       
+       Assuming there are 4 operators in the Freyja architecture, an illustration of the system is shown in Figure~\ref{fig:Overallarchitecture}
+       
+       
+       \begin{figure}[!htb]
+           \centering
+           \includegraphics[scale=0.5]{Overallarchitecture}
+           \caption{Freyja Architecture for 4 operators}
+           \label{fig:Overallarchitecture}
+       \end{figure}    
+       
+       The overall Frejya architecture consists of switch wrapper instantiating switch ports and the operator blocks for each of the operator functions. A transaction originating from operator 1 as shown in fig with orange box can be routed to any of the other operators as destination based on the address of the payload. This will be assigned in the control block of the operator where the transaction is originated.      
             
         \subsection{Parser implementation}
             Antlr tool is used as a parser generator to develop the language. The grammar is defined using EBNF. Antlr parser use a new parsing technology called Adaptive LL(*). This parsing strategy combines the simplicity, efficiency and predictability of conventional top-down LL(k) parser with the power of GLR like mechanism to make parsing decision. It performs the grammar analysis dynamically at runtime rather statically. The grammar analysis is moved to parse time which helps to handle any non-left recursive context free grammar.
@@ -1530,7 +1614,7 @@ else if(type == xios){
 	                    abstract = {In the area of computer architecture, designers are faced with the trade-of between flexibility and performance. The architectural choices span a wide spectrum, with general-purpose processors and application specific integrated circuits (ASICs) at opposite ends. General-purpose processors are not optimized to specific applications; they are flexible due to their versatile instruction sets that allow the implementation of every computable task. ASICs are dedicated hardware devices that can achieve higher performance, require less silicon area, and are less power-consuming than instruction-level programmable processors. However, they lack in flexibility. Reconfigurable computer architectures promise to overcome this traditional trade-off and achieve both, the high performance of ASICs and the flexibility of general-purpose processors.},
 	                    issn = {2227-4332},
 	                    url = {http://www.sciencepubco.com/index.php/JACST/article/view/518},
-	                    pages = {337--346}
+	                    pages = {337--346}}
 
                     	@INPROCEEDINGS{5351593, 
 	                	author={Shami, M.A. and Hemani, A.}, 
@@ -1656,7 +1740,17 @@ else if(type == xios){
                               year = {2015},
                               howpublished = "\url{http://www.ericsson.com/}",
                               note = "[Online; accessed 1-March-2015]",
-                              url = {http://www.ericsson.com/}}  
+                              url = {http://www.ericsson.com/}}
+                          
+                          
+                        @MISC{gaut,
+                            author = {},
+                            title = {},
+                            month = sept,
+                            year = {2015},
+                            howpublished = "\url{http://hls-labsticc.univ-ubs.fr/}",
+                            note = "[Online; accessed 20-Sept-2015]",
+                            url = {http://hls-labsticc.univ-ubs.fr/}}       
                             
                             
                             
@@ -1852,19 +1946,7 @@ else if(type == xios){
                             ISSN={0018-9162}, 
                             month={Apr},}
                         
-                        @ARTICLE{5209958, 
-                            author={Coussy, P. and Gajski, D.D. and Meredith, M. and Takach, A.}, 
-                            journal={Design Test of Computers, IEEE}, 
-                            title={An Introduction to High-Level Synthesis}, 
-                            year={2009}, 
-                            volume={26}, 
-                            number={4}, 
-                            pages={8-17}, 
-                            keywords={high level synthesis;HLS techniques;abstraction level design;high-level synthesis;optimized RTL hardware;Application software;Assembly;Circuit simulation;Circuit synthesis;Computer architecture;Design methodology;Design optimization;Hardware design languages;High level synthesis;Space exploration;RTL abstraction;architectures;custom processors;design and test;hardware synthesis and verification;high-level synthesis}, 
-                            doi={10.1109/MDT.2009.69}, 
-                            ISSN={0740-7475}, 
-                            month={July},}
-                        
+                                               
                         @ARTICLE{1654264, 
                             author={Gajski, D.D. and Kuhn, R.H.}, 
                             journal={Computer}, 
@@ -1887,7 +1969,175 @@ else if(type == xios){
                             year = {2007},
                             month = {September}
                         }
+                        
+                        
+                        @incollection{cgra,
+                            year={2007},
+                            isbn={978-1-4020-6504-0},
+                            booktitle={Fine- and Coarse-Grain Reconfigurable Computing},
+                            editor={Vassiliadis, Stamatis and Soudris, Dimitrios},
+                            doi={10.1007/978-1-4020-6505-7\_2},
+                            title={A Survey of Coarse-Grain Reconfigurable Architectures and Cad Tools},
+                            url={http://dx.doi.org/10.1007/978-1-4020-6505-7\_2},
+                            publisher={Springer Netherlands},
+                            keywords={Coarse-grain reconfigurable systems/architectures; design issues of coarse-grain reconfigurable systems; mapping/compilation methods; reconfiguration mechanisms},
+                            author={Theodoridis, G. and Soudris, D. and Vassiliadis, S.},
+                            pages={89-149},
+                            language={English}
+                        }
+                        
+                        @ARTICLE{4469916, 
+                            author={Dongwan Shin and Gerstlauer, A. and Domer, R. and Gajski, D.D.}, 
+                            journal={Very Large Scale Integration (VLSI) Systems, IEEE Transactions on}, 
+                            title={An Interactive Design Environment for C-Based High-Level Synthesis of RTL Processors}, 
+                            year={2008}, 
+                            volume={16}, 
+                            number={4}, 
+                            pages={466-475}, 
+                            keywords={C language;embedded systems;high level synthesis;pipeline processing;system-on-chip;C language;RTL processor;binding;chaining;clock definition;component allocation;embedded system;high-level synthesis;interactive RTL design environment;multicycling;pipelining;processor architecture;register transfer level;scheduling;system-on-chip;Embedded systems;high level synthesis;interactive design environment;register transfer level (RTL) processor;system-on-chip (SoC)}, 
+                            doi={10.1109/TVLSI.2007.915390}, 
+                            ISSN={1063-8210}, 
+                            month={April},}
                          
+                         
+                         
+                         @INPROCEEDINGS{1188678, 
+                             author={Bingfeng Mei and Vernalde, S. and Verkest, D. and De Man, H. and Lauwereins, R.}, 
+                             booktitle={Field-Programmable Technology, 2002. (FPT). Proceedings. 2002 IEEE International Conference on}, 
+                             title={DRESC: a retargetable compiler for coarse-grained reconfigurable architectures}, 
+                             year={2002}, 
+                             pages={166-173}, 
+                             keywords={circuit layout CAD;embedded systems;high level synthesis;parallel architectures;processor scheduling;reconfigurable architectures;DRESC;architecture abstraction;coarse-grained reconfigurable architectures;dataflow;internal graph representation;modulo scheduling algorithm;program analysis;retargetable compiler;scheduling;Computer architecture;Concrete;Field programmable gate arrays;Kernel;Parallel processing;Reconfigurable architectures;Scheduling algorithm;Testing;Topology;VLIW}, 
+                             doi={10.1109/FPT.2002.1188678}, 
+                             month={Dec},}
+                            
+                            @inproceedings{1530618,
+                                author = {Alle, Mythri and Varadarajan, Keshavan and Fell, Alexander and Nandy, S. K. and Narayan, Ranjani},
+                                title = {Compiling Techniques for Coarse Grained Runtime Reconfigurable Architectures},
+                                booktitle = {Proceedings of the 5th International Workshop on Reconfigurable Computing: Architectures, Tools and Applications},
+                                series = {ARC '09},
+                                year = {2009},
+                                isbn = {978-3-642-00640-1},
+                                location = {Karlsruhe, Germany},
+                                pages = {204--215},
+                                numpages = {12},
+                                url = {http://dx.doi.org/10.1007/978-3-642-00641-8_21},
+                                doi = {10.1007/978-3-642-00641-8_21},
+                                acmid = {1530618},
+                                publisher = {Springer-Verlag},
+                                address = {Berlin, Heidelberg},
+                            } 
+                            
+                            @INPROCEEDINGS{5669439, 
+                                author={Malik, O. and Hemani, A. and Shami, M.A.}, 
+                                booktitle={NORCHIP, 2010}, 
+                                title={High Level Synthesis Framework for a Coarse Grain Reconfigurable Architecture}, 
+                                year={2010}, 
+                                pages={1-6}, 
+                                keywords={digital signal processing chips;high level synthesis;reconfigurable architectures;DSP algorithms;SIMD;coarse grain reconfigurable architecture;high level synthesis framework;Computer architecture;Digital signal processing;Finite impulse response filter;Resource management;Synchronization;CGRA;High Level Language;High level synthesis;Symbolic Assembler}, 
+                                doi={10.1109/NORCHIP.2010.5669439}, 
+                                month={Nov},}
+                            
+                            @INPROCEEDINGS{707889, 
+                                author={Cronquist, D.C. and Franklin, P. and Berg, S.G. and Ebeling, C.}, 
+                                booktitle={FPGAs for Custom Computing Machines, 1998. Proceedings. IEEE Symposium on}, 
+                                title={Specifying and compiling applications for RaPiD}, 
+                                year={1998}, 
+                                pages={116-125}, 
+                                keywords={decoding;field programmable gate arrays;formal specification;reconfigurable architectures;RaPiD;computation-intensive applications;control program;decoding structure;deeply pipelined implementations;dynamic control signals;flexible architectures;pipelined computation structures;reconfigurable pipelined datapath architecture;special-purpose hardware machines;statically configured datapath;Application software;Circuits;Computer applications;Computer architecture;Computer science;Decoding;Hardware;High level languages;Pipelines;Program processors}, 
+                                doi={10.1109/FPGA.1998.707889}, 
+                                month={Apr},}
+                            
+                            
+                            @ARTICLE{839324, 
+                                author={Goldstein, S.C. and Schmit, H. and Budiu, M. and Cadambi, S. and Moe, M. and Taylor, R.R.}, 
+                                journal={Computer}, 
+                                title={PipeRench: a reconfigurable architecture and compiler}, 
+                                year={2000}, 
+                                volume={33}, 
+                                number={4}, 
+                                pages={70-77}, 
+                                keywords={performance evaluation;program compilers;reconfigurable architectures;FPGA architectures;PipeRench;compilation time;compiler;configuration time;custom hardware;digital signal processor;efficiency;embedded computer systems;flexibility;forward compatibility;general-purpose processors;hard constraints;logic granularity;microcontroller;performance speedup;reconfigurable architecture;reconfigurable computing;Application software;Computer architecture;Digital signal processors;Embedded computing;Field programmable gate arrays;Hardware;Microcontrollers;Reconfigurable architectures;Reconfigurable logic;Time factors}, 
+                                doi={10.1109/2.839324}, 
+                                ISSN={0018-9162}, 
+                                month={Apr},}
+                            
+                            @INPROCEEDINGS{Abnous98evaluationof,
+                                author = {Arthur Abnous and Katsunori Senoy and Marlene Wan and Jan Rabaey},
+                                title = {Evaluation of a low-power reconfigurable DSP architecture},
+                                booktitle = {proceedings 5 th Reconfigurable Architectures workshop (RAW98), March 30},
+                                year = {1998},
+                                pages = {55--60},
+                                publisher = {Springer}
+                            }
+                            
+                             @INPROCEEDINGS{progril,
+                                 author = {R.H.J Bloks},
+                                 title = {A Grammar Based Approach towards the automatic implementation of Data Communication protocols in Hardware},
+                                 booktitle = {Ph. D thesis, Eindhoven University of Technology, Sept 1993},
+                                 year = {1993},
+                                 pages = {},
+                                 publisher = {}
+                                }
+                            
+                            @INPROCEEDINGS{1213333, 
+                                author={Heysters, P.M. and Smit, G.J.M.}, 
+                                booktitle={Parallel and Distributed Processing Symposium, 2003. Proceedings. International}, 
+                                title={Mapping of DSP algorithms on the MONTIUM architecture}, 
+                                year={2003}, 
+                                pages={6 pp.-}, 
+                                keywords={digital signal processing chips;parallel algorithms;parallel architectures;reconfigurable architectures;system-on-chip;DSP algorithm mapping;MONTIUM architecture;battery operated mobile devices;course-grained reconfigurable architecture;digital signal processing algorithms;flexible high-performance architectures;programmable systems;Computer architecture;Digital signal processing;Energy efficiency;Hardware;Kernel;Reconfigurable architectures;Registers;Signal processing algorithms;Tiles;VLIW}, 
+                                doi={10.1109/IPDPS.2003.1213333}, 
+                                ISSN={1530-2075}, 
+                                month={April},}
+                            
+                            @ARTICLE{831438, 
+                                author={Oberg, J. and Kumar, A. and Hemani, A.}, 
+                                journal={Very Large Scale Integration (VLSI) Systems, IEEE Transactions on}, 
+                                title={Grammar-based hardware synthesis from port-size independent specifications}, 
+                                year={2000}, 
+                                volume={8}, 
+                                number={2}, 
+                                pages={184-194}, 
+                                keywords={grammars;high level synthesis;protocols;ATM;Program;automaton;communication protocol;grammar-based language;hardware synthesis;port-size independent specification;system design;Application software;Automata;Books;Computer languages;Hardware design languages;High level synthesis;Java;Protocols;Space exploration;Testing}, 
+                                doi={10.1109/92.831438}, 
+                                ISSN={1063-8210}, 
+                                month={April},}
+                            
+                            @INPROCEEDINGS{565871, 
+                                author={Oberg, J. and Kumar, A. and Hemani, A.}, 
+                                booktitle={System Synthesis, 1996. Proceedings., 9th International Symposium on}, 
+                                title={Grammar-based hardware synthesis of data communication protocols}, 
+                                year={1996}, 
+                                pages={14-19}, 
+                                keywords={data communication;high level synthesis;logic design;protocols;specification languages;PRO-GRAM;VHDL-code;compiler;data communication protocols;design space exploration;grammar-based hardware synthesis;hardware specification;implementation independent design specification;logic synthesis;protocol specification language;synthesis methodology;tokens;Circuit synthesis;Control system synthesis;Data communication;Hardware;High level synthesis;Laboratories;Protocols;Space exploration;Space technology;Telephony}, 
+                                doi={10.1109/ISSS.1996.565871}, 
+                                ISSN={1080-1820}, 
+                                month={Nov},}
+                            
+                            @INPROCEEDINGS{1012696, 
+                                author={Siegmund, R. and Muller, D.}, 
+                                booktitle={Design Automation Conference, 2002. Proceedings. 39th}, 
+                                title={A novel synthesis technique for communication controller hardware from declarative data communication protocol specifications}, 
+                                year={2002}, 
+                                pages={602-607}, 
+                                keywords={asynchronous transfer mode;controller area networks;flow graphs;formal specification;high level synthesis;protocols;ATM;C++ code;CAN;COSYNE tool;IEC14443 Wireless SmartCard;RTL models;USB;bit-serial protocols;communication controller hardware synthesis;conformity;consumer controllers;data communication protocol specifications;formal specification;interacting transaction producer;interconnect;interface-based design;protocol flow graph;single protocol specification;Algorithm design and analysis;Circuit synthesis;Communication system control;Control system synthesis;Control systems;Data communication;Hardware;Permission;Protocols;Universal Serial Bus}, 
+                                doi={10.1109/DAC.2002.1012696}, 
+                                ISSN={0738-100X}, 
+                                month={},}
+                            
+                            @ARTICLE{285744, 
+                                author={Seawright, A. and Brewer, F.}, 
+                                journal={Very Large Scale Integration (VLSI) Systems, IEEE Transactions on}, 
+                                title={Clairvoyant: a synthesis system for production-based specification}, 
+                                year={1994}, 
+                                volume={2}, 
+                                number={2}, 
+                                pages={172-185}, 
+                                keywords={application specific integrated circuits;logic CAD;specification languages;ASIC;BDD techniques;Clairvoyant;binary decision;control aspects;control flow;controlling machine;data-flow aspects;encodings;exponentially larger deterministic state space;hierarchical production based specification;high-level synthesis system;logic circuit design;logic complexity;logic depth;production hierarchy;Automatic control;Control system synthesis;Control systems;Encoding;Hardware;High level synthesis;Logic;Production systems;Software engineering;State-space methods}, 
+                                doi={10.1109/92.285744}, 
+                                ISSN={1063-8210}, 
+                                month={June},}
                                                   
 }
 
@@ -1896,8 +2146,9 @@ else if(type == xios){
 \thispagestyle{plain}
 \bibliographystyle{ieeetr}
 \phantomsection
-\bibliography{references}
 \addcontentsline{toc}{section}{References}
+\bibliography{references}
+
 \cleardoublepage
 
 \phantomsection
