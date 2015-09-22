@@ -154,7 +154,7 @@
 \begin{document}
 % Information to appear on the title page:
 \ititle{\textbf{Reconfigurable hardware programming  \\ in a   protocol processor unit}\\}
-\isubtitle{Grammar based language framework \\ for hardware/software co-design}
+%\isubtitle{Grammar based language framework \\ for hardware/software co-design}
 %\isubtitle{}
 \iauthor{ - Sunil Kallur Ramegowda}
 \idate{2015}
@@ -570,7 +570,7 @@
 
 		\subsection{Protocols}\label{protocols}
         
-        The most commonly used protocols in the wireless base stations are discussed briefly in below section. 
+        	The communication between chips in Radio Base station equipments has many protocols to fulfill the requirements of the specification. The protocols differ by standards. The most commonly used protocols in the wireless base stations are discussed briefly in below section. 
         
         \subsubsection*{Gb Ethernet (GbE)}  Is used for low rate signaling paths for which latency is not critical. It supports communication over a wide variety of physical media and transmission ranges, and is therefore well-suited for inter-module communication. 
         
@@ -585,10 +585,11 @@
 
 
         \subsubsection*{Proprietary interfaces like Xio-s}  can be used to provide slow- and fast-path communication within the
-        base station when the system designer has control of both ends of the link. 
+        base station when the system designer has control of both ends of the link. \\
 
-
-		The communication between chips in Radio Base station equipments has many protocols to fulfill the requirements of the specification. The protocols differ by standards. The different protocols being used at Ericsson AB and related to this thesis work are described below:  
+        
+        The next section will explain in detail about the 3 protocols which are of study for the  reconfigurable protocol processor. It will explain about different operations performed at each level of protocol processing.
+	  
 
 		\subsubsection{Ethernet}
 		Ethernet  is a widely used protocol for data communication. It is typically used in Local Area Network (LAN) applications. IEEE organization has standardized the protocol and revises it according to the technological advancement. The recent standard available is from 2012 \cite{iethernet} and it defines the protocol for different applications.
@@ -1003,8 +1004,8 @@
             
               \begin{figure}[!htb]
                   \centering
-                  \includegraphics[scale=0.45]{antlr}
-                  \caption{Antlr}
+                  \includegraphics[scale=0.4]{antlr}
+                  \caption{Antlr : Input, Grammar and Parsetree}
                   \label{fig:antlr}
                 \end{figure}
             
@@ -1037,7 +1038,7 @@
         \end{figure}
         
         
-        The operators can be multiplexed and a generic operator unit can be designed for the blocks with same color boundary line. For example, the FCS computation is required in all 3 protocols. They require 16/32 bit polynomial to compute the checksum value. The memory unit is stored with polynomials and control data required for informing the CRC operator to perform a CRC16 or CRC32 operation. Since the CRC check operation performed in the receiver stage also require the computation of FCS, a single operator unit can be designed and configured to perform different operation. A common hardware architecture can be designed with minimal reconfiguration to perform the protocol processing of different protocols stated above.\\
+        The operators can be multiplexed and a generic operator unit can be designed for the blocks with same color boundary line. For example, the FCS computation is required in all 3 protocols. They require 16/32 bit polynomial to compute the checksum value. The memory unit is stored with polynomials and control data required for informing the CRC operator to perform a CRC16 or CRC32 operation. Since the CRC check operation performed in the receiver stage also require the computation of FCS, a single operator unit can be designed and configured to perform different operation. The CRC operator will be designed such that it is used to transmit the received transaction by appending the FCS value according to the protocol and if the transaction is from receiver stage then the same hardware is used to compute the checksum value and then compared with the received checksum value. The operator switches its context based on the control information received form memory block. A common hardware architecture can be designed with minimal reconfiguration to perform the protocol processing of different protocols stated above.\\
         
         
         
@@ -1061,7 +1062,8 @@
 		\section{Developed language}
         \vspace{1cm}
         \thispagestyle{plain}
-            A language description is developed to define the Freyja architecture which maps different protocol operators and their interconnections. The high level description accounts for different operator?s instantiation, transaction routing, constants in memory and error handling. Each of these is explained in detail in this chapter.
+            
+            The reconfigurable architecture called Freyja is explained in detail in the first section and then a language description is developed to define the Freyja architecture which maps different protocol operators and their interconnections. The high level description accounts for different operator instantiation, transaction routing, constants in memory and error handling. Each of these is explained in detail in this chapter.
             
             
             
@@ -1188,7 +1190,7 @@
 } 
          \end{lstlisting}
         
-        The operator name CHECKSUM identifies the unique operator in the Freyja architecture. The sc\_name field is used to create the systemC file with fre\_op\_ctrl\_crc,fre\_op\_proc\_crc,fre\_op\_mem\_crc files which are the control,process and memory blocks respectively. Each operator definition also takes care of including a switch port and modifying the switch wrapper functions to take care of the interconnections. 
+        The operator name CHECKSUM identifies the unique operator in the Freyja architecture. The sc\_name field is used to create the systemC file with fre\_op\_ctrl\_crc, fre\_op\_proc\_crc, fre\_op\_mem\_crc files which are the control, process and memory blocks respectively. Each operator definition also takes care of including a switch port and modifying the switch wrapper functions to take care of the interconnections. 
         
         \subsection{Context switching}
         
@@ -1321,8 +1323,8 @@
           
         
        
-         \subsection{Blocking transport and timing annotation}
-         The transaction is sent through the socket using the b\_transport method of the TLM\-2.0 blocking transport interface, which passes its transaction arguments by reference and has no return value. The b\_transport also carries the timing annotation which is not configured as the main interest as of now is to model the functionality of the target and not modeling any timing detail.
+         \subsection{ Timing annotation}
+         The transaction is sent through the socket using the b\_transport method of the TLM\-2.0 blocking transport interface, which passes its transaction arguments by reference and has no return value. The b\_transport also carries the timing annotation which is not configured as the main interest as of now is to model the functionality of the target and not modeling any timing detail. 
          
          
         
