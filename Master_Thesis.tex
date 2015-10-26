@@ -322,11 +322,11 @@
         \end{table}
         
        
-        The rules are referred as \textit{protocols} in communication systems. They help in the exchange of information between the digital systems. Most of the higher layers (4 to 7) are processed through generic computer systems and the lower layers with dedicated embedded hardware. \gls{gpp} found in embedded systems cover a broad range from 8 bit low cost microcontrollers, to 32 bit RISC microprocessors, to today's high performance processors with \gls{dsp} enhancements.  They can be considered as hybrid processors which incorporate signal processing features into embedded hardware that unify control and signal processing in a single core. In the communication domain, a network processor is a programmable microprocessor optimized for processing network data packets. Common functions include header parsing, pattern matching, bit manipulation, packet modification, shift and data movement. Software programmability of network processors allows it to be more flexible across a range of applications. Even though all network processors are programmable, the user might not be given access for programming, restricting the programmability to vendors. Other \gls{gpp} can be programmed for protocol processing as they are less expensive. Solutions based on \gls{gpp}  or \gls{asic} exist \cite{5335678}\cite{558379} for protocol processing. GPPs will have more flexibility but are less energy efficient when compared to \acs{asic} which is less flexible but the most energy efficient. \gls{asip} or domain specific processors are more suitable for the protocol processing task and depending on their architectural characteristics they allow varying degrees of trade-off between flexibility and energy-efficiency \cite{1106752}.\\   
+        The rules are referred as \textit{protocols} in communication systems. They help in the exchange of information between the digital systems. Most of the higher layers (4 to 7) are processed through generic computer systems and the lower layers with dedicated embedded hardware. \gls{gpp} found in embedded systems cover a broad range from 8 bit low cost microcontrollers, to 32 bit RISC microprocessors, to today's high performance processors with \gls{dsp} enhancements.  They can be considered as hybrid processors which incorporate signal processing features into embedded hardware that unify control and signal processing in a single core. In the communication domain, a network processor is a programmable microprocessor optimized for processing network data packets. Common functions include header parsing, pattern matching, bit manipulation, packet modification, shift and data movement. Software programmability of network processors allows it to be more flexible across a range of applications. Even though all network processors are programmable, the user might not be given access for programming, restricting the programmability to vendors. Other \gls{gpp} can be programmed for protocol processing as they are less expensive. Solutions based on \gls{gpp}  or \gls{asic} exist \cite{5335678} \cite{558379} for protocol processing. GPPs will have more flexibility but are less energy efficient when compared to \acs{asic} which is less flexible but the most energy efficient. \gls{asip} or domain specific processors are more suitable for the protocol processing task and depending on their architectural characteristics they allow varying degrees of trade-off between flexibility and energy-efficiency \cite{1106752}.\\   
 
 	     Another class of hardware architecture referred as Reconfigurable architecture, are devices that contain programmable function blocks and programmable interconnects between function blocks. The most mature class of reconfigurable architectures is \gls{fpga} which are considered fine-grained reconfigurable architectures. Research advances in this field have led to the Coarse grain re-configurable architectures and reconfigurable computing platforms. Hardware resource usage and performance varies depending on the reconfigurable architecture and its level of abstraction \cite{6868627}. The design of coarse grain reconfigurable hardware architecture requires the compiler to produce the configuration or the hardware compatible code \cite{5681536}. These files can be produced at run time when the application is running or in a static way before execution. The complexity of the system depends on the selected design.\\ 
 
-		The reconfigurable hardware is modeled in SystemC language using \gls{tlm}. The files required for the reconfiguration are obtained by parsing the description of protocols which is described in high level language. The Antlr tool is used for building the base parser file for the defined grammar and then the required functions are implemented to output the complete system and configuration data.\\ 
+		The reconfigurable hardware is modeled in SystemC language using \gls{tlm}. The files required for the reconfiguration are obtained by parsing the description of protocols which is described in high level language. The Antlr tool is used for building the base parser file for the defined grammar and then the required functions are implemented to output the complete system and configuration data. 
         
 
 		
@@ -353,7 +353,7 @@
             	In 1960, Gerald Estrin proposed the idea of a fixed plus variable structure computer \cite{1114865}. It consisted of a fixed processor and an array of reconfigurable hardware which was controlled by the fixed processor. Even though the idea was demonstrated with a proof, the industry did not consider to further innovate in this field and till the 1980's there were no significant developments. In  1985, the reconfigurable \gls{pla} was patented \cite{page1985re}. Innovation in \acs{pla}s further continued with the commercially available \gls{fpga} in today's market.\\
                 
                 
-            In the field of computer architecture, designers make decisions based on flexibility and performance requirements\cite{JACST518}. \acs{asic}s are the least flexible in terms of adapting for any change in the application, and GPPs are the most flexible as they are independent of the application and the core can be programmed to make the required algorithm work at the cost of higher power and lower efficiency. ASIC and GPP lie in the extreme corners of the graph between Flexibility Vs Performance as shown in Fig.~\ref{fig:Fig1}. Reconfigurable architectures are intended to fill the gap and provide more flexibility in terms of hardware and potentially higher performance than software\cite{JACST518}.
+            In the field of computer architecture, designers make decisions based on flexibility and performance requirements \cite{JACST518}. \acs{asic}s are the least flexible in terms of adapting for any change in the application, and GPPs are the most flexible as they are independent of the application and the core can be programmed to make the required algorithm work at the cost of higher power and lower efficiency. ASIC and GPP lie in the extreme corners of the graph between Flexibility Vs Performance as shown in Fig.~\ref{fig:Fig1}. Reconfigurable architectures are intended to fill the gap and provide more flexibility in terms of hardware and potentially higher performance than software \cite{JACST518}.
             
             \begin{figure}[!htb]
                 \centering
@@ -378,10 +378,10 @@
             \end{figure}
             
             In the compile time reconfiguration model, the reconfigurable hardware system is configured at compile time and will be static during the application run time. In this model the programmable logic can be configured to perform some specific task like hardware accelerators to achieve high performance. An FPGA configured to perform floating point multiplication together with a GPPs will accelerate the performance of the application if the GPPs doesn't have a Floating Point Unit.
-            In the run-time reconfiguration model, the reconfiguration hardware is configured at run time and will be dynamically programmed to perform different tasks. The decision for making such dynamic reconfiguration has to be embedded coupled with the application and hence it increase the overhead. The \gls{drra} fabric developed at KTH Electronic System Dept is an example of this model\cite{5351593}.   
+            In the run-time reconfiguration model, the reconfiguration hardware is configured at run time and will be dynamically programmed to perform different tasks. The decision for making such dynamic reconfiguration has to be embedded coupled with the application and hence it increase the overhead. The \gls{drra} fabric developed at KTH Electronic System Dept is an example of this model \cite{5351593}.   
             
             \subsubsection{Reconfiguration rate}
-            The Fine graine systems will have more reconfiguration data (in FPGAs, it is in term of bit streams), which leads to more configuration time and the Coarse Grained Reconfigurable systems will have comparatively less blocks as they have higher granularity and will contain less reconfiguration data. Hence, the Coarse grain architecture will take less time to reconfigure. This depends on the dynamic reconfiguration architecture whether the complete fabric is reconfigured or partially reconfigured during runtime.\\ 
+            The Fine graine systems will have more reconfiguration data (in FPGAs, it is in term of bit streams), which leads to more configuration time and the Coarse Grained Reconfigurable systems will have comparatively less blocks as they have higher granularity and will contain less reconfiguration data. Hence, the Coarse grain architecture will take less time to reconfigure. This depends on the dynamic reconfiguration architecture whether the complete fabric is reconfigured or partially reconfigured during runtime. 
         
         
 		\subsection{Purpose of this thesis}
@@ -398,8 +398,6 @@
         \subsection{Problem description}
             As explained in the previous section reconfigurable architectures with low granularity are available for different applications. They still face the challenges of lower speed, high energy consumption and the compatibility of tool chains between different vendors. The lowest reconfigurable granularity can be designed at bit, block or function level. When targeting hybrid architectures to improve either performance, cost or speed, the application must be partitioned in such a way that certain repetitive or computation intensive functions are mapped on a reconfigurable hardware. Such mapping is not simple as it requires deep understanding of both hardware and software design \cite{1395538}. The know-how of the process to build the complete system which solves the practical problems is of great importance. Fig.~\ref{fig:designgap} from the International Technology  Roadmap for semiconductors shows how hardware and software design productivity has lagged Moore's law. The need of configuration data for the reconfigurable hardware requires the design of new software tools.\\
             
-            
-            
              \begin{figure}[!htb]
                             \centering
                            \includegraphics[scale=0.45]{designgap}
@@ -415,18 +413,16 @@
 		The thesis goal is to achieve the below milestones:
         
         \begin{itemize}
-            \item{Understand the reconfigurable hardware architecture designed at Ericsson AB}
-            \item{Understand Ethernet, Xio-s and CPRI protocols}
-            \item{Define a language to describe the protocols in high level description}
-            \item{Identifying how to represent the reconfiguration information}
-            \item{Mapping the description of language to hardware and interconnections}
-            \item{Integrating Ethernet protocol for the complete system}
-            \item{Verifying the system by simulation}
+            \item{Understand the reconfigurable hardware architecture designed at Ericsson AB.}
+            \item{Understand Ethernet, Xio-s and CPRI protocols.}
+            \item{Define a language to describe the protocols in high level description.}
+            \item{Identifying how to represent the reconfiguration information.}
+            \item{Mapping the description of language to hardware and interconnections.}
+            \item{Integrating Ethernet protocol for the complete system.}
+            \item{Verifying the system by simulation.}
             
             
         \end{itemize}
-        
-      	               
 
 		\subsection{Limits on scope}
 		The thesis focuses more on showing the proof of concept considering one to two protocols i.e Ethernet and Xio-s. The language will be designed such that it is easy with minor modification to extend for other protocols like CPRI. Developing and integrating the \acs{tlm} models for all the protocols will not be feasible in this time line. The architectural changes required are suggested but not changed as the focus is more on describing the protocol in high level description.
@@ -446,9 +442,7 @@
         
         \textbf{Chapter 6 :}  This chapter explains the integration of Ethernet protocol functions into the  system of files auto generated from the language application. The challenges and the mapping of input description are discussed in detail. The Xio-s protocol is also considered but part of the functions are integrated to show the context switching and to highlight the control block changes.\\
         
-        \textbf{Chapter 7 :}  This chapter concludes the thesis by explaining the outcome of connecting 3 dots namely reconfigurable hardware, protocols and Grammar based high level description framework. The limitations encountered and the future work is discussed further.\\
-        
-        
+        \textbf{Chapter 7 :}  This chapter concludes the thesis by explaining the outcome of connecting 3 dots namely reconfigurable hardware, protocols and Grammar based high level description framework. The limitations encountered and the future work is discussed further.
         
           
 		\clearpage
@@ -484,7 +478,7 @@
         
         The introduction of \acs{fpga} led to the research of optimizing and reusing the reconfigurable logic blocks. The  \gls{eda} tools compile and synthesize \gls{hdls}  to create a physical design in terms of the \acs{fpga}'s resources. They are attractive compared to the ordinary CPUs because of less power consumption per computation and price per performance \cite{839320}. Despite these merits, FPGAs have still achieved limited applicability in industries. The main reason is that most software programmers lack the knowledge of hardware description languages which are used to describe the complex algorithms in FPGAs. FPGA programming requires a more rigorous development process, involving training the programmers beyond application level, resulting in an increase in development cost and time to market.\\
         
-        To overcome the problems stated above, research on mapping high level description to \gls{rtl} level started. The growing capabilities of silicon technology and the increasing complexity of applications in recent decades have also forced design methodologies and tools to move to higher abstraction levels. The methodology is called High Level Synthesis (HLS). It enables the automatic synthesis of high level, untimed or partially timed specification (SystemC) to a low-level cycle accurate \acs{rtl} specifications for efficient implementations in ASICs or FPGAs.  During the 1990s, the first generation of commercial HLS tools were available  \cite{5209958}. HLS tools helped the designer to use High Level Languages (HLLs) for FPGA programming similar to processor programming. The latest generation of HLS tools, in most cases, uses either ANSI C, C++, or languages such as SystemC that are based on C or C++ that add hardware-specific constructs such as timing, hardware hierarchy, interface ports, signals, explicit specification of parallelism, and others \cite{5209958}. Some of the commercial HLS tools are Mentor's Catapult C, Forte's Cynthesizer, Cadence C-to-Silicon, NEC's CyberWorkbench and a new French company \textit{Synflow}  tool has its own language named Cx.\\
+        To overcome the problems stated above, research on mapping high level description to \gls{rtl} level started. The growing capabilities of silicon technology and the increasing complexity of applications in recent decades have also forced design methodologies and tools to move to higher abstraction levels. The methodology is called \gls{hls}. It enables the automatic synthesis of high level, untimed or partially timed specification (SystemC) to a low-level cycle accurate \acs{rtl} specifications for efficient implementations in ASICs or FPGAs.  During the 1990s, the first generation of commercial HLS tools were available  \cite{5209958}. HLS tools helped the designer to use High Level Languages (HLLs) for FPGA programming similar to processor programming. The latest generation of HLS tools, in most cases, uses either ANSI C, C++, or languages such as SystemC that add hardware-specific constructs such as timing, hardware hierarchy, interface ports, signals, explicit specification of parallelism, and others \cite{5209958}. Some of the commercial HLS tools are Mentor's Catapult C, Forte's Cynthesizer, Cadence C-to-Silicon, NEC's CyberWorkbench and a new French company \textit{Synflow}  tool has its own language named Cx.\\
         
         FPGA requires the reconfiguration of programmable fabric either before the program execution or partial reconfiguration on the fly when the program is running. The streaming and multimedia application requires the reconfiguration of fabric on the fly to optimally utilize the fabric. As FPGAs have granularity at the lowest possible bit level, the reconfiguration data is huge and the time for the hardware to reconfigure increases with the complexity. Most of the data handled in real world is either in byte or word width and reconfiguring the interconnect at bit level can be abstracted to higher level. This reduces the overhead of reconfiguring each bit. Similarly, the commonly used combinatorial logics can be defined as standard blocks for the custom design with the standard set of reconfiguration details. These features will reduce the amount of data and time required for reconfiguration and such a hardware class is called Coarse Grain Reconfigurable Logic.   
         
@@ -576,7 +570,7 @@
         decoding, 8x8 point Discrete Cosine Transform (DCT) and Fast Fourier Transform (FFT). Programming this architecture consists of transforming C to directly architecture dependent code provided kernel written in C code is available. Otherwise C language is translated into CDFG, clustered and finally into Montium C code.\\
     
         
-        The design of custom hardware architectures require a framework for producing the executable code and/or reconfiguration data. Most of the \gls{eda} tools are not mature enough to explore the coarse grain architectures. The projects discussed above develop their own framework for mapping application into their architecture.\\
+        The design of custom hardware architectures require a framework for producing the executable code and/or reconfiguration data. Most of the \gls{eda} tools are not mature enough to explore the coarse grain architectures. The projects discussed above develop their own framework for mapping application into their architecture.
         
         
 
@@ -649,7 +643,7 @@
        
        \subsubsection*{CRC}
        
-        The \gls{crc} is used to detect errors incurred during the physical transmission. The \gls{crc} value is computed by dividing the data to be transmitted with the pre-defined CRC polynomial stored in memory\cite{4066263}. The remainder of the division is known as the \gls{fcs}.\\ 
+        The \gls{crc} is used to detect errors incurred during the physical transmission. The \gls{crc} value is computed by dividing the data to be transmitted with the pre-defined CRC polynomial stored in memory \cite{4066263}. The remainder of the division is known as the \gls{fcs}.\\ 
         
         On the transmitter side, the \gls{fcs} is computed for the incoming data and appended as the last 4 bytes (32bits). In the Ethernet receive, the \gls{fcs} is again computed for the incoming data and is compared with the FCS field for any errors. This block will not change the incoming data apart from appending the \gls{fcs} field.
         
@@ -877,7 +871,7 @@
       
       	\subsection{System-level modeling}
           
-          A hardware system requires modeling concepts that allow designers to explore different aspects of the system. These concepts include communication, time, structure, hierarchy etc. As explained in Fig.~\ref{fig:Gajski}, there are different levels of abstraction and domains in which the development phases vary. For example, in software, designers carry out performance exploration to identify bottlenecks with respect to time, excluding the lower level hardware details. The Y chart maps the different modeling styles of hardware as 3 different domains. In order to represent the hardware in these domains at different abstraction levels, an executable model is required. The designer should be able to model the different aspects of hardware, it should be scalable, possible to simulate, test and verify the functions. The Register transfer level description of the hardware is synthesized into a gate level netlist by logic synthesis tools. This level of hardware abstraction describes the signal transition between synchronously clocked registers. Traditional modeling languages have emphasized the hardware design flow, whereas the recent languages have incorporated concepts for efficient modeling at system level. With traditional languages like VHDL/Verilog, which are more used for RTL level, it takes too much time to develop for architectural exploration and software development. They also have poor performance i.e takes more time to simulate complex systems and are not available early in the development phase. In this section, Transaction Level Modeling (TLM) is introduced which is an alternative to traditional approaches for efficient abstraction and exploration of architectural details. Transaction level modeling is supported in languages such as SystemC and SpecC by abstract channels that connect communicating modules.\\
+          A hardware system requires modeling concepts that allow designers to explore different aspects of the system. These concepts include communication, time, structure, hierarchy etc. As depicted in Fig.~\ref{fig:Gajski}, there are different levels of abstraction and domains in which the development phases vary. For example, in software, designers carry out performance exploration to identify bottlenecks with respect to time, excluding the lower level hardware details. The Y chart maps the different modeling styles of hardware as 3 different domains. In order to represent the hardware in these domains at different abstraction levels, an executable model is required. The designer should be able to model the different aspects of hardware, it should be scalable, possible to simulate, test and verify the functions. The Register transfer level description of the hardware is synthesized into a gate level netlist by logic synthesis tools. This level of hardware abstraction describes the signal transition between synchronously clocked registers. Traditional modeling languages have emphasized the hardware design flow, whereas the recent languages have incorporated concepts for efficient modeling at system level. With traditional languages like VHDL/Verilog, which are more used for RTL level, it takes too much time to develop for architectural exploration and software development. They also have poor performance i.e takes more time to simulate complex systems and are not available early in the development phase. In this section, Transaction Level Modeling (TLM) is introduced which is an alternative to traditional approaches for efficient abstraction and exploration of architectural details. Transaction level modeling is supported in languages such as SystemC and SpecC by abstract channels that connect communicating modules.
           
           
           \subsubsection{Language comparison}
@@ -892,22 +886,22 @@
               \label{fig:languagec}
             \end{figure}
             
-            SystemC is an ANSI standard C++ class library for system and hardware design, for use by designers and architects who need to address complex systems that are hybrid between hardware and software \cite{1617814}. SystemC provides an event-driven simulation kernel in C++, together with signals, events, and synchronization primitives, deliberately mimicking the hardware description languages VHDL and Verilog. Matlab and several other tools are widely used for capturing system requirements and developing signal processing algorithms.\\ 
+            SystemC is an ANSI standard C++ class library for system and hardware design, for use by designers and architects who need to address complex systems that are hybrid between hardware and software \cite{1617814}. SystemC provides an event-driven simulation kernel in C++, together with signals, events, and synchronization primitives, deliberately mimicking the hardware description languages VHDL and Verilog. Matlab and several other tools are widely used for capturing system requirements and developing signal processing algorithms. 
             
             \subsubsection{Transaction Level Modeling}
             
             Transaction level models use abstract channels to model communication between concurrent processes in the system using function calls \cite{tlm}. In RT level each bit is instantiated as a port and hence in TLM level it can be abstracted to a byte, word or according to the architecture requirement. Also, the signal assignments of individual bits in RT level are abstracted with function calls which either send or receive the transaction. A transaction can be defined as an exchange of information between the processes in the simulation. It may contain complex data structures with control and data information, burst of data or a simple word of data packet. Time within TLM components are modeled as untimed, approximately or cycle accurate \cite{ARM:07}.\\
             
-            Transaction level modeling complements RT-level modeling, in order to perform following activities \cite{groundup} :
+            TLM complements RT-level modeling, in order to perform following activities \cite{groundup} :
             
             \begin{itemize}
                 \item{Hardware micro-architecture exploration and starting point for more detailed hardware modeling.} 
                 
-                \item{System level architectural exploration, such as selecting communication and processing components and HW/SW partitioning.} 
+                \item{System level architectural exploration, such as selecting communication and processing components and Hardware/Software partitioning.} 
                 
                 \item{Virtual platform for software development.}
                 
-                \item{Reference model for hardware functional verification. }
+                \item{Reference model for hardware functional verification.}
             \end{itemize}
             
             Transaction level modeling is supported by languages like SystemC and SpecC. The communicating modules which are either initiators or targets are connected through channels. An initiator will start sending the transaction while the target will respond to the initiator request. Arbitration and routing algorithms are necessary for multiple initiators and targets to communicate in the system. The arbitration algorithm selects the initiator to be given access to the channel, and the routing algorithm assures that the correct target is addressed by transaction information. All these concepts are used to model the interconnects found in \gls{socs}. 
@@ -915,7 +909,7 @@
             
             \subsubsection{SystemC}
             
-            SystemC is a system design language that has evolved in response to a pervasive need for a language that improves overall productivity for designers of electronic systems \cite{groundup}. The open SystemC initiative (OSCI) formed in 1999, maintained a simulation library for SystemC. In December 5 2011, Accellera Systems Initiative was formed by the merger of Accellera and the Open SystemC Initiative. SystemC is a C++ library that contains routines and macros to simulate concurrent processes using HDL like semantic. SystemC is now the IEEE Std. 1666 for system-level modeling, design and verification. It offers real productivity gains for the designer by providing hardware and software components design in parallel, but at a high level of abstraction. This higher level of abstraction gives the design team a fundamental understanding of the intricacies and interactions of the entire system, early in the design process and enables better system trade offs, better and earlier verification, and over all productivity gains through reuse of early system models as executable specifications \cite{groundup}.\\
+            SystemC is a system design language that has evolved in response to a pervasive need for a language that improves overall productivity for designers of electronic systems \cite{groundup}. The open SystemC initiative (OSCI) formed in 1999, maintained a simulation library for SystemC. In December 5 2011, Accellera Systems initiative was formed by the merger of Accellera and the Open SystemC Initiative. SystemC is a C++ library that contains routines and macros to simulate concurrent processes using HDL like semantic. SystemC is now the IEEE Std. 1666 for system-level modeling, design and verification. It offers real productivity gains for the designer by providing hardware and software components design in parallel, but at a high level of abstraction. This higher level of abstraction gives the design team a fundamental understanding of the intricacies and interactions of the entire system, early in the design process and enables better system trade offs, earlier verification, and overall productivity gains through reuse of early system models as executable specifications \cite{groundup}.\\
             
             \begin{figure}[!htb]
                 \centering
@@ -963,7 +957,7 @@
             \end{figure}
             
             
-            The first step in verifying the designed system is by defining what kind of data is to be sent to the design under test. The detailed architecture of UVM is not discussed as it is out of the thesis scope. Only features relevant to the work are summarized. A transaction can be built from uvm\_transaction or uvm\_sequence\_item classes similar to the transaction in SystemC. The "random" keyword is used to generate a transaction according to the constraints. The sequencer is responsible for sending the transaction to the driver component, which in turn connects to the Design Under Test.\\
+            The first step in verifying the designed system is by defining what kind of data is to be sent to the design under test. The detailed architecture of UVM is not discussed as it is out of the thesis scope. Only features relevant to the work are summarized. A transaction can be built from uvm\_transaction or uvm\_sequence\_item classes similar to the transaction in SystemC. The "random" keyword is used to generate a transaction according to the constraints. The sequencer is responsible for sending the transaction to the driver component, which in turn connects to the Design Under Test.
             
       %\clearpage
        
@@ -990,11 +984,11 @@
           
           A high level language description requires the design of Lexer and parser as explained in Section \ref{grammar}. They can be designed using languages like C, C++, Java, C\# and more. Based on the application requirement, a parsing strategy needs to be decided. As the machine resources grew in today's world, researchers have developed more complex and powerful Non Deterministic parsing strategies. Today both \quotes{bottom-up} and \quotes{top-down} approaches exist. Developing a \quotes{bottom-up} parsers is hard to understand and debug, compared to the \quotes{top-down} parsers.\\
           
-          There are many tools like ANTLR4, APG, AXE, YACC etc which help to build a language application. They provide the user with Lexer and Parser implementations for the grammar defined by the user. This helps in building the language application in a short time. Antlr is one such tool which helps in designing a recursive descent top-down parser with a clear error recovery mechanism.           
+          There are many tools like Antlr4, APG, AXE, YACC etc which help to build a language application. They provide the user with Lexer and Parser implementations for the grammar defined by the user. This helps in building the language application in a short time. Antlr is one such tool which helps in designing a recursive descent top-down parser with a clear error recovery mechanism.           
          
          	\subsubsection{Antlr}
              
-            ANTLR4 accepts as input any context-free grammar that does not contain indirect or hidden left-recursion \cite{antlr4}. Antlr4 generates a recursive descent top down parser.  Antlr4 parser uses a new parsing technology called Adaptive LL(*). ALL(*) prediction mechanism launches sub parsers at decision points and they operate in pseudo parallel to explore all possibilities of input combinations. It performs the grammar analysis dynamically at runtime rather than statically. Antlr4 currently generates parsers in Java or C\#, and the previous version supports even C and C++.\\ 
+            Antlr4 accepts as input any context-free grammar that does not contain indirect or hidden left-recursion \cite{antlr4}. Antlr4 generates a recursive descent top down parser.  Antlr4 parser uses a new parsing technology called Adaptive LL(*). ALL(*) prediction mechanism launches sub parsers at decision points and they operate in pseudo parallel to explore all possibilities of input combinations. It performs the grammar analysis dynamically at runtime rather than statically. Antlr4 currently generates parsers in Java or C\#, and the previous version supports even C and C++.\\ 
             
             
               \begin{figure}[!htb]
@@ -1007,14 +1001,14 @@
             Antlr4 grammar uses Yacc-like syntax with EBNF operators like the Kleene star(*) and token literals in single quotes. Both lexical and syntactic rules are specified in the same grammar file. The Lexical rules are specified in capital letters which distinguishes them from others.\\
             
             
-            Fig~\ref{fig:antlr} illustrates ANTLR's Yacc-like metalanguage. Antlr4 automatically rewrites the rules to be non left recursive and unambiguous. The grammar analysis is performed dynamically and results are cached in lookahead DFA for efficiency \cite{antlr4}. 
+            Fig~\ref{fig:antlr} illustrates Antlr's Yacc-like metalanguage. Antlr4 automatically rewrites the rules to be non left recursive and unambiguous. The grammar analysis is performed dynamically and results are cached in lookahead Deterministic Finite Automaton (DFA) for efficiency \cite{antlr4}. 
              
           
              \subsubsection*{Parse tree listeners and visitors}
-             Antlr provides 2 tree walking mechanisms in its runtime library. In parse tree Listeners, ANTLR generates a ParseTreeListener subclass specific to each grammar with entry and exit methods for each rule. This is suitable for applications wherein the complete tree needs to be invoked from root until the last leaf node in-order. This is the default method in ANTLR. The advantage of using ParsetreeListener mechanism is that it generates automatic \gls{apis} for the walker sequence and it is easier to build the language application.\\ 
+             Antlr provides 2 tree walking mechanisms in its runtime library. In parse tree Listeners, Antlr generates a ParseTreeListener subclass specific to each grammar with entry and exit methods for each rule. This is suitable for applications wherein the complete tree needs to be invoked from root until the last leaf node in-order. This is the default method in Antlr. The advantage of using ParsetreeListener mechanism is that it generates automatic \gls{apis} for the walker sequence and it is easier to build the language application.\\ 
              
              
-             In many circumstances, the designer needs to control the walk sequence. It is not possible to design a language application with visitor method which generate \gls{apis} from the left to the right leaf node. The parse tree visitor mechanism is used when the tree walking needs to be controlled. Option -visitor makes ANTLR4 to generate a visitor interface from a grammar with a visit method per rule. Then in the application-specific code, a visitor implementation can be called.\\
+             In many circumstances, the designer needs to control the walk sequence. It is not possible to design a language application with visitor method which generate \gls{apis} from the left to the right leaf node. The parse tree visitor mechanism is used when the tree walking needs to be controlled. Option -visitor makes Antlr4 to generate a visitor interface from a grammar with a visit method per rule. Then in the application-specific code, a visitor implementation can be called.\\
         
         \clearpage
         
@@ -1030,7 +1024,7 @@
         
         The parser generator tools need to be used to describe the protocols and produce the reconfigurable files for the hardware architecture. The protocols of the MAC layer considered in this work are explained in section \ref*{protocols}.\\ 
         
-        The common functions in each protocol are highlighted with the same color for the boundary line in Figure~\ref{fig:common_tx} \& Figure~\ref{fig:common_rx}. Each of the operators are implemented in SystemC and they receive and process the TLM2.0 transaction to perform the corresponding tasks.\\ 
+        The common functions in each protocol are highlighted with the same color for the boundary line in Fig~\ref{fig:common_tx} \& Fig~\ref{fig:common_rx}. Each of the operators are implemented in SystemC and they receive and process the TLM2.0 transaction to perform the corresponding tasks.\\ 
         
         
         
@@ -1136,7 +1130,7 @@
         
         A brief description of the generated file is stated below:\\
         
-        Freyja\_archInitparser.java: contains the parser class definition specific to grammar Freyja\_arch that recognizes our Freyja protocol processor language syntax.\\
+        Freyja\_archInitparser.java: This file contains the parser class definition specific to the grammar in Freyja\_arch, that recognizes the syntax of Freyja protocol processor language.\\
         
         Freyja\_archInitLexer.java: This file contains the lexer class definition by analyzing the lexical rules in the grammar.\\
         
@@ -1149,7 +1143,7 @@
         
         \subsection{Operator Instantiation}
         
-        As explained in Fig~\ref{fig:CRC}, each of the operators in the Freyja architecture consists of a control block to take care of the transaction routing and error handling and a memory block for storing the constants and results, and the process block to perform the operator function.
+        As illustrated in Fig~\ref{fig:CRC}, each of the operators in the Freyja architecture consists of a control block to take care of the transaction routing and error handling and a memory block for storing the constants and results, and the process block to perform the operator function.
         
         
          \begin{figure}[!htb]
@@ -1533,10 +1527,10 @@
         
         Programmers are building domain-specific languages, configuration file formats, network protocols and numerous data file formats as well as traditional programming language compilers and interpreters. The development of such systems can be made faster by using the language building tools.\\
         
-        Programmers tend to avoid using language tools, resorting to adhoc methods, partly because of the raw and low level interface to these tools \cite{Bovet:2008:AAG:1410270.1410275}. Using a grammar based approach to build parsers will offer a more natural, high fidelity, robust and maintainable means of encoding a language-related problem. Most grammar development is done today with a simple text editor. The ANTLR4 parser generator \cite{Parr:2007:DAR:1209320} attempts to make grammars more accessible to the programmer by generating recursive descent parsers that are very similar to what the programmer would build by hand.\\
+        Programmers tend to avoid using language tools, resorting to adhoc methods, partly because of the raw and low level interface to these tools \cite{Bovet:2008:AAG:1410270.1410275}. Using a grammar based approach to build parsers will offer a more natural, high fidelity, robust and maintainable means of encoding a language-related problem. Most grammar development is done today with a simple text editor. The Antlr4 parser generator \cite{Parr:2007:DAR:1209320} attempts to make grammars more accessible to the programmer by generating recursive descent parsers that are very similar to what the programmer would build by hand.\\
         
         
-        Antlr4 supports rapid grammar developemnt by using ANTLR's built in interpreter, thus, providing immediate feedback during development \cite{Daly:2006:PES:1142473.1142568}. The parse tree associated with the matching input (as in Fig.~\ref{fig:parsetree}) helps in debugging for error in grammar definition. If the input sequence is not in the language recognized by specified start rule, Antlr4 inserts an error node into the parse tree to indicate where the problem occurred.\\ 
+        Antlr4 supports rapid grammar developemnt by using Antlr's built in interpreter, thus, providing immediate feedback during development \cite{Daly:2006:PES:1142473.1142568}. The parse tree associated with the matching input (as in Fig.~\ref{fig:parsetree}) helps in debugging for error in grammar definition. If the input sequence is not in the language recognized by specified start rule, Antlr4 inserts an error node into the parse tree to indicate where the problem occurred.\\ 
         
        All the above features of the Antlr4 tool helps to build the language application in a more structured way. Providing the framework in multiple languages makes the programmer comfortable to build with their preferred language. The most encountered problems are resolved with the community support and the book written by the author Terrence Parr \cite{Parr:2007:DAR:1209320}.
         
@@ -1548,11 +1542,11 @@
          
          \subsection{Future work}
         
-          The Freyja architecture is still under implementation and in the future, the complete details of the architecture can be abstracted into high level description by extending the grammar. Features like multiple core instantiations and transactions from different sources to same destination (required for Xio-s protocol) are possible to represent but still require the backend implementations to modify according to the interconnection defined in future. Once the reconfigurable file format required by RTL hardware implementations is defined, the same framework can output such files to speedup the design process. As explained in section \ref{reconf} the granularity of Freyja architecture is at algorithmic level. Common hardware blocks at logic levels and exploiting the reconfigurability for the freyja architecture can be considered further, and then the language can be extended similar to the TACO protocol processor \cite{taco}. The header, as explained in Fig.~\ref{fig:header}, can be described in the high level description which provides control in manipulating the length of each field.\\
+          The Freyja architecture is still under implementation and in the future, the complete details of the architecture can be abstracted into high level description by extending the grammar. Features like multiple core instantiations and transactions from different sources to same destination (required for Xio-s protocol) are possible to represent but still require the backend implementations to modify according to the interconnection defined in future. Once the reconfigurable file format required by RTL hardware implementations is defined, the same framework can output such files to speedup the design process. As explained in section \ref{reconf} the granularity of Freyja architecture is at algorithmic level. Common hardware blocks at logic levels and exploiting the reconfigurability for the Freyja architecture can be considered further, and then the language can be extended similar to the TACO protocol processor \cite{taco}. The header, as depicted in Fig.~\ref{fig:header}, can be described in the high level description which provides control in manipulating the length of each field.\\
           
-          The integration of Xio-s and CPRI protocols into the framework is straight forward. The process block i.e core functions of each operator needs to be modified to integrate these protocols into the system. The Ethernet integration is set as an example. The grammar supports the definition of multiple protocols in the language. The implementation of protocol functions does not require any modifications in the grammar. \\
+          The integration of Xio-s and CPRI protocols into the framework is straight forward. The process block that is the core functions of each operator needs to be modified to integrate these protocols into the system. The Ethernet integration is set as an example. The language supports the definition of multiple protocols in the language. The implementation of protocol functions does not require any modifications in the grammar. \\
           
-          Antlr4 is made to output the framework in Java language and the tool (in future!) will support other languages like C, C++. Based on the project requirements the language can be selected. Java has good commands for File IO operations and handling the objects. The major backend implementation deals with storing the parsed data in the form of Hashmap and Linkedlist. These facts can be considered when building similar concepts for other reconfigurable architectures. \\ 
+          Antlr4 is made to output the framework in Java language and the tool (in future!) will support other languages like C and C++. Based on the project requirements the language can be selected. Java has good commands for file IO operations and object handling. The major back-end implementation deals with storing the parsed data in the form of hash-map and linked-list. These facts can be considered when building similar concepts for other reconfigurable architectures. \\ 
         
          
           In general, the framework can be extended for all levels of synthesis while designing the hardware. The development environment will be heterogeneous at different levels and a common framework for producing the top level configurable files will reduce the errors. Once the architecture is specified, the tool can be made to generate the SystemC model for simulation, a Matlab model for estimation of resources and a VHDL model for synthesis of the architecture. The resource estimation can also be integrated within the tool by developing an interpreter using the parsed input. 
